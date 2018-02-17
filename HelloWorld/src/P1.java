@@ -1,10 +1,59 @@
 import java.util.Scanner;
 import java.lang.String;
-
+import java.util.Random;
 
 public class P1 
 {
-	public static int g_y, g_x;
+	public static int g_y, g_x, hy, hx, ny, nx;
+	
+	public static void print_map(String map[][])
+	{
+		for(int i = 0; i < map.length; i++)
+		{
+			for(int j = 0; j < map[i].length; j++)
+				System.out.print(map[i][j]);
+				
+			System.out.print("\n");
+		}
+	}
+	
+	public static boolean game_over(String map[][], String enemy)
+	{
+		if((map[hy][hx + 1] == enemy) || (map[hy][hx - 1] == enemy)
+				|| (map[hy - 1][hx] == enemy) || (map[hy + 1][hx] == enemy))
+		{
+			map[hy][hx] = "_";
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	public static void hero_move(String move)
+	{
+		switch(move)
+		{
+			case "w":
+				ny = hy - 1;
+				nx = hx;
+				break;
+				
+			case "s":
+				ny = hy + 1;
+				nx = hx;
+				break;
+				
+			case "a":
+				ny = hy;
+				nx = hx - 1;
+				break;
+				
+			case "d":
+				ny = hy;
+				nx = hx + 1;
+				break;
+		}
+	}
 	
 	public static void guard_move(String map[][])
 	{
@@ -26,7 +75,7 @@ public class P1
 					 g_x -= 1;
 				 }
 				 else
-					 if(((map[g_y][g_x - 1] == "I") || (map[g_y][g_x] == "S"))
+					 if(((map[g_y][g_x - 1] == "I") || (map[g_y][g_x - 1] == "S"))
 							 && (map[g_y + 1][g_x] == "_"))
 					 {
 						 map[g_y][g_x] = "_";
@@ -47,15 +96,18 @@ public class P1
 	
 	public static void main(String[] args) 
 	{
-		int hx = 1, hy = 1, nx = 1, ny = 1, d1_x = 4, d1_y = 1, d2_x = 2, d2_y = 3, d3_x = 4, 
-				d3_y = 3, d4_x = 0, d4_y = 5, d5_x = 0, d5_y = 6, d6_x = 2, d6_y = 8, d7_x = 4, 
-				d7_y = 8;
-		boolean lever = false, game_over = false;
+		int d1_x = 4, d1_y = 1, d2_x = 2, d2_y = 3, d3_x = 4, d3_y = 3, d4_x = 0, d4_y = 5, 
+				d5_x = 0, d5_y = 6, d6_x = 2, d6_y = 8, d7_x = 4, d7_y = 8;
+		boolean lever = false, next_level = false;
 		String move = "start";
 		Scanner in = new Scanner (System.in);
 		
 		g_y =1;
 		g_x = 8;
+		hx =1;
+		hy = 1;
+		nx = 1;
+		ny = 1;
 		
 		String map[][] = { 
 				{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X"}, 
@@ -69,41 +121,13 @@ public class P1
 				{"X","_","I","_","I","_","X","K","_","X"},
 				{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X"}};
 		
-		for(int i = 0; i < map.length; i++)
-		{
-			for(int j = 0; j < map[i].length; j++)
-				System.out.print(map[i][j]);
-				
-			System.out.print("\n");
-		}
+		print_map(map);
 		
-		
-		while(!move.equalsIgnoreCase("exit"))
+		while(!move.equalsIgnoreCase("exit") && !next_level)
 		{
 			move =  in.next();
 			
-			switch(move)
-			{
-				case "w":
-					ny = hy - 1;
-					nx = hx;
-					break;
-					
-				case "s":
-					ny = hy + 1;
-					nx = hx;
-					break;
-					
-				case "a":
-					ny = hy;
-					nx = hx - 1;
-					break;
-					
-				case "d":
-					ny = hy;
-					nx = hx + 1;
-					break;
-			}
+			hero_move(move);
 			
 			switch(map[ny][nx])
 			{
@@ -137,9 +161,8 @@ public class P1
 				break;
 				 
 			 case "S":
-				System.out.print("Victory!\n");
-				in.close();
-				return;
+				next_level = true;
+				break;
 				 
 			default:
 				break;
@@ -161,27 +184,163 @@ public class P1
 			map[hy][hx] = "H";
 			map[g_y][g_x] = "G";
 			
-			if((map[hy][hx + 1] == "G") || (map[hy][hx - 1] == "G")
-					|| (map[hy - 1][hx] == "G") || (map[hy + 1][hx] == "G"))
-			{
-				map[hy][hx] = "_";
-				game_over = true;
-			}
-
-			for (int i = 0; i < map.length; i++) 
-			{
-				for (int j = 0; j < map[i].length; j++)
-					System.out.print(map[i][j]);
-
-				System.out.print("\n");
-			}
+			print_map(map);
 			
-			if(game_over)
+			if(game_over(map, "G"))
 			{
 				System.out.print("Game Over\n");
 				in.close();
 				return;
 			}
+		}
+		
+		String lair[][] = {
+				{"X", "X", "X", "X", "X", "X", "X", "X", "X"},
+				{"I", "_", "_", "_", "O", "_", "_", "k", "X"},
+				{"X", "_", "_", "_", "_", "_", "_", "_", "X"},
+				{"X", "_", "_", "_", "_", "_", "_", "_", "X"},
+				{"X", "_", "_", "_", "_", "_", "_", "_", "X"},
+				{"X", "_", "_", "_", "_", "_", "_", "_", "X"},
+				{"X", "_", "_", "_", "_", "_", "_", "_", "X"},
+				{"X", "H", "_", "_", "_", "_", "_", "_", "X"},
+				{"X", "X", "X", "X", "X", "X", "X", "X", "X"}};
+		
+		print_map(lair);
+		
+		int d8_x = 0, d8_y = 1, on = 0, o_x = 4, o_y = 1, no_x = 4, no_y = 1;
+		Random rand = new Random();
+		boolean key = false, o_key = false;
+		
+		hx = 1;
+		hy = 7;
+		ny = 7;
+		nx = 1;
+		
+		while(!move.equalsIgnoreCase("exit"))
+		{
+			move = in.next();
+			
+			hero_move(move);
+			
+			switch(lair[ny][nx])
+			{
+				case "X":
+					break;
+					
+				case "I":
+					
+					if(key)
+						lair[d8_y][d8_x] = "S";
+						
+					
+						
+					break;
+					
+				case "S":
+					
+					if(key)
+					{
+						System.out.print("Victory!\n");
+						in.close();
+						return;
+					}
+					
+					break;
+					
+				case "k":
+					lair[hy][hx] = "_";
+					hy = ny;
+					hx = nx;
+					key = true;
+					break;
+					
+				case "_":
+					lair[hy][hx] = "_";
+					hy = ny;
+					hx = nx;
+					break;
+					
+				default:
+					break;
+ 			}
+			
+			on = rand.nextInt(4) + 1;
+			
+			switch(on)
+			{
+				case 1:
+					no_y = o_y + 1;
+					break;
+					
+				case 2:
+					no_x = o_x + 1;
+					break;
+					
+				case 3:
+					no_y = o_y - 1;
+					break;
+					
+				case 4:
+					no_x = o_x - 1;
+					break;
+					
+				default:
+					break;	
+			}
+			
+			switch(lair[no_y][no_x])
+			{
+				case "X":
+					break;
+					
+				case "I":
+					break;
+					
+				case "_":
+					
+					if(o_key)
+					{
+						lair[o_y][o_x] = "k";
+						o_key = false;	
+					}
+					else
+						lair[o_y][o_x] = "_";
+					
+					o_x = no_x;
+					o_y = no_y;
+					lair[o_y][o_x] = "O";
+					break;
+					
+				case "k":
+					lair[o_y][o_x] = "_";
+					o_x = no_x;
+					o_y = no_y;
+					lair[o_y][o_x] = "$";
+					o_key = true;
+					
+				case "S":
+					break;
+					
+				default:
+					break;
+			}
+			
+			if(key)
+				lair[hy][hx] = "K";
+			else
+				lair[hy][hx] = "H";
+			
+			
+			print_map(lair);
+			
+			
+			if(game_over(lair, "O"))
+			{
+				System.out.print("Game Over\n");
+				in.close();
+				return;
+			}
+			
 		}
 		
 		in.close();
