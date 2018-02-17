@@ -207,9 +207,10 @@ public class P1
 		
 		print_map(lair);
 		
-		int d8_x = 0, d8_y = 1, on = 0, o_x = 4, o_y = 1, no_x = 4, no_y = 1;
+		int d8_x = 0, d8_y = 1, on = 0, o_x = 4, o_y = 1, no_x = 4, no_y = 1, cn = 0, c_x = 5, 
+				c_y = 1, cn_x = 5, cn_y = 1;
 		Random rand = new Random();
-		boolean key = false, o_key = false;
+		boolean key = false, o_key = false, c_key = false;
 		
 		hx = 1;
 		hy = 7;
@@ -269,7 +270,7 @@ public class P1
 			switch(on)
 			{
 				case 1:
-					no_y = o_y + 1;
+					no_y = o_y -1;
 					break;
 					
 				case 2:
@@ -277,7 +278,7 @@ public class P1
 					break;
 					
 				case 3:
-					no_y = o_y - 1;
+					no_y = o_y + 1;
 					break;
 					
 				case 4:
@@ -286,6 +287,64 @@ public class P1
 					
 				default:
 					break;	
+			}
+			
+			cn = rand.nextInt(4) + 1;
+			
+			switch(cn)
+			{
+				case 1:
+					cn_x = o_x;
+					cn_y = o_y - 1;
+					break;
+					
+				case 2:
+					cn_x = o_x + 1;
+					cn_y = o_y;
+					break;
+					
+				case 3:
+					cn_x = o_x;
+					cn_y = o_y + 1;
+					break;
+					
+				case 4:
+					cn_x = o_x - 1;
+					cn_y = o_y;
+					break;
+					
+				default:
+					break;
+			}
+			
+			switch(lair[cn_y][cn_x])
+			{		
+				case "_":
+					
+					if(c_key)
+					{
+						lair[c_y][c_x] = "k";
+						c_key = false;
+					}
+					else
+						lair[c_y][c_x] = "_";
+					
+					c_x = cn_x;
+					c_y = cn_y;
+					lair[c_y][c_x] = "*";
+					break;
+					
+				case "k":
+					lair[c_y][c_x] = "_";
+					c_y = cn_y;
+					c_x = cn_x;
+					lair[c_y][c_x] = "$";
+					c_key = true;
+					break;
+					
+				default:
+					break;
+					
 			}
 			
 			switch(lair[no_y][no_x])
@@ -334,7 +393,7 @@ public class P1
 			print_map(lair);
 			
 			
-			if(game_over(lair, "O"))
+			if(game_over(lair, "O") || game_over(lair, "*") || game_over(lair, "$"))
 			{
 				System.out.print("Game Over\n");
 				in.close();
@@ -344,7 +403,6 @@ public class P1
 		}
 		
 		in.close();
-		
 	}
 
 }
