@@ -4,14 +4,58 @@ import java.lang.String;
 
 public class P1 
 {
+	public static int g_y, g_x;
+	
+	public static void guard_move(String map[][])
+	{
+		 if((g_y == 1) && (g_x == 8))
+		 {
+			 map[g_y][g_x] = "_";
+			 g_x -= 1;
+		 }
+		 else
+			 if(map[g_y][g_x - 1] == "X")
+			 {
+				 map[g_y][g_x] = "_";
+				 g_y += 1;
+			 }
+			 else
+				 if((map[g_y][g_x - 1] == "_") && (g_y == 5) && (map[g_y][g_x + 1] != "X"))
+				 {
+					 map[g_y][g_x] = "_";
+					 g_x -= 1;
+				 }
+				 else
+					 if(((map[g_y][g_x - 1] == "I") || (map[g_y][g_x] == "S"))
+							 && (map[g_y + 1][g_x] == "_"))
+					 {
+						 map[g_y][g_x] = "_";
+						 g_y += 1;
+					 }
+					 else
+						 if(map[g_y][g_x + 1] == "_")
+						 {
+							 map[g_y][g_x] = "_";
+							 g_x += 1;
+						 }
+						 else
+						 {
+							 map[g_y][g_x] = "_";
+							 g_y -= 1;
+						 }
+	}
+	
 	public static void main(String[] args) 
 	{
 		int hx = 1, hy = 1, nx = 1, ny = 1, d1_x = 4, d1_y = 1, d2_x = 2, d2_y = 3, d3_x = 4, 
 				d3_y = 3, d4_x = 0, d4_y = 5, d5_x = 0, d5_y = 6, d6_x = 2, d6_y = 8, d7_x = 4, 
 				d7_y = 8;
-		boolean lever = false;
+		boolean lever = false, game_over = false;
 		String move = "start";
 		Scanner in = new Scanner (System.in);
+		
+		g_y =1;
+		g_x = 8;
 		
 		String map[][] = { 
 				{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X"}, 
@@ -81,7 +125,7 @@ public class P1
 				 
 				 hx = nx;
 				 hy = ny;
-				 
+				 guard_move(map);
 				 break;
 				 
 			 case "K":
@@ -89,6 +133,7 @@ public class P1
 				map[hy][hx] = "_";
 				hx = nx;
 				hy = ny;
+				guard_move(map);
 				break;
 				 
 			 case "S":
@@ -114,6 +159,14 @@ public class P1
 			}
 				
 			map[hy][hx] = "H";
+			map[g_y][g_x] = "G";
+			
+			if((map[hy][hx + 1] == "G") || (map[hy][hx - 1] == "G")
+					|| (map[hy - 1][hx] == "G") || (map[hy + 1][hx] == "G"))
+			{
+				map[hy][hx] = "_";
+				game_over = true;
+			}
 
 			for (int i = 0; i < map.length; i++) 
 			{
@@ -121,6 +174,13 @@ public class P1
 					System.out.print(map[i][j]);
 
 				System.out.print("\n");
+			}
+			
+			if(game_over)
+			{
+				System.out.print("Game Over\n");
+				in.close();
+				return;
 			}
 		}
 		
