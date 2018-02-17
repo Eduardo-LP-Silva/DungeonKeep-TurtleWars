@@ -4,36 +4,11 @@ import java.lang.String;
 
 public class P1 
 {
-
-	public static boolean movement(String map[][], int nx, int ny)
-	{
-		switch(map[ny][nx])
-		{
-		 case "X":
-			 return false;
-			 
-		 case "I":
-			 return false;
-			 
-		 case "_":
-			 return true;
-			 
-		 case "K":
-			 return true;
-			 
-		 case "S":
-			 return true;
-			 
-		default:
-			return false;
-				 
-		}
-		
-	}
-	
 	public static void main(String[] args) 
 	{
-		int hx = 1, hy = 1, nx = 1, ny = 1;
+		int hx = 1, hy = 1, nx = 1, ny = 1, d1_x = 4, d1_y = 1, d2_x = 2, d2_y = 3, d3_x = 4, 
+				d3_y = 3, d4_x = 0, d4_y = 5, d5_x = 0, d5_y = 6, d6_x = 2, d6_y = 8, d7_x = 4, 
+				d7_y = 8;
 		boolean lever = false;
 		String move = "start";
 		Scanner in = new Scanner (System.in);
@@ -86,35 +61,60 @@ public class P1
 					break;
 			}
 			
-			if (movement(map, nx, ny)) 
+			switch(map[ny][nx])
 			{
-				if(lever)
-				{
+			 case "X":
+				 break;
+				 
+			 case "I":
+				 break;
+				 
+			 case "_":
+				 
+				 if(lever)
+				 {
 					map[hy][hx] = "K";
 					lever = false;
 				}
 				else
 					map[hy][hx] = "_";
-				
+				 
+				 hx = nx;
+				 hy = ny;
+				 
+				 break;
+				 
+			 case "K":
+				lever = true;
+				map[hy][hx] = "_";
 				hx = nx;
 				hy = ny;
-				
-				if(map[hy][hx].equals("K"))
-				{
-					lever = true;
-					map[1][4] = "S";
-					map[3][2] = "S";
-					map[3][4] = "S";
-					map[5][0] = "S";
-					map[6][0] = "S";
-					map[8][2] = "S";
-					map[8][4] = "S";
-				}
-				
-				map[hy][hx] = "H";
-
+				break;
+				 
+			 case "S":
+				System.out.print("Victory!\n");
+				in.close();
+				return;
+				 
+			default:
+				break;
+					 
 			}
-			
+				
+			if(map[hy][hx].equals("K"))
+			{
+				lever = true;
+				map[d1_y][d1_x] = "S";
+				map[d2_y][d2_x] = "S";
+				map[d3_y][d3_x] = "S";
+				map[d4_y][d4_x] = "S";
+				map[d5_y][d5_x] = "S";
+				map[d6_y][d6_x] = "S";
+				map[d7_y][d7_x] = "S";
+			}
+				
+			map[hy][hx] = "H";
+
 			for (int i = 0; i < map.length; i++) 
 			{
 				for (int j = 0; j < map[i].length; j++)
