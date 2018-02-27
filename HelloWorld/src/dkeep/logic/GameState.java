@@ -13,7 +13,7 @@ public class GameState
 		victory = false;
 	}
 	
-	public boolean game_over(String map[][], String enemy, Hero hero)
+	public boolean test_collision(String map[][], String enemy, Hero hero)
 	{
 		if((map[hero.y][hero.x + 1] == enemy) || (map[hero.y][hero.x - 1] == enemy)
 				|| (map[hero.y - 1][hero.x] == enemy) || (map[hero.y + 1][hero.x] == enemy))

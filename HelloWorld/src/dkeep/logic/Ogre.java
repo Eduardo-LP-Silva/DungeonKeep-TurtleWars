@@ -5,6 +5,7 @@ public class Ogre extends Character
 {
 	public Character club;
 	public boolean club_on_key, on_top_of_key;
+	public int turns_stunned;
 	
 	public Ogre(int x, int y)
 	{
@@ -12,6 +13,7 @@ public class Ogre extends Character
 		club = new Character(5,1);
 		club_on_key = false;
 		on_top_of_key = false;
+		turns_stunned = 0;
 	}
 	
 	public void move(int on)
@@ -44,9 +46,11 @@ public class Ogre extends Character
 		switch(map.level[ny][nx])
 		{
 			case "X":
+				map.level[y][x] = "O";
 				break;
 				
 			case "I":
+				map.level[y][x] = "O";
 				break;
 				
 			case "_":
@@ -72,6 +76,13 @@ public class Ogre extends Character
 				on_top_of_key = true;
 				
 			case "S":
+				map.level[y][x] = "O";
+				break;
+				
+			case "O":
+				x = nx;
+				y = ny;
+				map.level[y][x] = "O";
 				break;
 				
 			default:
