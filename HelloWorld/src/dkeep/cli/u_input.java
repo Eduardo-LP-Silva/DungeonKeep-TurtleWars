@@ -12,26 +12,14 @@ import dkeep.logic.GameState;
 
 public class u_input 
 {
-	public static void print_map(Map map)
-	{
-		for(int i = 0; i < map.level.length; i++)
-		{
-			for(int j = 0; j < map.level[i].length; j++)
-				System.out.print(map.level[i][j]);
-				
-			System.out.print("\n");
-		}
-	}
-	
-	
 	public static void main(String[] args) 
 	{
 		String move = "start";
 		Scanner in = new Scanner(System.in);
 		Hero hero = new Hero(1,1);
 		Guard guard = new Guard(8,1, Guard.Guard_Type.Drunken);
-		Map map = new Map();
-		print_map(map);
+		Map map = new Map("1");
+		map.print_map();
 		GameState gs = new GameState(1);
 		ArrayList<Ogre> Ogres = new ArrayList<Ogre>();
 		int i;
@@ -39,20 +27,8 @@ public class u_input
 		while(!move.equalsIgnoreCase("exit") && gs.level_no == 1)
 		{
 			move =  in.next();
-			hero.hero_move(move);
+			hero.heroMove(move);
 			hero.action(map, gs, guard);
-			
-			if(map.level[hero.y][hero.x].equals("K"))
-			{
-				map.lever = true;
-				map.level[Map.door1_1.y][Map.door1_1.x] = "S";
-				map.level[Map.door1_2.y][Map.door1_2.x] = "S";
-				map.level[Map.door1_3.y][Map.door1_3.x] = "S";
-				map.level[Map.door1_4.y][Map.door1_4.x] = "S";
-				map.level[Map.door1_5.y][Map.door1_5.x] = "S";
-				map.level[Map.door1_6.y][Map.door1_6.x] = "S";
-				map.level[Map.door1_7.y][Map.door1_7.x] = "S";
-			}
 				
 			map.level[hero.y][hero.x] = "H";
 			
@@ -61,7 +37,7 @@ public class u_input
 			else
 				map.level[guard.y][guard.x] = "G";
 			
-			print_map(map);
+			map.print_map();
 			
 			if(gs.test_collision(map.level, "G", hero))
 			{
@@ -80,7 +56,7 @@ public class u_input
 			return;
 		}
 		
-		print_map(map);
+		map.print_map();
 		
 		Random rand = new Random();
 		Ogre ogre = new Ogre(4, 1);
@@ -95,11 +71,12 @@ public class u_input
 		hero.y = 7;
 		hero.ny = 7;
 		hero.nx = 1;
+		hero.armed = true;
 		
 		while(!move.equalsIgnoreCase("exit") && gs.level_no == 2)
 		{
 			move = in.next();
-			hero.hero_move(move);
+			hero.heroMove(move);
 			hero.action(map, gs);
 					
 			for(i = 0; i < Ogres.size(); i++)
@@ -134,9 +111,10 @@ public class u_input
 			else
 				map.level[hero.y][hero.x] = "A";
 		
-			print_map(map);
+			map.print_map();
 			
-			if(gs.test_collision(map.level, "O", hero))
+			if(gs.test_collision(map.level, "O", hero) 
+					&& hero.armed)
 			{
 				for(i = 0; i < Ogres.size(); i++)
 				{

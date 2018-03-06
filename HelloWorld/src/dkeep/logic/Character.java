@@ -9,4 +9,11 @@ public class Character
 		this.x = x;
 		this.y = y;
 	}
+	
+	@Override
+	public boolean equals(Object c2)
+	{
+		return getClass().equals(c2.getClass()) && 
+				(((Character)c2).x == x) && (((Character) c2).y == y);
+	}
 }
