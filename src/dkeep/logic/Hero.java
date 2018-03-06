@@ -6,7 +6,7 @@ import dkeep.logic.GameState;
 
 public class Hero extends Character 
 {
-	public boolean armed;
+	private boolean armed;
 	
 	public Hero(int x, int y)
 	{
@@ -14,6 +14,16 @@ public class Hero extends Character
 		armed = false;
 	}
 	
+	public boolean isArmed() 
+	{
+		return armed;
+	}
+
+	public void setArmed(boolean armed) 
+	{
+		this.armed = armed;
+	}
+
 	public void heroMove(String move)
 	{
 		switch(move)
@@ -63,7 +73,7 @@ public class Hero extends Character
 			 x = nx;
 			 y = ny;
 			 
-			 if(gs.level_no == 1)
+			 if(gs.getLevel_no() == 1)
 					guard.guard_move(map);
 			 
 			 break;
@@ -75,7 +85,7 @@ public class Hero extends Character
 			y = ny;
 			map.lever = true;
 			
-			if(gs.level_no == 1)
+			if(gs.getLevel_no() == 1)
 			{
 				map.level[Map.door1_1.y][Map.door1_1.x] = "S";
 				map.level[Map.door1_2.y][Map.door1_2.x] = "S";
@@ -87,7 +97,7 @@ public class Hero extends Character
 				guard.guard_move(map);
 			}
 			
-			if(gs.level_no == 3)
+			if(gs.getLevel_no() == 3)
 			{
 				map.level[Map.door_t1.y][Map.door_t1.x] = "S";
 				map.level[Map.door_t2.y][Map.door_t2.x] = "S";
@@ -96,7 +106,7 @@ public class Hero extends Character
 			break;
 			 
 		 case "S":
-			 gs.level_no = 2;
+			 gs.setLevel_no(2);
 			break;
 			 
 		 default:
@@ -120,7 +130,7 @@ public class Hero extends Character
 			case "S":
 				
 				if(map.key)
-					gs.victory = true;
+					gs.setVictory(true);
 					
 				break;
 				

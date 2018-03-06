@@ -4,10 +4,10 @@ import java.util.Random;
 public class Guard extends Character
 {
 	public enum Guard_Type {Rookie, Drunken, Suspicious};
-	public String movement;
-	public Guard_Type type;
-	public boolean asleep;
-	public int turns_asleep;
+	private String movement;
+	private Guard_Type type;
+	private boolean asleep;
+	private int turns_asleep;
 	
 	public Guard(int x, int y, Guard_Type t)
 	{
@@ -19,6 +19,11 @@ public class Guard extends Character
 		type = t;
 	}
 	
+	public boolean isAsleep() 
+	{
+		return asleep;
+	}
+
 	public void guard_move_forward(Map map)
 	{
 		 if((y == 1) && (x == 8))

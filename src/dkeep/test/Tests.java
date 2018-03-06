@@ -40,7 +40,7 @@ public class Tests
 		hero.heroMove("d");
 		hero.action(test_map, gs, guard);
 		gs.test_collision(test_map.level, "G", hero);
-		assertTrue(gs.game_over);
+		assertTrue(gs.isGame_over());
 	}
 	
 	@Test
@@ -53,7 +53,7 @@ public class Tests
 		hero.action(test_map, gs);
 		hero.heroMove("a");
 		hero.action(test_map, gs);
-		assertFalse(gs.victory);
+		assertFalse(gs.isVictory());
 		assertEquals(new Hero(1,2), hero);
 	}
 	
@@ -86,7 +86,7 @@ public class Tests
 		hero.action(testMap, gs, guard);
 		hero.heroMove("a");
 		hero.action(testMap, gs, guard);
-		assertEquals(2, gs.level_no);
+		assertEquals(2, gs.getLevel_no());
 	}
 	
 	

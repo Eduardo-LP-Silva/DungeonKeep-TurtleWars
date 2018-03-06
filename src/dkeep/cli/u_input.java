@@ -24,18 +24,18 @@ public class u_input
 		ArrayList<Ogre> Ogres = new ArrayList<Ogre>();
 		int i;
 		
-		while(!move.equalsIgnoreCase("exit") && gs.level_no == 1)
+		while(!move.equalsIgnoreCase("exit") && gs.getLevel_no() == 1)
 		{
 			move =  in.next();
 			hero.heroMove(move);
 			hero.action(map, gs, guard);
 				
-			map.level[hero.y][hero.x] = "H";
+			map.level[hero.getY()][hero.getX()] = "H";
 			
-			if(guard.asleep)
-				map.level[guard.y][guard.x] = "g";
+			if(guard.isAsleep())
+				map.level[guard.getY()][guard.getX()] = "g";
 			else
-				map.level[guard.y][guard.x] = "G";
+				map.level[guard.getY()][guard.getX()] = "G";
 			
 			map.print_map();
 			
@@ -47,7 +47,7 @@ public class u_input
 			}
 		}
 		
-		if(gs.level_no == 2)
+		if(gs.getLevel_no() == 2)
 			map.next_level();
 		else
 		{
@@ -67,13 +67,13 @@ public class u_input
 		Ogres.add(ogre2);
 		Ogres.add(ogre3);
 		
-		hero.x = 1;
-		hero.y = 7;
-		hero.ny = 7;
-		hero.nx = 1;
-		hero.armed = true;
+		hero.setX(1);
+		hero.setX(7);
+		hero.setNy(7);
+		hero.setNx(1);
+		hero.setArmed(true);
 		
-		while(!move.equalsIgnoreCase("exit") && gs.level_no == 2)
+		while(!move.equalsIgnoreCase("exit") && gs.getLevel_no() == 2)
 		{
 			move = in.next();
 			hero.heroMove(move);
@@ -107,21 +107,21 @@ public class u_input
 				}
 						
 			if(map.key)
-				map.level[hero.y][hero.x] = "K";
+				map.level[hero.getY()][hero.getX()] = "K";
 			else
-				map.level[hero.y][hero.x] = "A";
+				map.level[hero.getY()][hero.getX()] = "A";
 		
 			map.print_map();
 			
 			if(gs.test_collision(map.level, "O", hero) 
-					&& hero.armed)
+					&& hero.isArmed())
 			{
 				for(i = 0; i < Ogres.size(); i++)
 				{
 					if(Ogres.get(i).turns_stunned == 0)
 					{
 						Ogres.get(i).turns_stunned++;
-						map.level[Ogres.get(i).y][Ogres.get(i).x] = "8";
+						map.level[Ogres.get(i).getY()][Ogres.get(i).getX()] = "8";
 						break;
 					}
 			
@@ -136,7 +136,7 @@ public class u_input
 				return;
 			}
 			
-			if(gs.victory)
+			if(gs.isVictory())
 			{
 				System.out.print("Victory!\n");
 				in.close();
