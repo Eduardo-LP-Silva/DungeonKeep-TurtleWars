@@ -53,7 +53,11 @@ public class Character
 	@Override
 	public boolean equals(Object c2)
 	{
-		return getClass().equals(c2.getClass()) && 
-				(((Character)c2).x == x) && (((Character) c2).y == y);
+		if(!(c2 instanceof Character))
+			return false;
+		
+		Character c1 = (Character) c2;
+		
+		return c1.x == x && c1.y == y;
 	}
 }

@@ -24,85 +24,101 @@ public class Guard extends Character
 		return asleep;
 	}
 
-	public void guard_move_forward(Map map)
+	
+	public void setType(Guard_Type type) 
+	{
+		this.type = type;
+	}
+
+	
+	public String getMovement() 
+	{
+		return movement;
+	}
+
+	public void guard_move_forward(GameState gs)
 	{
 		 if((y == 1) && (x == 8))
 		 {
-			 map.level[y][x] = "_";
+			 gs.getCurrent_map().getLevel()[y][x] = "_";
 			 x -= 1;
 		 }
 		 else
-			 if(map.level[y][x - 1] == "X")
+			 if(gs.getCurrent_map().getLevel()[y][x - 1] == "X")
 			 {
-				 map.level[y][x] = "_";
+				 gs.getCurrent_map().getLevel()[y][x] = "_";
 				 y += 1;
 			 }
 			 else
-				 if((map.level[y][x - 1] == "_") && (y == 5) && (map.level[y][x + 1] != "X"))
+				 if((gs.getCurrent_map().getLevel()[y][x - 1] == "_") 
+						 && (y == 5) 
+						 && (gs.getCurrent_map().getLevel()[y][x + 1] != "X"))
 				 {
-					 map.level[y][x] = "_";
+					 gs.getCurrent_map().getLevel()[y][x] = "_";
 					 x -= 1;
 				 }
 				 else
-					 if(((map.level[y][x - 1] == "I") || (map.level[y][x - 1] == "S"))
-							 && (map.level[y + 1][x] == "_"))
+					 if(((gs.getCurrent_map().getLevel()[y][x - 1] == "I") 
+							 || (gs.getCurrent_map().getLevel()[y][x - 1] == "S"))
+							 && (gs.getCurrent_map().getLevel()[y + 1][x] == "_"))
 					 {
-						 map.level[y][x] = "_";
+						 gs.getCurrent_map().getLevel()[y][x] = "_";
 						 y += 1;
 					 }
 					 else
-						 if(map.level[y][x + 1] == "_")
+						 if(gs.getCurrent_map().getLevel()[y][x + 1] == "_")
 						 {
-							 map.level[y][x] = "_";
+							 gs.getCurrent_map().getLevel()[y][x] = "_";
 							 x += 1;
 						 }
 						 else
 						 {
-							 map.level[y][x] = "_";
+							 gs.getCurrent_map().getLevel()[y][x] = "_";
 							 y -= 1;
 						 }
 	}
 	
-	public void guard_move_backwards(Map map)
+	public void guard_move_backwards(GameState gs)
 	{
-		if(map.level[y][x + 1] == "X" && y < 6)
+		if(gs.getCurrent_map().getLevel()[y][x + 1] == "X" && y < 6)
 		{
-			map.level[y][x] = "_";
+			gs.getCurrent_map().getLevel()[y][x] = "_";
 			y++;
 		}
 		else
-			if(y == 6 && map.level[y][x - 1] == "_")
+			if(y == 6 && gs.getCurrent_map().getLevel()[y][x - 1] == "_")
 			{
-				map.level[y][x] = "_";
+				gs.getCurrent_map().getLevel()[y][x] = "_";
 				x--;
 			}
 			else
-				if(y == 6 && (map.level[y][x - 1] == "I" || map.level[y][x - 1] == "S"))
+				if(y == 6 && (gs.getCurrent_map().getLevel()[y][x - 1] == "I" 
+				|| gs.getCurrent_map().getLevel()[y][x - 1] == "S"))
 				{
-					map.level[y][x] = "_";
+					gs.getCurrent_map().getLevel()[y][x] = "_";
 					y--;
 				}
 				else
-					if(map.level[y][x + 2] == "_")
+					if(gs.getCurrent_map().getLevel()[y][x + 2] == "_")
 					{
-						map.level[y][x] = "_";
+						gs.getCurrent_map().getLevel()[y][x] = "_";
 						x++;
 					}
 					else
-						if(map.level[y - 1][x] == "_")
+						if(gs.getCurrent_map().getLevel()[y - 1][x] == "_")
 						{
-							map.level[y][x] = "_";
+							gs.getCurrent_map().getLevel()[y][x] = "_";
 							y--;
 						}
 						else
 						{
-							map.level[y][x] = "_";
+							gs.getCurrent_map().getLevel()[y][x] = "_";
 							x++;
 						}
 			
 	}
 	
-	public void guard_move(Map map)
+	public void guard_move(GameState gs)
 	{
 		Random rand = new Random();
 		int action;
@@ -110,7 +126,7 @@ public class Guard extends Character
 		switch(type)
 		{
 		 case Rookie:
-			 guard_move_forward(map);
+			 guard_move_forward(gs);
 			 break;
 			 
 		 case Drunken:
@@ -127,12 +143,12 @@ public class Guard extends Character
 					 
 					 if(action == 1)
 						 {
-						 	guard_move_forward(map);
+						 	guard_move_forward(gs);
 						 	movement = "forwards";
 						 }
 					 else
 						 {
-						 	guard_move_backwards(map);
+						 	guard_move_backwards(gs);
 						 	movement = "backwards";
 						 }
 				 }
@@ -142,9 +158,9 @@ public class Guard extends Character
 					 
 					 if(action == 1)
 						 if(movement == "forwards")
-							 guard_move_forward(map);
+							 guard_move_forward(gs);
 						 else
-							 guard_move_backwards(map);
+							 guard_move_backwards(gs);
 					 else
 						 asleep = true;
 				 }
@@ -156,14 +172,14 @@ public class Guard extends Character
 			 
 			 if(action == 1)
 				 if(movement == "forwards")
-					 guard_move_forward(map);
+					 guard_move_forward(gs);
 				 else
-					 guard_move_backwards(map);
+					 guard_move_backwards(gs);
 			 else
 				 if(movement == "forwards")
-					 guard_move_backwards(map);
+					 guard_move_backwards(gs);
 				 else
-					 guard_move_forward(map);
+					 guard_move_forward(gs);
 			 
 			 break;
 			 

@@ -1,6 +1,5 @@
 package dkeep.logic;
 import dkeep.logic.Map;
-import dkeep.logic.Guard;
 import dkeep.logic.GameState;
 
 
@@ -24,7 +23,7 @@ public class Hero extends Character
 		this.armed = armed;
 	}
 
-	public void heroMove(String move)
+	public void heroMove(String move, GameState gs)
 	{
 		switch(move)
 		{
@@ -48,11 +47,36 @@ public class Hero extends Character
 				nx = x + 1;
 				break;
 		}
+		
+		action(gs);
 	}
 	
-	public void action(Map map, GameState gs, Guard guard)
+	public void action(GameState gs)
 	{
-		switch(map.level[ny][nx])
+		switch(gs.getLevel_no())
+		{
+			case 0:
+				actionLevel1(gs);
+				break;
+				
+			case 1:
+				actionLevel1(gs);
+				break;
+				
+			case 2:
+				actionLevel2(gs);
+				break;
+				
+			default:
+				break;
+		}
+		
+	}
+	
+	
+	public void actionLevel1(GameState gs)
+	{
+		switch(gs.getCurrent_map().getLevel()[ny][nx])
 		{
 		 case "X":
 			 break;
@@ -62,45 +86,45 @@ public class Hero extends Character
 				 
 		 case "_":
 				 
-			 if(map.lever)
+			 if(gs.getCurrent_map().isLever())
 			 {
-				map.level[y][x] = "K";
-				map.lever = false;
+				gs.getCurrent_map().getLevel()[y][x] = "k";
+				gs.getCurrent_map().setLever(false);
 			}
 			else
-				map.level[y][x] = "_";
+				gs.getCurrent_map().getLevel()[y][x] = "_";
 			 
 			 x = nx;
 			 y = ny;
 			 
 			 if(gs.getLevel_no() == 1)
-					guard.guard_move(map);
-			 
+				 gs.getGuard().guard_move(gs);
+			
 			 break;
 			 
 		 case "k":
-			map.lever = true;
-			map.level[y][x] = "_";
+			gs.getCurrent_map().setLever(true);
+			gs.getCurrent_map().getLevel()[y][x] = "_";
 			x = nx;
 			y = ny;
-			map.lever = true;
+			gs.getCurrent_map().setLever(true);
 			
 			if(gs.getLevel_no() == 1)
 			{
-				map.level[Map.door1_1.y][Map.door1_1.x] = "S";
-				map.level[Map.door1_2.y][Map.door1_2.x] = "S";
-				map.level[Map.door1_3.y][Map.door1_3.x] = "S";
-				map.level[Map.door1_4.y][Map.door1_4.x] = "S";
-				map.level[Map.door1_5.y][Map.door1_5.x] = "S";
-				map.level[Map.door1_6.y][Map.door1_6.x] = "S";
-				map.level[Map.door1_7.y][Map.door1_7.x] = "S";
-				guard.guard_move(map);
+				gs.getCurrent_map().getLevel()[Map.door1_1.y][Map.door1_1.x] = "S";
+				gs.getCurrent_map().getLevel()[Map.door1_2.y][Map.door1_2.x] = "S";
+				gs.getCurrent_map().getLevel()[Map.door1_3.y][Map.door1_3.x] = "S";
+				gs.getCurrent_map().getLevel()[Map.door1_4.y][Map.door1_4.x] = "S";
+				gs.getCurrent_map().getLevel()[Map.door1_5.y][Map.door1_5.x] = "S";
+				gs.getCurrent_map().getLevel()[Map.door1_6.y][Map.door1_6.x] = "S";
+				gs.getCurrent_map().getLevel()[Map.door1_7.y][Map.door1_7.x] = "S";
+				gs.getGuard().guard_move(gs);
 			}
 			
-			if(gs.getLevel_no() == 3)
+			if(gs.getLevel_no() == 0)
 			{
-				map.level[Map.door_t1.y][Map.door_t1.x] = "S";
-				map.level[Map.door_t2.y][Map.door_t2.x] = "S";
+				gs.getCurrent_map().getLevel()[Map.door_t1.y][Map.door_t1.x] = "S";
+				gs.getCurrent_map().getLevel()[Map.door_t2.y][Map.door_t2.x] = "S";
 			}
 			
 			break;
@@ -114,35 +138,35 @@ public class Hero extends Character
 		}
 	}
 	
-	public void action(Map map, GameState gs)
+	public void actionLevel2(GameState gs)
 	{
-		switch(map.level[ny][nx])
+		switch(gs.getCurrent_map().getLevel()[ny][nx])
 		{
 			case "X":
 				break;
 				
 			case "I":
-				if(map.key)
-					map.level[Map.door2_1.y][Map.door2_1.x] = "S";
+				if(gs.getCurrent_map().isKey())
+					gs.getCurrent_map().getLevel()[Map.door2_1.y][Map.door2_1.x] = "S";
 					
 				break;
 				
 			case "S":
 				
-				if(map.key)
+				if(gs.getCurrent_map().isKey())
 					gs.setVictory(true);
 					
 				break;
 				
 			case "k":
-				map.level[y][x] = "_";
+				gs.getCurrent_map().getLevel()[y][x] = "_";
 				y = ny;
 				x = nx;
-				map.key = true;
+				gs.getCurrent_map().setKey(true);
 				break;
 				
 			case "_":
-				map.level[y][x] = "_";
+				gs.getCurrent_map().getLevel()[y][x] = "_";
 				y = ny;
 				x = nx;
 				break;
@@ -151,4 +175,5 @@ public class Hero extends Character
 				break;
 			}
 	}
+	
 }

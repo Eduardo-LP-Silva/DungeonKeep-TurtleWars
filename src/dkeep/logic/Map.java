@@ -7,8 +7,8 @@ public class Map
 	
 	public static Character door1_1, door1_2, door1_3, door1_4, door1_5, door1_6, 
 	door1_7, door2_1, door_t1, door_t2;
-	public boolean lever, key;
-	public String level[][];
+	private boolean lever, key;
+	private String level[][];
 	
 	public void print_map()
 	{
@@ -21,11 +21,11 @@ public class Map
 		}
 	}
 					
-	public Map(String name)
+	public Map(int no)
 	{
-		switch(name)
+		switch(no)
 		{
-			case "1":
+			case 1:
 				lever = false;
 				
 				level = new String[][]{ 
@@ -50,7 +50,7 @@ public class Map
 				door2_1 = new Character(0,1);
 				break;
 				
-			case "2":
+			case 2:
 				level = new String[][]{{"X", "X", "X", "X", "X", "X", "X", "X", "X"},
 					{"I", "_", "_", "_", "O", "_", "_", "k", "X"},
 					{"X", "_", "_", "_", "_", "_", "_", "_", "X"},
@@ -61,10 +61,12 @@ public class Map
 					{"X", "H", "_", "_", "_", "_", "_", "_", "X"},
 					{"X", "X", "X", "X", "X", "X", "X", "X", "X"}};
 					
+					door2_1 = new Character(0,1);
+					
 			key = false;
 			break;
 			
-			case "test":
+			case 0:
 				level = new String[][]{
 						{"X", "X", "X", "X", "X"},
 						{"X", "H", "_", "G", "X"},
@@ -74,23 +76,42 @@ public class Map
 						
 				door_t1 = new Character(0,2);
 				door_t2 = new Character(0,3);
+				break;
 				
-		}
+			default:
+				break;
+			}
 											
 	}
 	
-	public void next_level()
+	public boolean isLever() 
 	{
-		level = new String[][]{{"X", "X", "X", "X", "X", "X", "X", "X", "X"},
-				{"I", "_", "_", "_", "O", "_", "_", "k", "X"},
-				{"X", "_", "_", "_", "_", "_", "_", "_", "X"},
-				{"X", "_", "_", "_", "_", "_", "_", "_", "X"},
-				{"X", "O", "_", "_", "_", "_", "_", "_", "X"},
-				{"X", "_", "_", "_", "_", "_", "_", "O", "X"},
-				{"X", "_", "_", "_", "_", "_", "_", "_", "X"},
-				{"X", "H", "_", "_", "_", "_", "_", "_", "X"},
-				{"X", "X", "X", "X", "X", "X", "X", "X", "X"}};
-				
-		key = false;
+		return lever;
 	}
+
+	public void setLever(boolean lever) 
+	{
+		this.lever = lever;
+	}
+
+	public boolean isKey() 
+	{
+		return key;
+	}
+
+	public void setKey(boolean key) 
+	{
+		this.key = key;
+	}
+
+	public String[][] getLevel() 
+	{
+		return level;
+	}
+
+	public void setLevel(String[][] level) 
+	{
+		this.level = level;
+	}
+
 }
