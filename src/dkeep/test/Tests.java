@@ -174,6 +174,7 @@ public class Tests
 		boolean up = false, down = false, left = false, right = false;
 		int ox, oy;
 		GameState gs = new GameState(2);
+		gs.addOgres(2);
 		
 		while(!up || !down || !left || !right)
 		{
@@ -214,7 +215,7 @@ public class Tests
 	{
 		GameState gs = new GameState(1);
 		
-		gs.getGuard().setType(Guard.Guard_Type.Suspicious);
+		gs.getGuard().setType("Suspicious");
 		
 		while(gs.getGuard().getMovement().equals("forward"))
 		{
@@ -223,12 +224,12 @@ public class Tests
 		}
 	}
 	
-	@Test()
+	@Test
 	public void testGuardPath()
 	{
 		GameState gs = new GameState(1);
 		
-		gs.getGuard().setType(Guard.Guard_Type.Rookie);
+		gs.getGuard().setType("Rookie");
 		
 		for(int i = 0; i < 11; i++)
 		{
@@ -240,5 +241,14 @@ public class Tests
 		assertEquals(gs.getCurrent_map().getLevel()[3][8], "G");
 	}
 	
+	@Test
+	public void testOgreNumber()
+	{
+		GameState gs = new GameState(2);
+		
+		gs.addOgres(7);
+		assertEquals(7, gs.getOgres().size());
+		
+	}
 	
 }

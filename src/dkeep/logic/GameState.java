@@ -20,6 +20,7 @@ public class GameState
 		victory = false;
 		game_over = false;
 		setLevel_no(level);
+		ogres = new ArrayList<Ogre>();
 	}
 	
 	public int getLevel_no() 
@@ -47,9 +48,6 @@ public class GameState
 				hero = new Hero(1,7);
 				hero.setArmed(true);
 				ogres = new ArrayList<Ogre>();
-				ogres.add(new Ogre(4, 1));
-				ogres.add(new Ogre(7,5));
-				ogres.add(new Ogre(1, 4));
 				break;
 				
 			default:
@@ -58,6 +56,19 @@ public class GameState
 		}
 		
 		level_no = level;
+	}
+	
+	public void addOgres(int n)
+	{
+		Random rand = new Random();
+		int x, y;
+		
+		for(int i = 0; i < n; i++)
+		{
+			x = rand.nextInt(8) + 1;
+			y = rand.nextInt(8) + 1;
+			ogres.add(new Ogre(x,y));
+		}
 	}
 	
 	public Map getCurrent_map() 
@@ -151,7 +162,7 @@ public class GameState
 				break;
 		}
 		
-		current_map.print_map();
+		//current_map.print_map();
 	}
 	
 	public void moveOgres()

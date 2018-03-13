@@ -14,6 +14,8 @@ public class Ogre extends Character
 		club_on_key = false;
 		on_top_of_key = false;
 		turns_stunned = 0;
+		nx = x;
+		ny = y;
 	}
 	
 	public void move(int on)

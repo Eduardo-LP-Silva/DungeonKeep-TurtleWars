@@ -6,6 +6,10 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import dkeep.logic.GameState;
+import dkeep.logic.Guard;
+
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import java.awt.Color;
@@ -21,6 +25,8 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputMethodListener;
+import java.awt.event.InputMethodEvent;
 
 public class StartUpWindow extends JFrame 
 {
@@ -29,7 +35,7 @@ public class StartUpWindow extends JFrame
 	private JTextField textField;
 	private JComboBox personalityCB;
 	private JPanel midCP;
-	private JTextArea textArea;
+	private JTextArea gameScreen;
 	private JPanel midRightCP;
 	private JButton btnNewGame;
 	private JButton btnLeft;
@@ -37,6 +43,7 @@ public class StartUpWindow extends JFrame
 	private JButton btnDown;
 	private JButton buttonRight;
 	private JLabel lblStatus;
+	private GameState gs;
 
 	/**
 	 * Launch the application.
@@ -67,6 +74,7 @@ public class StartUpWindow extends JFrame
 	{
 		initComponents();
 		createEvents();
+		gs = new GameState(1);
 	}
 	
 	private void initComponents() 
@@ -85,6 +93,7 @@ public class StartUpWindow extends JFrame
 		lblNumberOfOgres.setBackground(Color.WHITE);
 		
 		textField = new JTextField();
+		
 		textField.setColumns(10);
 		
 		JLabel lblGuardPersonality = new JLabel("Guard Personality");
@@ -137,10 +146,10 @@ public class StartUpWindow extends JFrame
 		);
 		midCP.setLayout(new GridLayout(0, 2, 0, 0));
 		
-		textArea = new JTextArea();
-		textArea.setFont(new Font("Courier New", Font.PLAIN, 13));
-		textArea.setEditable(false);
-		midCP.add(textArea);
+		gameScreen = new JTextArea();
+		gameScreen.setFont(new Font("Courier New", Font.PLAIN, 13));
+		gameScreen.setEditable(false);
+		midCP.add(gameScreen);
 		
 		midRightCP = new JPanel();
 		midRightCP.setBackground(Color.DARK_GRAY);
@@ -166,10 +175,7 @@ public class StartUpWindow extends JFrame
 		btnUp = new JButton("Up");
 		btnUp.setBackground(Color.LIGHT_GRAY);
 		btnUp.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnUp.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		
 		
 		btnDown = new JButton("Down");
 		btnDown.setBackground(Color.LIGHT_GRAY);
@@ -230,14 +236,90 @@ public class StartUpWindow extends JFrame
 		setIconImage(Toolkit.getDefaultToolkit().getImage(StartUpWindow.class.getResource("/resources/knight32.png")));
 		
 	}
+	
+	public boolean status()
+	{
+		if(textField.getText() == null)
+		{
+			lblStatus.setText("Must have at least one Ogre");
+			return false;
+		}
+		
+		if(Integer.parseInt(textField.getText()) <= 0 || textField.getText() == null)
+		{
+			lblStatus.setText("Must have at least one Ogre");
+			return false;
+		}
+		
+		if(Integer.parseInt(textField.getText()) >= 9)
+		{
+			lblStatus.setText("Number of Ogres too high");
+			return false;
+		}
+	
+		lblStatus.setText("You can play now.");
+		
+		return true;
+	}
+	
+	public String map_to_string()
+	{
+		if(gs == null)
+			return "";
+		
+		String map = "";
+		
+		for(int i = 0; i < gs.getCurrent_map().getLevel().length; i++)
+			{
+				for(int j = 0; j < gs.getCurrent_map().getLevel()[i].length; j++)
+					map += gs.getCurrent_map().getLevel()[i][j];
+				
+				map += "\n";
+			}
+			
+				
+		return map;	
+	}
 
 	private void createEvents() 
 	{
 		btnNewGame.addActionListener(new ActionListener() 
 		{
+			
+			
 			public void actionPerformed(ActionEvent e) 
 			{
 				
+				if(!status())
+					return;
+				
+				gs.addOgres(Integer.parseInt(textField.getText()));
+				
+				gs.getGuard().setType((String) personalityCB.getSelectedItem());
+				
+				gameScreen.setText(map_to_string());
+			}
+		});
+		
+		textField.addInputMethodListener(new InputMethodListener() 
+		{
+			public void caretPositionChanged(InputMethodEvent arg0) 
+			{
+				status();
+			}
+			
+			public void inputMethodTextChanged(InputMethodEvent arg0) 
+			{
+				status();
+			}
+		});
+		
+		btnUp.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				gs.getHero().heroMove("w", gs);
+				gs.updateMap();
 			}
 		});
 		

@@ -25,9 +25,25 @@ public class Guard extends Character
 	}
 
 	
-	public void setType(Guard_Type type) 
+	public void setType(String tp) 
 	{
-		this.type = type;
+		switch(tp)
+		{
+			case "Rookie":
+				type = Guard.Guard_Type.Rookie;
+				break;
+				
+			case "Drunken":
+				type = Guard.Guard_Type.Drunken;
+				break;
+				
+			case "Suspicious":
+				type = Guard.Guard_Type.Suspicious;
+				break;
+				
+			default:
+				break;
+		}
 	}
 
 	
@@ -139,7 +155,7 @@ public class Guard extends Character
 					 turns_asleep = 0;
 					 asleep = false;
 					 
-					 action = rand.nextInt(2) + 1;
+					 action = rand.nextInt(4) + 1;
 					 
 					 if(action == 1)
 						 {
@@ -154,7 +170,7 @@ public class Guard extends Character
 				 }
 				 else
 				 {
-					 action = rand.nextInt(2) + 1;
+					 action = rand.nextInt(4) + 1;
 					 
 					 if(action == 1)
 						 if(movement == "forwards")
