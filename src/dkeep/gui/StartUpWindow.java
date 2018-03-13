@@ -27,6 +27,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputMethodListener;
 import java.awt.event.InputMethodEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import dkeep.logic.GameState;
+import dkeep.cli.u_input;
+
 
 public class StartUpWindow extends JFrame 
 {
@@ -42,6 +48,7 @@ public class StartUpWindow extends JFrame
 	private JButton btnUp;
 	private JButton btnDown;
 	private JButton buttonRight;
+    private JButton btnExit;
 	private JLabel lblStatus;
 	private GameState gs;
 
@@ -56,7 +63,7 @@ public class StartUpWindow extends JFrame
 			{
 				try 
 				{
-					StartUpWindow frame = new StartUpWindow();
+					StartUpWindow frame = new StartUpWindow();				
 					frame.setVisible(true);
 				} 
 				catch (Exception e) 
@@ -76,6 +83,7 @@ public class StartUpWindow extends JFrame
 		createEvents();
 		gs = new GameState(1);
 	}
+	
 	
 	private void initComponents() 
 	{
@@ -160,7 +168,7 @@ public class StartUpWindow extends JFrame
 		btnNewGame.setBackground(Color.LIGHT_GRAY);
 		btnNewGame.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
-		JButton btnExit = new JButton("Exit");
+		btnExit = new JButton("Exit");
 		btnExit.setBackground(Color.LIGHT_GRAY);
 		btnExit.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
@@ -182,8 +190,10 @@ public class StartUpWindow extends JFrame
 		btnDown.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
 		buttonRight = new JButton("Right");
+		
 		buttonRight.setBackground(Color.LIGHT_GRAY);
 		buttonRight.setFont(new Font("Tahoma", Font.PLAIN, 14));
+			
 		GroupLayout gl_midRightCP = new GroupLayout(midRightCP);
 		gl_midRightCP.setHorizontalGroup(
 			gl_midRightCP.createParallelGroup(Alignment.LEADING)
@@ -301,6 +311,7 @@ public class StartUpWindow extends JFrame
 			}
 		});
 		
+		
 		textField.addInputMethodListener(new InputMethodListener() 
 		{
 			public void caretPositionChanged(InputMethodEvent arg0) 
@@ -314,14 +325,59 @@ public class StartUpWindow extends JFrame
 			}
 		});
 		
+		
+		btnExit.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				gs.setGameOver();
+				gameScreen.setText(map_to_string());
+			}
+		});
+		
+		
 		btnUp.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
 				gs.getHero().heroMove("w", gs);
 				gs.updateMap();
+				gameScreen.setText(map_to_string());
 			}
 		});
+		
+
+		btnDown.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				gs.getHero().heroMove("s", gs);
+				gs.updateMap();
+				gameScreen.setText(map_to_string());
+			}
+		});
+		
+		buttonRight.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				gs.getHero().heroMove("d", gs);
+				gs.updateMap();
+				gameScreen.setText(map_to_string());
+			}
+		});
+		
+		btnLeft.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				gs.getHero().heroMove("a", gs);
+				gs.updateMap();
+				gameScreen.setText(map_to_string());
+			}
+		});
+		
+		
 		
 	}
 }

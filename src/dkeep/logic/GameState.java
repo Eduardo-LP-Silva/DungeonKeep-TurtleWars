@@ -75,6 +75,17 @@ public class GameState
 	{
 		return current_map;
 	}
+	
+	public boolean getGameOver()
+	{
+		return this.game_over;
+	}
+	
+	public void setGameOver()
+	{
+		this.game_over = true;
+	}
+	
 
 	public void setCurrent_map(Map current_map) 
 	{
