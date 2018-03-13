@@ -331,7 +331,7 @@ public class StartUpWindow extends JFrame
 			public void actionPerformed(ActionEvent e) 
 			{
 				gs.setGameOver();
-				gameScreen.setText(map_to_string());
+				System.exit(0);
 			}
 		});
 		
