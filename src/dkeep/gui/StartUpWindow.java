@@ -155,7 +155,7 @@ public class StartUpWindow extends JFrame
 		midCP.setLayout(new GridLayout(0, 2, 0, 0));
 		
 		gameScreen = new JTextArea();
-		gameScreen.setFont(new Font("Courier New", Font.PLAIN, 13));
+		gameScreen.setFont(new Font("Courier 10 Pitch", Font.PLAIN, 13));
 		gameScreen.setEditable(false);
 		midCP.add(gameScreen);
 		
