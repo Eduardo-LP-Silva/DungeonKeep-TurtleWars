@@ -1,12 +1,14 @@
 package dkeep.cli;
 import java.util.Scanner;
 import java.lang.String;
-
 import dkeep.logic.GameState;
+import dkeep.gui.*;
 
 
 public class u_input 
 {
+	protected StartUpWindow window;
+	
 	public static void main(String[] args) 
 	{
 		String move = "start";
