@@ -47,7 +47,7 @@ public class GameState
 				current_map = new Map(level);
 				hero = new Hero(1,7);
 				hero.setArmed(true);
-				ogres = new ArrayList<Ogre>();
+				updateMap();
 				break;
 				
 			default:
@@ -125,11 +125,7 @@ public class GameState
 
 	public void setVictory(boolean vic) 
 	{
-		
 		victory = vic;
-		
-		if(vic)
-			System.out.println("Victory!");
 	}
 
 	public boolean isGame_over() 
@@ -144,7 +140,7 @@ public class GameState
 	
 	public void updateMap()
 	{
-		getCurrent_map().getLevel()[hero.getY()][hero.getX()] = "H";
+		
 		
 		switch(level_no)
 		{
@@ -152,6 +148,8 @@ public class GameState
 				break;
 				
 			case 1:
+				
+				getCurrent_map().getLevel()[hero.getY()][hero.getX()] = "H";
 				
 				if(guard.isAsleep())
 					getCurrent_map().getLevel()[guard.getY()][guard.getX()] = "g";
@@ -165,15 +163,19 @@ public class GameState
 				if(current_map.isKey())
 					getCurrent_map().getLevel()[hero.getY()][hero.getX()] = "K";
 				else
-					getCurrent_map().getLevel()[hero.getY()][hero.getX()] = "A";
+					if(!getHero().isArmed())
+						getCurrent_map().getLevel()[hero.getY()][hero.getX()] = "H";
+					else
+						getCurrent_map().getLevel()[hero.getY()][hero.getX()] = "A";
 				
-				
+				for(int i = 0; i < ogres.size(); i++)
+				{
+					getCurrent_map().getLevel()[ogres.get(i).getY()][ogres.get(i).getX()] = "O";
+				}
 				
 			default:
 				break;
 		}
-		
-		//current_map.print_map();
 	}
 	
 	public void moveOgres()
@@ -222,22 +224,40 @@ public class GameState
 		}
 	}
 	
-	public boolean test_collision(String enemy)
+	public boolean test_game_over()
 	{
+		switch(level_no)
+		{
+			case 0:
+				game_over = test_collision("G");
+				return game_over;
+		
+			case 1:
+				
+				game_over = test_collision("G");
+				return game_over;
+				
+			case 2:
+				
+				if(!hero.isArmed())
+					game_over = test_collision("O");
+				else
+					game_over = test_collision("*") || test_collision("$");
+				
+				return game_over;
+				
+			default:
+				return false;
+		}
+	}
+	
+	public boolean test_collision(String enemy)
+	{	
 		if((current_map.getLevel()[hero.getY()][hero.getX() + 1].equals(enemy)) 
 				|| (current_map.getLevel()[hero.getY()][hero.getX() - 1].equals(enemy))
 				|| (current_map.getLevel()[hero.getY() - 1][hero.getX()].equals(enemy)) 
 				|| (current_map.getLevel()[hero.getY() + 1][hero.getX()].equals(enemy)))
-		{
-			if(enemy == "G" || (enemy == "O" && !hero.isArmed()))
-			{
-				current_map.getLevel()[hero.getY()][hero.getX()] = "_";
-				setGame_over(true);
-				System.out.print("Game Over\n");
-			}
-			
 			return true;
-		}
 		else
 			return false;
 	}	

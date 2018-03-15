@@ -50,7 +50,7 @@ public class StartUpWindow extends JFrame
 	private JButton buttonRight;
     private JButton btnExit;
 	private JLabel lblStatus;
-	private GameState gs;
+	private static GameState gs;
 
 	/**
 	 * Launch the application.
@@ -155,7 +155,7 @@ public class StartUpWindow extends JFrame
 		midCP.setLayout(new GridLayout(0, 2, 0, 0));
 		
 		gameScreen = new JTextArea();
-		gameScreen.setFont(new Font("Courier 10 Pitch", Font.PLAIN, 13));
+		gameScreen.setFont(new Font("Courier New", Font.PLAIN, 13));
 		gameScreen.setEditable(false);
 		midCP.add(gameScreen);
 		
@@ -272,33 +272,16 @@ public class StartUpWindow extends JFrame
 		return true;
 	}
 	
-	public String map_to_string()
-	{
-		if(gs == null)
-			return "";
-		
-		String map = "";
-		
-		for(int i = 0; i < gs.getCurrent_map().getLevel().length; i++)
-			{
-				for(int j = 0; j < gs.getCurrent_map().getLevel()[i].length; j++)
-					map += gs.getCurrent_map().getLevel()[i][j];
-				
-				map += "\n";
-			}
-			
-				
-		return map;	
-	}
+	
 
 	private void createEvents() 
 	{
 		btnNewGame.addActionListener(new ActionListener() 
 		{
 			
-			
 			public void actionPerformed(ActionEvent e) 
 			{
+				gs = new GameState(1);
 				
 				if(!status())
 					return;
@@ -307,7 +290,7 @@ public class StartUpWindow extends JFrame
 				
 				gs.getGuard().setType((String) personalityCB.getSelectedItem());
 				
-				gameScreen.setText(map_to_string());
+				gameScreen.setText(gs.getCurrent_map().map_to_string());
 			}
 		});
 		
@@ -330,19 +313,23 @@ public class StartUpWindow extends JFrame
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				gs.setGameOver();
+				if(gs.isGame_over())
+					lblStatus.setText("Game Over\n");
+
 				System.exit(0);
 			}
 		});
 		
-		
 		btnUp.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e) 
-			{
+			{	
 				gs.getHero().heroMove("w", gs);
 				gs.updateMap();
-				gameScreen.setText(map_to_string());
+				gameScreen.setText(gs.getCurrent_map().map_to_string());
+				
+				if(gs.test_game_over())
+					lblStatus.setText("Game Over\n");
 			}
 		});
 		
@@ -353,7 +340,10 @@ public class StartUpWindow extends JFrame
 			{
 				gs.getHero().heroMove("s", gs);
 				gs.updateMap();
-				gameScreen.setText(map_to_string());
+				gameScreen.setText(gs.getCurrent_map().map_to_string());
+				
+				if(gs.test_game_over())
+					lblStatus.setText("Game Over\n");
 			}
 		});
 		
@@ -363,7 +353,10 @@ public class StartUpWindow extends JFrame
 			{
 				gs.getHero().heroMove("d", gs);
 				gs.updateMap();
-				gameScreen.setText(map_to_string());
+				gameScreen.setText(gs.getCurrent_map().map_to_string());
+				
+				if(gs.test_game_over())
+					lblStatus.setText("Game Over\n");
 			}
 		});
 		
@@ -373,7 +366,10 @@ public class StartUpWindow extends JFrame
 			{
 				gs.getHero().heroMove("a", gs);
 				gs.updateMap();
-				gameScreen.setText(map_to_string());
+				gameScreen.setText(gs.getCurrent_map().map_to_string());
+				
+				if(gs.test_game_over())
+					lblStatus.setText("Game Over\n");
 			}
 		});
 		

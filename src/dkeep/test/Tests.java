@@ -33,7 +33,7 @@ public class Tests
 	{
 		GameState gs = new GameState(0);
 		gs.getHero().heroMove("d", gs);
-		gs.test_collision("G");
+		gs.test_game_over();
 		assertTrue(gs.isGame_over());
 	}
 	
@@ -81,7 +81,7 @@ public class Tests
 		for(int i = 0; i < 2; i++)
 			gs.getHero().heroMove("w", gs);
 			
-		gs.test_collision("O");
+		gs.test_game_over();
 		assertTrue(gs.isGame_over());
 	}
 	

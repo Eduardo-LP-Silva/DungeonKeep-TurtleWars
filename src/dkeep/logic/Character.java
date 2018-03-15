@@ -8,6 +8,8 @@ public class Character
 	{
 		this.x = x;
 		this.y = y;
+		nx = x;
+		ny = y;
 	}
 	
 	public int getX() 

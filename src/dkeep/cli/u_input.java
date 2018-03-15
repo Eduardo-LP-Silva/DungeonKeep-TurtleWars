@@ -20,11 +20,13 @@ public class u_input
 		{
 			move =  in.next();
 			gs.getHero().heroMove(move, gs);
-			gs.updateMap();	
+			gs.updateMap();
+			gs.getCurrent_map().print_map();
 			
-			if(gs.test_collision("G"))
+			if(gs.test_game_over())
 			{
 				in.close();
+				System.out.println("Game Over\n");
 				return; 
 			}
 		}
@@ -45,14 +47,14 @@ public class u_input
 			gs.getHero().heroMove(move, gs);
 			gs.updateMap();
 					
-			if(gs.test_collision("O") 
-					&& gs.getHero().isArmed())
-				gs.stunOgres();
+			if(gs.getHero().isArmed())
+				if(gs.test_collision("O"))
+					gs.stunOgres();
 			
-			if(gs.test_collision("*") 
-					|| gs.test_collision("$"))
+			if(gs.test_game_over())
 			{
 				in.close();
+				System.out.println("Game Over\n");
 				return;
 			}
 			

@@ -25,6 +25,9 @@ public class Hero extends Character
 
 	public void heroMove(String move, GameState gs)
 	{
+		if(gs.isGame_over())
+			return;
+		
 		switch(move)
 		{
 			case "w":
@@ -136,6 +139,8 @@ public class Hero extends Character
 		 default:
 			break;		 
 		}
+		
+		
 	}
 	
 	public void actionLevel2(GameState gs)
@@ -163,12 +168,14 @@ public class Hero extends Character
 				y = ny;
 				x = nx;
 				gs.getCurrent_map().setKey(true);
+				gs.moveOgres();
 				break;
 				
 			case "_":
 				gs.getCurrent_map().getLevel()[y][x] = "_";
 				y = ny;
 				x = nx;
+				gs.moveOgres();
 				break;
 				
 			default:

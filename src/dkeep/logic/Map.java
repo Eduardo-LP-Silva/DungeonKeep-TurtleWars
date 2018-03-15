@@ -52,11 +52,11 @@ public class Map
 				
 			case 2:
 				level = new String[][]{{"X", "X", "X", "X", "X", "X", "X", "X", "X"},
-					{"I", "_", "_", "_", "O", "_", "_", "k", "X"},
+					{"I", "_", "_", "_", "_", "_", "_", "k", "X"},
 					{"X", "_", "_", "_", "_", "_", "_", "_", "X"},
 					{"X", "_", "_", "_", "_", "_", "_", "_", "X"},
-					{"X", "O", "_", "_", "_", "_", "_", "_", "X"},
-					{"X", "_", "_", "_", "_", "_", "_", "O", "X"},
+					{"X", "_", "_", "_", "_", "_", "_", "_", "X"},
+					{"X", "_", "_", "_", "_", "_", "_", "_", "X"},
 					{"X", "_", "_", "_", "_", "_", "_", "_", "X"},
 					{"X", "H", "_", "_", "_", "_", "_", "_", "X"},
 					{"X", "X", "X", "X", "X", "X", "X", "X", "X"}};
@@ -112,6 +112,22 @@ public class Map
 	public void setLevel(String[][] level) 
 	{
 		this.level = level;
+	}
+	
+	public String map_to_string()
+	{
+		String map = "";
+		
+		for(int i = 0; i < getLevel().length; i++)
+			{
+				for(int j = 0; j < getLevel()[i].length; j++)
+					map += getLevel()[i][j];
+				
+				map += "\n";
+			}
+			
+				
+		return map;	
 	}
 
 }
