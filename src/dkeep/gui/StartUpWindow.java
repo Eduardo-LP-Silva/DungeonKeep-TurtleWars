@@ -5,11 +5,10 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import java.awt.Dimension;
 import javax.swing.border.EmptyBorder;
-
 import dkeep.logic.GameState;
 import dkeep.logic.Guard;
-
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import java.awt.Color;
@@ -29,9 +28,8 @@ import java.awt.event.InputMethodListener;
 import java.awt.event.InputMethodEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import dkeep.logic.GameState;
 import dkeep.cli.u_input;
+import dkeep.gui.GameScreen;
 
 
 public class StartUpWindow extends JFrame 
@@ -40,8 +38,8 @@ public class StartUpWindow extends JFrame
 	private JPanel mainCP;
 	private JTextField textField;
 	private JComboBox personalityCB;
+	private GameScreen gameScreen;
 	private JPanel midCP;
-	private JTextArea gameScreen;
 	private JPanel midRightCP;
 	private JButton btnNewGame;
 	private JButton btnLeft;
@@ -108,10 +106,14 @@ public class StartUpWindow extends JFrame
 		lblGuardPersonality.setForeground(Color.WHITE);
 		lblGuardPersonality.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		
-		personalityCB = new JComboBox();
 		
+		
+		personalityCB = new JComboBox();
+			
 		midCP = new JPanel();
 		midCP.setBackground(Color.DARK_GRAY);
+		
+		
 		
 		lblStatus = new JLabel("Status");
 		lblStatus.setForeground(Color.WHITE);
@@ -125,15 +127,17 @@ public class StartUpWindow extends JFrame
 					.addGroup(gl_mainCP.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_mainCP.createSequentialGroup()
 							.addGroup(gl_mainCP.createParallelGroup(Alignment.LEADING)
+								.addComponent(midCP, GroupLayout.PREFERRED_SIZE, 647, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblStatus, GroupLayout.PREFERRED_SIZE, 324, GroupLayout.PREFERRED_SIZE))
+							.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+						.addGroup(gl_mainCP.createSequentialGroup()
+							.addGroup(gl_mainCP.createParallelGroup(Alignment.LEADING)
 								.addComponent(lblNumberOfOgres, GroupLayout.PREFERRED_SIZE, 132, GroupLayout.PREFERRED_SIZE)
 								.addComponent(lblGuardPersonality, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE))
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addGroup(gl_mainCP.createParallelGroup(Alignment.LEADING)
 								.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(personalityCB, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)))
-						.addComponent(midCP, GroupLayout.PREFERRED_SIZE, 647, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblStatus, GroupLayout.PREFERRED_SIZE, 324, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+								.addComponent(personalityCB, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)))))
 		);
 		gl_mainCP.setVerticalGroup(
 			gl_mainCP.createParallelGroup(Alignment.LEADING)
@@ -152,16 +156,9 @@ public class StartUpWindow extends JFrame
 					.addComponent(lblStatus, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
-		midCP.setLayout(new GridLayout(0, 2, 0, 0));
-		
-		gameScreen = new JTextArea();
-		gameScreen.setFont(new Font("Courier New", Font.PLAIN, 13));
-		gameScreen.setEditable(false);
-		midCP.add(gameScreen);
 		
 		midRightCP = new JPanel();
 		midRightCP.setBackground(Color.DARK_GRAY);
-		midCP.add(midRightCP);
 		
 		btnNewGame = new JButton("New Game");
 		
@@ -198,12 +195,13 @@ public class StartUpWindow extends JFrame
 		gl_midRightCP.setHorizontalGroup(
 			gl_midRightCP.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_midRightCP.createSequentialGroup()
-					.addGap(67)
+					.addContainerGap(67, Short.MAX_VALUE)
 					.addComponent(btnLeft)
-					.addPreferredGap(ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+					.addGap(69)
 					.addComponent(buttonRight)
 					.addGap(67))
 				.addGroup(gl_midRightCP.createSequentialGroup()
+					.addGap(0, 0, Short.MAX_VALUE)
 					.addGroup(gl_midRightCP.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_midRightCP.createSequentialGroup()
 							.addGap(109)
@@ -213,11 +211,11 @@ public class StartUpWindow extends JFrame
 						.addGroup(gl_midRightCP.createSequentialGroup()
 							.addGap(127)
 							.addComponent(btnDown)))
-					.addContainerGap(117, Short.MAX_VALUE))
+					.addGap(117))
 				.addGroup(gl_midRightCP.createSequentialGroup()
-					.addGap(135)
+					.addContainerGap(135, Short.MAX_VALUE)
 					.addComponent(btnUp)
-					.addContainerGap(139, Short.MAX_VALUE))
+					.addGap(139))
 		);
 		gl_midRightCP.setVerticalGroup(
 			gl_midRightCP.createParallelGroup(Alignment.LEADING)
@@ -233,9 +231,32 @@ public class StartUpWindow extends JFrame
 					.addComponent(btnDown)
 					.addGap(62)
 					.addComponent(btnExit, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(25, Short.MAX_VALUE))
+					.addContainerGap(19, Short.MAX_VALUE))
 		);
 		midRightCP.setLayout(gl_midRightCP);
+		
+		gameScreen = new GameScreen((GameState) null);
+		GroupLayout gl_midCP = new GroupLayout(midCP);
+		gl_midCP.setHorizontalGroup(
+			gl_midCP.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_midCP.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(gameScreen, GroupLayout.PREFERRED_SIZE, 360, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(midRightCP, GroupLayout.PREFERRED_SIZE, 281, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		gl_midCP.setVerticalGroup(
+			gl_midCP.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_midCP.createSequentialGroup()
+					.addGroup(gl_midCP.createParallelGroup(Alignment.LEADING)
+						.addComponent(midRightCP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(gameScreen, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addContainerGap())
+		);
+		midCP.setLayout(gl_midCP);
+		
+		
 		
 		personalityCB.addItem("Rookie");
 		personalityCB.addItem("Drunken");
@@ -282,6 +303,7 @@ public class StartUpWindow extends JFrame
 			public void actionPerformed(ActionEvent e) 
 			{
 				gs = new GameState(1);
+				gameScreen = new GameScreen(gs);
 				
 				if(!status())
 					return;
@@ -289,8 +311,8 @@ public class StartUpWindow extends JFrame
 				gs.addOgres(Integer.parseInt(textField.getText()));
 				
 				gs.getGuard().setType((String) personalityCB.getSelectedItem());
+				gameScreen.paint();
 				
-				gameScreen.setText(gs.getCurrent_map().map_to_string());
 			}
 		});
 		
@@ -326,7 +348,7 @@ public class StartUpWindow extends JFrame
 			{	
 				gs.getHero().heroMove("w", gs);
 				gs.updateMap();
-				gameScreen.setText(gs.getCurrent_map().map_to_string());
+				gameScreen.paint();
 				
 				if(gs.test_game_over())
 					lblStatus.setText("Game Over\n");
@@ -340,7 +362,7 @@ public class StartUpWindow extends JFrame
 			{
 				gs.getHero().heroMove("s", gs);
 				gs.updateMap();
-				gameScreen.setText(gs.getCurrent_map().map_to_string());
+				gameScreen.paint();
 				
 				if(gs.test_game_over())
 					lblStatus.setText("Game Over\n");
@@ -353,7 +375,7 @@ public class StartUpWindow extends JFrame
 			{
 				gs.getHero().heroMove("d", gs);
 				gs.updateMap();
-				gameScreen.setText(gs.getCurrent_map().map_to_string());
+				gameScreen.paint();
 				
 				if(gs.test_game_over())
 					lblStatus.setText("Game Over\n");
@@ -366,7 +388,7 @@ public class StartUpWindow extends JFrame
 			{
 				gs.getHero().heroMove("a", gs);
 				gs.updateMap();
-				gameScreen.setText(gs.getCurrent_map().map_to_string());
+				gameScreen.paint();
 				
 				if(gs.test_game_over())
 					lblStatus.setText("Game Over\n");
