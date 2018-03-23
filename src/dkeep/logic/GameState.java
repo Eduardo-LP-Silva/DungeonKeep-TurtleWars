@@ -47,7 +47,6 @@ public class GameState
 				current_map = new Map(level);
 				hero = new Hero(1,7);
 				hero.setArmed(true);
-				updateMap();
 				break;
 				
 			default:
@@ -65,8 +64,8 @@ public class GameState
 		
 		for(int i = 0; i < n; i++)
 		{
-			x = rand.nextInt(8) + 1;
-			y = rand.nextInt(8) + 1;
+			x = rand.nextInt(6) + 1;
+			y = rand.nextInt(6) + 1;
 			ogres.add(new Ogre(x,y));
 		}
 	}
@@ -140,8 +139,6 @@ public class GameState
 	
 	public void updateMap()
 	{
-		
-		
 		switch(level_no)
 		{
 			case 0:
@@ -214,7 +211,8 @@ public class GameState
 	{
 		for(int i = 0; i < ogres.size(); i++)
 		{
-			if(ogres.get(i).turns_stunned == 0)
+			if(ogres.get(i).getY() == hero.getY() + 1 || ogres.get(i).getY() == hero.getY() - 1
+					|| ogres.get(i).getX() == hero.getX() + 1 || ogres.get(i).getX() == hero.getX() - 1)
 			{
 				ogres.get(i).turns_stunned++;
 				getCurrent_map().getLevel()[ogres.get(i).getY()][ogres.get(i).getX()] = "8";

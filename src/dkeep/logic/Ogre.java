@@ -82,6 +82,7 @@ public class Ogre extends Character
 				break;
 				
 			case "O":
+				gs.getCurrent_map().getLevel()[y][x] = "_";
 				x = nx;
 				y = ny;
 				gs.getCurrent_map().getLevel()[y][x] = "O";

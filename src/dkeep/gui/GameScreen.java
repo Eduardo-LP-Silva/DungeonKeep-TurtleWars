@@ -15,17 +15,18 @@ public class GameScreen extends JPanel implements KeyListener
 	private GameState gs;
 	private BufferedImage knight;
 	private BufferedImage guard;
-	private BufferedImage ogre_i;
 	private BufferedImage wall;
 	private BufferedImage key;
 	private BufferedImage door_open;
 	private BufferedImage door_closed;
 	private BufferedImage floor;
+	private BufferedImage ogre;
+	private BufferedImage guard_sleeping;
+	private BufferedImage stick;
 	
 	
-	public GameScreen(GameState g) 
+	public GameScreen() 
 	{
-		gs = g;
 		addKeyListener(this);
 		
 		try
@@ -37,12 +38,20 @@ public class GameScreen extends JPanel implements KeyListener
 			door_closed =  ImageIO.read(GameScreen.class.getResource("/resources/Door32.png"));
 			door_open =  ImageIO.read(GameScreen.class.getResource("/resources/DoorO32.png"));
 			guard  =  ImageIO.read(GameScreen.class.getResource("/resources/Bad32.png"));
+			ogre  =  ImageIO.read(GameScreen.class.getResource("/resources/Ogre32option.png"));
+			guard_sleeping  =  ImageIO.read(GameScreen.class.getResource("/resources/Sleep32.png"));
+			stick  =  ImageIO.read(GameScreen.class.getResource("/resources/Stick32.png"));
 		}
 		catch (IOException ex)
 		{
 			System.out.println("Erro loading image");
 			return;
 		}
+	}
+	
+	public void setGameState(GameState g)
+	{
+		gs = g;
 	}
 	
 	public void drawMap(Graphics g)
@@ -52,9 +61,9 @@ public class GameScreen extends JPanel implements KeyListener
 		if(gs == null)
 			return;
 		
-		for(int i = 0; i < gs.getCurrent_map().getLevel().length; i++)
+		for(int j = 0; j < gs.getCurrent_map().getLevel().length; j++)
 		{
-			for(int j = 0; j < gs.getCurrent_map().getLevel()[i].length; j++)
+			for(int i = 0; i < gs.getCurrent_map().getLevel()[j].length; i++)
 			{
 				switch(gs.getCurrent_map().getLevel()[i][j])
 				{
@@ -64,23 +73,48 @@ public class GameScreen extends JPanel implements KeyListener
 						
 					case "H":
 						g.drawImage(knight, n_images_y, n_images_x, this);
+						break;
 						
 					case "_":
 						g.drawImage(floor, n_images_y, n_images_x, this);
+						break;
 						
 					case "k":
 						g.drawImage(key, n_images_y, n_images_x, this);
+						break;
 						
-					case "K":
+					case "":
 						g.drawImage(floor, n_images_y, n_images_x, this);
+						break;
 						
 					case "I": 
 						g.drawImage(door_closed, n_images_y, n_images_x, this);
+						break;
 						
 					case "S": 
 						g.drawImage(door_open, n_images_y, n_images_x, this);
+						break;
 						
+					case "G":
+						g.drawImage(guard, n_images_y, n_images_x, this);
+						break;
+					
+					case "g":
+						g.drawImage(guard_sleeping, n_images_y, n_images_x, this);
+						break;
+					
+					case "*":
+						g.drawImage(stick, n_images_y, n_images_x, this);
+						break;
+					
+					case "O": 
+						g.drawImage(ogre, n_images_y, n_images_x, this);
+						break;
 						
+					case "A":
+						g.drawImage(knight, n_images_y, n_images_x, this);
+						break;
+							
 					default:
 						break;
 						

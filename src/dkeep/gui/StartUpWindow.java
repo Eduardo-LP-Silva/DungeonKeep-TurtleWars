@@ -235,7 +235,9 @@ public class StartUpWindow extends JFrame
 		);
 		midRightCP.setLayout(gl_midRightCP);
 		
-		gameScreen = new GameScreen((GameState) null);
+		gameScreen = new GameScreen();
+		gameScreen.setPreferredSize(new Dimension(32, 32));
+		
 		GroupLayout gl_midCP = new GroupLayout(midCP);
 		gl_midCP.setHorizontalGroup(
 			gl_midCP.createParallelGroup(Alignment.LEADING)
@@ -303,7 +305,7 @@ public class StartUpWindow extends JFrame
 			public void actionPerformed(ActionEvent e) 
 			{
 				gs = new GameState(1);
-				gameScreen = new GameScreen(gs);
+				gameScreen.setGameState(gs);
 				
 				if(!status())
 					return;
