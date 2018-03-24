@@ -9,6 +9,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import dkeep.logic.GameState;
+import dkeep.logic.Map;
 
 public class GameScreen extends JPanel
 {
@@ -54,6 +55,11 @@ public class GameScreen extends JPanel
 		gs = g;
 	}
 	
+	public GameState getGameState()
+	{
+		return gs;
+	}
+	
 	public void drawMap(Graphics g)
 	{
 		int n_images_x = 0, n_images_y = 0;
@@ -61,11 +67,11 @@ public class GameScreen extends JPanel
 		if(gs == null)
 			return;
 		
-		for(int j = 0; j < gs.getCurrent_map().getLevel().length; j++)
+		for(int j = 0; j < gs.getCurrent_map().length; j++)
 		{
-			for(int i = 0; i < gs.getCurrent_map().getLevel()[j].length; i++)
+			for(int i = 0; i < gs.getCurrent_map()[j].length; i++)
 			{
-				switch(gs.getCurrent_map().getLevel()[i][j])
+				switch(gs.getCurrent_map()[i][j])
 				{
 					case "X":
 						g.drawImage(wall, n_images_y, n_images_x, this);
@@ -154,8 +160,5 @@ public class GameScreen extends JPanel
 	public void paint()
 	{
 		repaint();
-	}
-	
-
-	
+	}	
 }

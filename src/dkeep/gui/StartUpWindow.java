@@ -7,6 +7,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.Dimension;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 import dkeep.logic.GameState;
 import dkeep.logic.Guard;
 import java.awt.GridLayout;
@@ -32,6 +35,7 @@ import dkeep.cli.u_input;
 import dkeep.gui.GameScreen;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.UIManager;
 
 
 public class StartUpWindow extends JFrame 
@@ -51,6 +55,7 @@ public class StartUpWindow extends JFrame
     private JButton btnExit;
 	private JLabel lblStatus;
 	private JButton btnLevelEditor;
+	private LevelEditor gw;
 	private static GameState gs;
 
 	/**
@@ -58,6 +63,11 @@ public class StartUpWindow extends JFrame
 	 */
 	public static void main(String[] args) 
 	{
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 		EventQueue.invokeLater(new Runnable() 
 		{
 			public void run() 
@@ -149,23 +159,25 @@ public class StartUpWindow extends JFrame
 			gl_mainCP.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_mainCP.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_mainCP.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_mainCP.createParallelGroup(Alignment.TRAILING, false)
 						.addGroup(gl_mainCP.createSequentialGroup()
 							.addComponent(lblStatus, GroupLayout.PREFERRED_SIZE, 324, GroupLayout.PREFERRED_SIZE)
-							.addGap(116)
-							.addComponent(btnLevelEditor, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE))
-						.addGroup(Alignment.TRAILING, gl_mainCP.createSequentialGroup()
+							.addGap(230))
+						.addGroup(gl_mainCP.createSequentialGroup()
 							.addGroup(gl_mainCP.createParallelGroup(Alignment.LEADING)
 								.addComponent(lblNumberOfOgres, GroupLayout.PREFERRED_SIZE, 132, GroupLayout.PREFERRED_SIZE)
 								.addComponent(lblGuardPersonality, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE))
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addGroup(gl_mainCP.createParallelGroup(Alignment.LEADING)
-								.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addGroup(gl_mainCP.createSequentialGroup()
+									.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED, 305, Short.MAX_VALUE)
+									.addComponent(btnLevelEditor, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE))
 								.addGroup(gl_mainCP.createSequentialGroup()
 									.addComponent(personalityCB, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.RELATED, 392, Short.MAX_VALUE))))
 						.addComponent(midCP, GroupLayout.PREFERRED_SIZE, 647, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(76, Short.MAX_VALUE))
+					.addGap(151))
 		);
 		gl_mainCP.setVerticalGroup(
 			gl_mainCP.createParallelGroup(Alignment.LEADING)
@@ -173,7 +185,8 @@ public class StartUpWindow extends JFrame
 					.addContainerGap()
 					.addGroup(gl_mainCP.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblNumberOfOgres, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnLevelEditor, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(gl_mainCP.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblGuardPersonality, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
@@ -181,10 +194,8 @@ public class StartUpWindow extends JFrame
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(midCP, GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(gl_mainCP.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblStatus, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnLevelEditor, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap())
+					.addComponent(lblStatus, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+					.addGap(18))
 		);
 		
 		midRightCP = new JPanel();
@@ -202,10 +213,7 @@ public class StartUpWindow extends JFrame
 		btnLeft = new JButton("Left");
 		btnLeft.setBackground(Color.LIGHT_GRAY);
 		btnLeft.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnLeft.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
+		
 		
 		btnUp = new JButton("Up");
 		btnUp.setBackground(Color.LIGHT_GRAY);
@@ -281,13 +289,13 @@ public class StartUpWindow extends JFrame
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		gl_midCP.setVerticalGroup(
-			gl_midCP.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_midCP.createSequentialGroup()
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+			gl_midCP.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_midCP.createSequentialGroup()
+					.addContainerGap()
 					.addGroup(gl_midCP.createParallelGroup(Alignment.TRAILING, false)
 						.addComponent(midRightCP, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addComponent(gameScreen, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE))
-					.addContainerGap())
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		midCP.setLayout(gl_midCP);
 		
@@ -303,30 +311,24 @@ public class StartUpWindow extends JFrame
 		
 	}
 	
-	public boolean status()
-	{
-		if(textField.getText() == null)
-		{
-			lblStatus.setText("Must have at least one Ogre");
-			return false;
-		}
+	 public boolean status()
+	  {
+		  	if(textField.getText().equals("") || Integer.parseInt(textField.getText()) <= 0)
+			{
+				lblStatus.setText("Must have at least one Ogre");
+				return false;
+			}
+			
+			if(Integer.parseInt(textField.getText()) >= 9)
+			{
+				lblStatus.setText("Number of Ogres too high");
+				return false;
+			}
 		
-		if(Integer.parseInt(textField.getText()) <= 0)
-		{
-			lblStatus.setText("Must have at least one Ogre");
-			return false;
-		}
-		
-		if(Integer.parseInt(textField.getText()) >= 9)
-		{
-			lblStatus.setText("Number of Ogres too high");
-			return false;
-		}
-	
-		lblStatus.setText("You can play now.");
-		
-		return true;
-	}
+			lblStatus.setText("You can play now.");
+			
+			return true;
+	  }
 	
 	
 
@@ -342,6 +344,8 @@ public class StartUpWindow extends JFrame
 				
 				if(!status())
 					return;
+				else
+					lblStatus.setText("");
 				
 				gs.addOgres(Integer.parseInt(textField.getText()));
 				
@@ -353,17 +357,22 @@ public class StartUpWindow extends JFrame
 		});
 		
 		
-		textField.addInputMethodListener(new InputMethodListener() 
+		textField.getDocument().addDocumentListener(new DocumentListener() 
 		{
-			public void caretPositionChanged(InputMethodEvent arg0) 
-			{
-				status();
-			}
-			
-			public void inputMethodTextChanged(InputMethodEvent arg0) 
-			{
-				status();
-			}
+			  public void changedUpdate(DocumentEvent e) 
+			  {
+				    status();
+			  }
+			  
+			  public void removeUpdate(DocumentEvent e) 
+			  {
+				  status();
+			  }
+				  
+			  public void insertUpdate(DocumentEvent e) 
+			  {
+				    status();
+			  } 
 		});
 		
 		
@@ -430,8 +439,12 @@ public class StartUpWindow extends JFrame
 			}
 		});
 		
-		btnLevelEditor.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		btnLevelEditor.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				gw = new LevelEditor(gs);
+				gw.StartGameWindow(gs);
 			}
 		});
 		

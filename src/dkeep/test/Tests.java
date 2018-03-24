@@ -14,8 +14,8 @@ public class Tests
 		gs.getHero().heroMove("s", gs);
 		gs.updateMap();
 		assertEquals(new Hero(1,2), gs.getHero());
-		assertEquals(gs.getCurrent_map().getLevel()[1][1], "_");
-		assertEquals(gs.getCurrent_map().getLevel()[2][1], "H");
+		assertEquals(gs.getCurrent_map()[1][1], "_");
+		assertEquals(gs.getCurrent_map()[2][1], "H");
 	}
 	
 	
@@ -55,9 +55,9 @@ public class Tests
 		GameState gs = new GameState(0);
 		gs.getHero().heroMove("s", gs);
 		gs.getHero().heroMove("s", gs);
-		assertTrue(gs.getCurrent_map().isLever());
-		assertEquals(gs.getCurrent_map().getLevel()[2][0], "S");
-		assertEquals(gs.getCurrent_map().getLevel()[3][0], "S");
+		assertTrue(gs.isLever());
+		assertEquals(gs.getCurrent_map()[2][0], "S");
+		assertEquals(gs.getCurrent_map()[3][0], "S");
 	}
 	
 	
@@ -103,10 +103,10 @@ public class Tests
 		gs.getHero().heroMove("w", gs);
 		gs.getHero().heroMove("w", gs);
 		
-		assertTrue(gs.getCurrent_map().isKey());
+		assertTrue(gs.isKey());
 		gs.getHero().heroMove("a", gs);
 		gs.updateMap();
-		assertEquals(gs.getCurrent_map().getLevel()
+		assertEquals(gs.getCurrent_map()
 				[gs.getHero().getY()][gs.getHero().getX()], "K");
 	}
 	
@@ -124,7 +124,7 @@ public class Tests
 			gs.getHero().heroMove("a", gs);
 		
 		gs.updateMap();
-		assertEquals(gs.getCurrent_map().getLevel()
+		assertEquals(gs.getCurrent_map()
 				[gs.getHero().getY()][gs.getHero().getX()], "A");
 		assertFalse(gs.isVictory());
 	}
@@ -134,7 +134,7 @@ public class Tests
 	{
 		GameState gs = new GameState(2);
 		
-		gs.getCurrent_map().setKey(true);
+		gs.setKey(true);
 		
 		gs.getHero().heroMove("d", gs);
 		
@@ -146,8 +146,8 @@ public class Tests
 		
 		gs.updateMap();
 		
-		assertEquals(gs.getCurrent_map().getLevel()
-				[Map.door2_1.getY()][Map.door2_1.getX()], "S");
+		assertEquals(gs.getCurrent_map()
+				[gs.getHero().getNy()][gs.getHero().getNx()], "S");
 	}
 	
 	@Test
@@ -155,7 +155,7 @@ public class Tests
 	{
 		GameState gs = new GameState(2);
 		
-		gs.getCurrent_map().setKey(true);
+		gs.setKey(true);
 		
 		gs.getHero().heroMove("d", gs);
 		
@@ -238,7 +238,7 @@ public class Tests
 			gs.updateMap();
 		}
 		
-		assertEquals(gs.getCurrent_map().getLevel()[3][8], "G");
+		assertEquals(gs.getCurrent_map()[3][8], "G");
 	}
 	
 	@Test

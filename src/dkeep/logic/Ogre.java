@@ -53,47 +53,47 @@ public class Ogre extends Character
 	{
 		Random rand = new Random();
 		
-		switch(gs.getCurrent_map().getLevel()[ny][nx])
+		switch(gs.getCurrent_map()[ny][nx])
 		{
 			case "X":
-				gs.getCurrent_map().getLevel()[y][x] = "O";
+				gs.getCurrent_map()[y][x] = "O";
 				break;
 				
 			case "I":
-				gs.getCurrent_map().getLevel()[y][x] = "O";
+				gs.getCurrent_map()[y][x] = "O";
 				break;
 				
 			case "_":
 				
 				if(on_top_of_key)
 				{
-					gs.getCurrent_map().getLevel()[y][x] = "k";
+					gs.getCurrent_map()[y][x] = "k";
 					on_top_of_key = false;	
 				}
 				else
-					gs.getCurrent_map().getLevel()[y][x] = "_";
+					gs.getCurrent_map()[y][x] = "_";
 				
 				x = nx;
 				y = ny;
-				gs.getCurrent_map().getLevel()[y][x] = "O";
+				gs.getCurrent_map()[y][x] = "O";
 				break;
 				
 			case "k":
-				gs.getCurrent_map().getLevel()[y][x] = "_";
+				gs.getCurrent_map()[y][x] = "_";
 				x = nx;
 				y = ny;
-				gs.getCurrent_map().getLevel()[y][x] = "$";
+				gs.getCurrent_map()[y][x] = "$";
 				on_top_of_key = true;
 				
 			case "S":
-				gs.getCurrent_map().getLevel()[y][x] = "O";
+				gs.getCurrent_map()[y][x] = "O";
 				break;
 				
 			case "O":
-				gs.getCurrent_map().getLevel()[y][x] = "_";
+				gs.getCurrent_map()[y][x] = "_";
 				x = nx;
 				y = ny;
-				gs.getCurrent_map().getLevel()[y][x] = "O";
+				gs.getCurrent_map()[y][x] = "O";
 				break;
 				
 			default:
@@ -135,28 +135,28 @@ public class Ogre extends Character
 	
 	public void smash(GameState gs)
 	{
-		switch(gs.getCurrent_map().getLevel()[club.ny][club.nx])
+		switch(gs.getCurrent_map()[club.ny][club.nx])
 		{		
 			case "_":
 				
 				if(club_on_key)
 				{
-					gs.getCurrent_map().getLevel()[club.y][club.x] = "k";
+					gs.getCurrent_map()[club.y][club.x] = "k";
 					club_on_key = false;
 				}
 				else
-					gs.getCurrent_map().getLevel()[club.y][club.x] = "_";
+					gs.getCurrent_map()[club.y][club.x] = "_";
 				
 				club.x = club.nx;
 				club.y = club.ny;
-				gs.getCurrent_map().getLevel()[club.y][club.x] = "*";
+				gs.getCurrent_map()[club.y][club.x] = "*";
 				break;
 				
 			case "k":
-				gs.getCurrent_map().getLevel()[club.y][club.x] = "_";
+				gs.getCurrent_map()[club.y][club.x] = "_";
 				club.y = club.ny;
 				club.x = club.nx;
-				gs.getCurrent_map().getLevel()[club.y][club.x] = "$";
+				gs.getCurrent_map()[club.y][club.x] = "$";
 				club_on_key = true;
 				break;
 				

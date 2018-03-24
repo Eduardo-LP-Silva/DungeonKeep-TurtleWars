@@ -2,132 +2,125 @@ package dkeep.logic;
 import java.lang.String;
 import dkeep.logic.Character;
 
-public class Map 
+public abstract class Map 
 {
 	
-	public static Character door1_1, door1_2, door1_3, door1_4, door1_5, door1_6, 
-	door1_7, door2_1, door_t1, door_t2;
-	private boolean lever, key;
-	private String level[][];
+	private static Character door1_1 = new Character(4,1), 
+			door1_2 =  new Character(2,3), 
+			door1_3 = new Character(4,3), 
+			door1_4 = new Character(0,5), 
+			door1_5 = new Character(0,6), 
+			door1_6 = new Character(2,8), 
+			door1_7 = new Character(4,8), 
+			door_t1 = new Character(0,2), 
+			door_t2 = new Character(0,3);
+	private static String test_level[][] = new String[][]{
+		{"X", "X", "X", "X", "X"},
+		{"X", "H", "_", "G", "X"},
+		{"I", "_", "_", "_", "X"},
+		{"I", "k", "_", "_", "X"},
+		{"X", "X", "X", "X", "X"}};
+	private static String level1[][] = new String[][]{ 
+		{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X"}, 
+		{"X", "H", "_", "_", "I", "_", "X", "_", "G", "X"},
+		{"X", "X", "X", "_", "X", "X", "X", "_", "_", "X"},
+		{"X","_","I","_","I","_","X","_","_","X"},
+		{"X", "X", "X", "_", "X", "X", "X", "_", "_", "X"},
+		{"I", "_", "_", "_", "_", "_", "_", "_", "_", "X"},
+		{"I", "_", "_", "_", "_", "_", "_", "_", "_", "X"},
+		{"X", "X", "X", "_", "X", "X", "X", "X", "_", "X"},
+		{"X","_","I","_","I","_","X","k","_","X"},
+		{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X"}};
+	private static String level2[][] =  new String[][]{{"X", "X", "X", "X", "X", "X", "X", "X", "X"},
+		{"I", "_", "_", "_", "_", "_", "_", "k", "X"},
+		{"X", "_", "_", "_", "_", "_", "_", "_", "X"},
+		{"X", "_", "_", "_", "_", "_", "_", "_", "X"},
+		{"X", "_", "_", "_", "_", "_", "_", "_", "X"},
+		{"X", "_", "_", "_", "_", "_", "_", "_", "X"},
+		{"X", "_", "_", "_", "_", "_", "_", "_", "X"},
+		{"X", "H", "_", "_", "_", "_", "_", "_", "X"},
+		{"X", "X", "X", "X", "X", "X", "X", "X", "X"}};
 	
-	public void print_map()
+	
+	public static String[][] getLevel1() 
 	{
-		for(int i = 0; i < this.level.length; i++)
-		{
-			for(int j = 0; j < this.level[i].length; j++)
-				System.out.print(this.level[i][j]);
-				
-			System.out.print("\n");
-		}
+		return level1;
 	}
-					
-	public Map(int no)
+	
+	public static String[][] getLevel2() 
 	{
-		switch(no)
+		return level2;
+	}
+	
+	public static String[][] getTestLevel() 
+	{
+		return test_level;
+	}
+	
+	public static void setLevel(int level_no, String[][] new_level)
+	{
+		switch(level_no)
 		{
-			case 1:
-				lever = false;
+			case 0:
+				test_level = new_level;
+				break;
 				
-				level = new String[][]{ 
-						{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X"}, 
-						{"X", "H", "_", "_", "I", "_", "X", "_", "G", "X"},
-						{"X", "X", "X", "_", "X", "X", "X", "_", "_", "X"},
-						{"X","_","I","_","I","_","X","_","_","X"},
-						{"X", "X", "X", "_", "X", "X", "X", "_", "_", "X"},
-						{"I", "_", "_", "_", "_", "_", "_", "_", "_", "X"},
-						{"I", "_", "_", "_", "_", "_", "_", "_", "_", "X"},
-						{"X", "X", "X", "_", "X", "X", "X", "X", "_", "X"},
-						{"X","_","I","_","I","_","X","k","_","X"},
-						{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X"}};
-						
-				door1_1 = new Character(4,1);
-				door1_2 = new Character(2,3);
-				door1_3 = new Character(4,3);
-				door1_4 = new Character(0,5);
-				door1_5 = new Character(0,6);
-				door1_6 = new Character(2,8);
-				door1_7 = new Character(4,8);
-				door2_1 = new Character(0,1);
+			case 1:
+				level1 = new_level;
 				break;
 				
 			case 2:
-				level = new String[][]{{"X", "X", "X", "X", "X", "X", "X", "X", "X"},
-					{"I", "_", "_", "_", "_", "_", "_", "k", "X"},
-					{"X", "_", "_", "_", "_", "_", "_", "_", "X"},
-					{"X", "_", "_", "_", "_", "_", "_", "_", "X"},
-					{"X", "_", "_", "_", "_", "_", "_", "_", "X"},
-					{"X", "_", "_", "_", "_", "_", "_", "_", "X"},
-					{"X", "_", "_", "_", "_", "_", "_", "_", "X"},
-					{"X", "H", "_", "_", "_", "_", "_", "_", "X"},
-					{"X", "X", "X", "X", "X", "X", "X", "X", "X"}};
-					
-					door2_1 = new Character(0,1);
-					
-			key = false;
-			break;
-			
-			case 0:
-				level = new String[][]{
-						{"X", "X", "X", "X", "X"},
-						{"X", "H", "_", "G", "X"},
-						{"I", "_", "_", "_", "X"},
-						{"I", "k", "_", "_", "X"},
-						{"X", "X", "X", "X", "X"}};
-						
-				door_t1 = new Character(0,2);
-				door_t2 = new Character(0,3);
+				level2 = new_level;
 				break;
 				
 			default:
 				break;
-			}
-											
-	}
-	
-	public boolean isLever() 
-	{
-		return lever;
+		}
 	}
 
-	public void setLever(boolean lever) 
+	public static Character getDoor1_1() 
 	{
-		this.lever = lever;
+		return door1_1;
 	}
 
-	public boolean isKey() 
+	public static Character getDoor1_2() 
 	{
-		return key;
+		return door1_2;
 	}
 
-	public void setKey(boolean key) 
+	public static Character getDoor1_3() 
 	{
-		this.key = key;
+		return door1_3;
 	}
 
-	public String[][] getLevel() 
+	public static Character getDoor1_4() 
 	{
-		return level;
+		return door1_4;
 	}
 
-	public void setLevel(String[][] level) 
+	public static Character getDoor1_5() 
 	{
-		this.level = level;
+		return door1_5;
 	}
-	
-	public String map_to_string()
+
+	public static Character getDoor1_6() 
 	{
-		String map = "";
-		
-		for(int i = 0; i < getLevel().length; i++)
-			{
-				for(int j = 0; j < getLevel()[i].length; j++)
-					map += getLevel()[i][j];
-				
-				map += "\n";
-			}
-			
-				
-		return map;	
+		return door1_6;
+	}
+
+	public static Character getDoor1_7() 
+	{
+		return door1_7;
+	}
+
+	public static Character getDoor_t1() 
+	{
+		return door_t1;
+	}
+
+	public static Character getDoor_t2() 
+	{
+		return door_t2;
 	}
 
 }

@@ -14,14 +14,14 @@ public class u_input
 		String move = "start";
 		Scanner in = new Scanner(System.in);
 		GameState gs = new GameState(1);
-		gs.getCurrent_map().print_map();
+		gs.print_map();
 		
 		while(!move.equalsIgnoreCase("exit") && gs.getLevel_no() == 1)
 		{
 			move =  in.next();
 			gs.getHero().heroMove(move, gs);
 			gs.updateMap();
-			gs.getCurrent_map().print_map();
+			gs.print_map();
 			
 			if(gs.test_game_over())
 			{
@@ -38,7 +38,7 @@ public class u_input
 			return;
 		}
 		
-		gs.getCurrent_map().print_map();
+		gs.print_map();
 		
 		while(!move.equalsIgnoreCase("exit") && gs.getLevel_no() == 2)
 		{

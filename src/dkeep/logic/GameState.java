@@ -9,10 +9,11 @@ public class GameState
 	private int level_no;
 	private boolean victory;
 	private boolean game_over;
-	private Map current_map;
+	private String[][] current_map;
 	private Hero hero;
 	private Guard guard;
 	private ArrayList<Ogre> ogres;
+	private boolean lever, key;
 	
 	public GameState(int level)
 	{
@@ -27,24 +28,44 @@ public class GameState
 	{
 		return level_no;
 	}
+	
+	public boolean isLever() 
+	{
+		return lever;
+	}
+
+	public void setLever(boolean lever) 
+	{
+		this.lever = lever;
+	}
+
+	public boolean isKey() 
+	{
+		return key;
+	}
+	
+	public void setKey(boolean key) 
+	{
+		this.key = key;
+	}
 
 	public void setLevel_no(int level) 
 	{
 		switch(level)
 		{
 			case 0:
-				current_map = new Map(level);
+				current_map = Map.getTestLevel();
 				hero = new Hero(1,1);
 				guard = new Guard(3,1, Guard.Guard_Type.Rookie);
 		
 			case 1:
-				current_map = new Map(level);
+				current_map = Map.getLevel1();
 				hero = new Hero(1,1);
 				guard = new Guard(8,1, Guard.Guard_Type.Drunken);
 				break;
 				
 			case 2:
-				current_map = new Map(level);
+				current_map = Map.getLevel2();
 				hero = new Hero(1,7);
 				hero.setArmed(true);
 				break;
@@ -70,7 +91,7 @@ public class GameState
 		}
 	}
 	
-	public Map getCurrent_map() 
+	public String[][] getCurrent_map() 
 	{
 		return current_map;
 	}
@@ -86,7 +107,7 @@ public class GameState
 	}
 	
 
-	public void setCurrent_map(Map current_map) 
+	public void setCurrent_map(String[][] current_map) 
 	{
 		this.current_map = current_map;
 	}
@@ -146,28 +167,28 @@ public class GameState
 				
 			case 1:
 				
-				getCurrent_map().getLevel()[hero.getY()][hero.getX()] = "H";
+				getCurrent_map()[hero.getY()][hero.getX()] = "H";
 				
 				if(guard.isAsleep())
-					getCurrent_map().getLevel()[guard.getY()][guard.getX()] = "g";
+					getCurrent_map()[guard.getY()][guard.getX()] = "g";
 				else
-					getCurrent_map().getLevel()[guard.getY()][guard.getX()] = "G";
+					getCurrent_map()[guard.getY()][guard.getX()] = "G";
 				
 				break;
 				
 			case 2:
 				
-				if(current_map.isKey())
-					getCurrent_map().getLevel()[hero.getY()][hero.getX()] = "K";
+				if(isKey())
+					getCurrent_map()[hero.getY()][hero.getX()] = "K";
 				else
 					if(!getHero().isArmed())
-						getCurrent_map().getLevel()[hero.getY()][hero.getX()] = "H";
+						getCurrent_map()[hero.getY()][hero.getX()] = "H";
 					else
-						getCurrent_map().getLevel()[hero.getY()][hero.getX()] = "A";
+						getCurrent_map()[hero.getY()][hero.getX()] = "A";
 				
 				for(int i = 0; i < ogres.size(); i++)
 				{
-					getCurrent_map().getLevel()[ogres.get(i).getY()][ogres.get(i).getX()] = "O";
+					getCurrent_map()[ogres.get(i).getY()][ogres.get(i).getX()] = "O";
 				}
 				
 			default:
@@ -205,7 +226,7 @@ public class GameState
 					|| ogres.get(i).getX() == hero.getX() + 1 || ogres.get(i).getX() == hero.getX() - 1)
 			{
 				ogres.get(i).turns_stunned++;
-				getCurrent_map().getLevel()[ogres.get(i).getY()][ogres.get(i).getX()] = "8";
+				getCurrent_map()[ogres.get(i).getY()][ogres.get(i).getX()] = "8";
 				break;
 			}
 	
@@ -241,12 +262,39 @@ public class GameState
 	
 	public boolean test_collision(String enemy)
 	{	
-		if((current_map.getLevel()[hero.getY()][hero.getX() + 1].equals(enemy)) 
-				|| (current_map.getLevel()[hero.getY()][hero.getX() - 1].equals(enemy))
-				|| (current_map.getLevel()[hero.getY() - 1][hero.getX()].equals(enemy)) 
-				|| (current_map.getLevel()[hero.getY() + 1][hero.getX()].equals(enemy)))
+		if((current_map[hero.getY()][hero.getX() + 1].equals(enemy)) 
+				|| (current_map[hero.getY()][hero.getX() - 1].equals(enemy))
+				|| (current_map[hero.getY() - 1][hero.getX()].equals(enemy)) 
+				|| (current_map[hero.getY() + 1][hero.getX()].equals(enemy)))
 			return true;
 		else
 			return false;
 	}	
+	
+	public String map_to_string()
+	{
+		String map = "";
+		
+		for(int i = 0; i < current_map.length; i++)
+			{
+				for(int j = 0; j < current_map[i].length; j++)
+					map += current_map[i][j];
+				
+				map += "\n";
+			}
+			
+				
+		return map;	
+	}
+	
+	public void print_map()
+	{
+		for(int i = 0; i < this.current_map.length; i++)
+		{
+			for(int j = 0; j < this.current_map[i].length; j++)
+				System.out.print(this.current_map[i][j]);
+				
+			System.out.print("\n");
+		}
+	}
 }
