@@ -1,5 +1,6 @@
 package dkeep.logic;
 
+import java.util.Random;
 
 public class Ogre extends Character
 {
@@ -18,8 +19,11 @@ public class Ogre extends Character
 		ny = y;
 	}
 	
-	public void move(int on)
+	public void move(GameState gs)
 	{
+		Random rand = new Random();
+		int on = rand.nextInt(4) + 1;
+		
 		switch(on)
 		{
 			case 1:
@@ -41,10 +45,14 @@ public class Ogre extends Character
 			default:
 				break;	
 		}
+		
+		action(gs);
 	}
 	
 	public void action(GameState gs)
 	{
+		Random rand = new Random();
+		
 		switch(gs.getCurrent_map().getLevel()[ny][nx])
 		{
 			case "X":
@@ -91,6 +99,9 @@ public class Ogre extends Character
 			default:
 				break;
 		}
+		
+		swing_club(rand.nextInt(4) + 1);
+		smash(gs);
 	}
 	
 	public void swing_club(int cn)

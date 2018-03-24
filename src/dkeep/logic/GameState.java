@@ -182,28 +182,18 @@ public class GameState
 		for(int i = 0; i < ogres.size(); i++)
 		{
 			if(ogres.get(i).turns_stunned == 0)
-			{
-				ogres.get(i).move(rand.nextInt(4) + 1);
-				ogres.get(i).action(this);
-				ogres.get(i).swing_club(rand.nextInt(4) + 1);
-				ogres.get(i).smash(this);
-			}
+				ogres.get(i).move(this);
 			else
 			{
 				if(ogres.get(i).turns_stunned == 1)
-				{
 					ogres.get(i).turns_stunned++;
-					ogres.get(i).swing_club(rand.nextInt(4) + 1);
-					ogres.get(i).smash(this);
-				}
 				else
-				{
 					ogres.get(i).turns_stunned = 0;
-					ogres.get(i).swing_club(rand.nextInt(4) + 1);
-					ogres.get(i).smash(this);
-				}
-			}
 				
+				
+				ogres.get(i).swing_club(rand.nextInt(4) + 1);
+				ogres.get(i).smash(this);
+			}	
 		}
 	}
 

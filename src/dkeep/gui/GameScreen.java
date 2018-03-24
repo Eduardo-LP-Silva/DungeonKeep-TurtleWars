@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import dkeep.logic.GameState;
 
-public class GameScreen extends JPanel implements KeyListener
+public class GameScreen extends JPanel
 {
 	private GameState gs;
 	private BufferedImage knight;
@@ -23,12 +23,11 @@ public class GameScreen extends JPanel implements KeyListener
 	private BufferedImage ogre;
 	private BufferedImage guard_sleeping;
 	private BufferedImage stick;
+	private BufferedImage lever;
 	
 	
 	public GameScreen() 
 	{
-		addKeyListener(this);
-		
 		try
 		{
 			wall =  ImageIO.read(GameScreen.class.getResource("/resources/wall32.png"));
@@ -41,6 +40,7 @@ public class GameScreen extends JPanel implements KeyListener
 			ogre  =  ImageIO.read(GameScreen.class.getResource("/resources/Ogre32option.png"));
 			guard_sleeping  =  ImageIO.read(GameScreen.class.getResource("/resources/Sleep32.png"));
 			stick  =  ImageIO.read(GameScreen.class.getResource("/resources/Stick32.png"));
+			lever =  ImageIO.read(GameScreen.class.getResource("/resources/lever32.png"));
 		}
 		catch (IOException ex)
 		{
@@ -79,8 +79,17 @@ public class GameScreen extends JPanel implements KeyListener
 						g.drawImage(floor, n_images_y, n_images_x, this);
 						break;
 						
+					case "K":
+						g.drawImage(knight, n_images_y, n_images_x, this);
+						break;
+						
 					case "k":
-						g.drawImage(key, n_images_y, n_images_x, this);
+						
+						if(gs.getLevel_no() == 1)
+							g.drawImage(lever, n_images_y, n_images_x, this);
+						else
+							g.drawImage(key, n_images_y, n_images_x, this);
+						
 						break;
 						
 					case "":
@@ -147,27 +156,6 @@ public class GameScreen extends JPanel implements KeyListener
 		repaint();
 	}
 	
-	
-	@Override
-	public void keyPressed(KeyEvent arg0) 
-	{
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void keyReleased(KeyEvent arg0) 
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void keyTyped(KeyEvent arg0) 
-	{
-		// TODO Auto-generated method stub
-		
-	}
-	
 	
 }

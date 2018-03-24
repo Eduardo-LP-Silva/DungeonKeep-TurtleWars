@@ -25,7 +25,7 @@ public class Hero extends Character
 
 	public void heroMove(String move, GameState gs)
 	{
-		if(gs.isGame_over())
+		if(gs.isGame_over() || gs.isVictory())
 			return;
 		
 		switch(move)
@@ -152,7 +152,10 @@ public class Hero extends Character
 				
 			case "I":
 				if(gs.getCurrent_map().isKey())
-					gs.getCurrent_map().getLevel()[Map.door2_1.y][Map.door2_1.x] = "S";
+					{
+						gs.getCurrent_map().getLevel()[Map.door2_1.y][Map.door2_1.x] = "S";
+						gs.moveOgres();
+					}
 					
 				break;
 				
