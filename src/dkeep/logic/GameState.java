@@ -51,22 +51,35 @@ public class GameState
 
 	public void setLevel_no(int level) 
 	{
+		boolean found = false;
+		
 		switch(level)
 		{
 			case 0:
-				current_map = Map.getTestLevel();
+				current_map = Map.copyLevel(Map.getTestLevel());
 				hero = new Hero(1,1);
 				guard = new Guard(3,1, Guard.Guard_Type.Rookie);
 		
 			case 1:
-				current_map = Map.getLevel1();
+				current_map = Map.copyLevel(Map.getLevel1());
 				hero = new Hero(1,1);
 				guard = new Guard(8,1, Guard.Guard_Type.Drunken);
 				break;
 				
 			case 2:
-				current_map = Map.getLevel2();
-				hero = new Hero(1,7);
+				current_map = Map.copyLevel(Map.getLevel2());
+				
+				for(int i = 0; i < current_map.length; i++)
+					for(int j = 0; j < current_map[i].length; j++)
+						if(current_map[i][j].equals("H") || current_map[i][j].equals("A"))
+							{
+								hero = new Hero(j, i);
+								found = true;
+							}
+				
+				if(!found)
+					hero = new Hero(1,7);
+					
 				hero.setArmed(true);
 				break;
 				
@@ -81,12 +94,34 @@ public class GameState
 	public void addOgres(int n)
 	{
 		Random rand = new Random();
-		int x, y;
+		int x, y, i;
 		
-		for(int i = 0; i < n; i++)
+		if(n == 0)
+			n = 2;
+			
+		for(i = 0; i < Map.getLevel2().length; i++)
+			for(int j = 0; j < Map.getLevel2()[i].length; j++)
+				if(Map.getLevel2()[i][j].equals("O"))
+				{
+					n--;
+					Ogre o = new Ogre(j, i);
+					
+					if(Map.getLevel2()[i][j].equals("k"))
+						o.setOn_top_of_key(true);
+					
+					ogres.add(o);
+				}
+		
+		for(i = 0; i < n; i++)
 		{
-			x = rand.nextInt(6) + 1;
-			y = rand.nextInt(6) + 1;
+			do
+			{
+				x = rand.nextInt(Map.getLevel2()[0].length - 2) + 1;
+				y = rand.nextInt(Map.getLevel2().length - 2) + 1;
+			}
+			while(Map.getLevel2()[y][x].equals("X") || Map.getLevel2()[y][x].equals("H")
+					|| Map.getLevel2()[y][x].equals("A"));
+			
 			ogres.add(new Ogre(x,y));
 		}
 	}
@@ -188,7 +223,13 @@ public class GameState
 				
 				for(int i = 0; i < ogres.size(); i++)
 				{
-					getCurrent_map()[ogres.get(i).getY()][ogres.get(i).getX()] = "O";
+					if(ogres.get(i).getTurns_stunned() > 0)
+						getCurrent_map()[ogres.get(i).getY()][ogres.get(i).getX()] = "8";
+					else
+						if(ogres.get(i).isOn_top_of_key())
+							getCurrent_map()[ogres.get(i).getY()][ogres.get(i).getX()] = "$";
+						else
+							getCurrent_map()[ogres.get(i).getY()][ogres.get(i).getX()] = "O";
 				}
 				
 			default:
@@ -202,32 +243,35 @@ public class GameState
 		
 		for(int i = 0; i < ogres.size(); i++)
 		{
-			if(ogres.get(i).turns_stunned == 0)
+			if(ogres.get(i).getTurns_stunned() == 0)
 				ogres.get(i).move(this);
 			else
 			{
-				if(ogres.get(i).turns_stunned == 1)
-					ogres.get(i).turns_stunned++;
+				if(ogres.get(i).getTurns_stunned() == 1)
+					ogres.get(i).setTurns_stunned(ogres.get(i).getTurns_stunned() + 1);
 				else
-					ogres.get(i).turns_stunned = 0;
-				
+					ogres.get(i).setTurns_stunned(0);
 				
 				ogres.get(i).swing_club(rand.nextInt(4) + 1);
 				ogres.get(i).smash(this);
 			}	
 		}
+		
+		if(hero.isArmed())
+			stunOgres();
 	}
 
 	public void stunOgres()
 	{
 		for(int i = 0; i < ogres.size(); i++)
 		{
-			if(ogres.get(i).getY() == hero.getY() + 1 || ogres.get(i).getY() == hero.getY() - 1
-					|| ogres.get(i).getX() == hero.getX() + 1 || ogres.get(i).getX() == hero.getX() - 1)
+			if((ogres.get(i).getY() == hero.getY() + 1 && ogres.get(i).getX() == hero.getX()) 
+					|| (ogres.get(i).getY() == hero.getY() - 1 && ogres.get(i).getX() == hero.getX())
+					|| (ogres.get(i).getX() == hero.getX() + 1 && ogres.get(i).getY() == hero.getY())
+					|| (ogres.get(i).getX() == hero.getX() - 1 && ogres.get(i).getY() == hero.getY()))
 			{
-				ogres.get(i).turns_stunned++;
+				ogres.get(i).setTurns_stunned(ogres.get(i).getTurns_stunned() + 1);
 				getCurrent_map()[ogres.get(i).getY()][ogres.get(i).getX()] = "8";
-				break;
 			}
 	
 		}

@@ -101,12 +101,10 @@ public class StartUpWindow extends JFrame
 		gs.getHero().heroMove(m, gs);
 		gs.updateMap();
 		gameScreen.paint();
-		
+		gameScreen.adjustSize();
+	
 		if(gs.test_game_over())
 			lblStatus.setText("Game Over\n");
-		
-		if(gs.getLevel_no() == 2 && gameScreen.getSize().getHeight() != 280 &&  gameScreen.getSize().getWidth() != 280)
-			gameScreen.setSize(new Dimension(280,280));
 		
 		if(gs.isVictory())
 			lblStatus.setText("Victory\n");
@@ -335,8 +333,7 @@ public class StartUpWindow extends JFrame
 	private void createEvents() 
 	{
 		btnNewGame.addActionListener(new ActionListener() 
-		{
-			
+		{	
 			public void actionPerformed(ActionEvent e) 
 			{
 				gs = new GameState(1);

@@ -39,18 +39,15 @@ public class u_input
 		}
 		
 		gs.print_map();
+		gs.addOgres(2);
 		
 		while(!move.equalsIgnoreCase("exit") && gs.getLevel_no() == 2)
 		{
 			move = in.next();
-			gs.moveOgres();
 			gs.getHero().heroMove(move, gs);
 			gs.updateMap();
+			gs.print_map();
 					
-			if(gs.getHero().isArmed())
-				if(gs.test_collision("O"))
-					gs.stunOgres();
-			
 			if(gs.test_game_over())
 			{
 				in.close();

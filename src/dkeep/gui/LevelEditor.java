@@ -25,6 +25,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.SwingConstants;
 
 public class LevelEditor extends JFrame 
 {
@@ -47,6 +50,12 @@ public class LevelEditor extends JFrame
 	private JPanel topPanel;
 	private JPanel panel;
 	private JButton btnGenerate;
+	private String item;
+	private JButton btnExit;
+	private boolean HeroPlaced;
+	private boolean DoorPlaced;
+	private boolean KeyPlaced;
+	private JLabel lblMapStatus;
 
 	/**
 	 * Launch the application.
@@ -109,36 +118,39 @@ public class LevelEditor extends JFrame
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addComponent(topPanel, GroupLayout.PREFERRED_SIZE, 704, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(leftPanel, GroupLayout.PREFERRED_SIZE, 369, GroupLayout.PREFERRED_SIZE)
-							.addGap(18)
-							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 332, GroupLayout.PREFERRED_SIZE)
-							.addGap(345)))
-					.addContainerGap())
+							.addComponent(leftPanel, GroupLayout.PREFERRED_SIZE, 377, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 332, GroupLayout.PREFERRED_SIZE)))
+					.addGap(9))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addComponent(topPanel, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(panel, GroupLayout.PREFERRED_SIZE, 293, GroupLayout.PREFERRED_SIZE)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(leftPanel, GroupLayout.PREFERRED_SIZE, 302, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)))
-					.addContainerGap(308, Short.MAX_VALUE))
+							.addGap(18)
+							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 293, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap(19, Short.MAX_VALUE))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(leftPanel, GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE))))
 		);
 		
 		lblDoor = new JLabel("   Door");
+		
 		lblDoor.setIcon(new ImageIcon(LevelEditor.class.getResource("/resources/Door32.png")));
 		lblDoor.setForeground(Color.WHITE);
 		lblDoor.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		
 		lblKey = new JLabel("   Key");
+		
 		lblKey.setIcon(new ImageIcon(LevelEditor.class.getResource("/resources/Key32.png")));
 		lblKey.setForeground(Color.WHITE);
 		lblKey.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		
 		lblWall = new JLabel("   Wall");
+		
 		lblWall.setIcon(new ImageIcon(LevelEditor.class.getResource("/resources/wall32.png")));
 		lblWall.setForeground(Color.WHITE);
 		lblWall.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -150,41 +162,63 @@ public class LevelEditor extends JFrame
 			lblStatus.setFont(new Font("Tahoma", Font.PLAIN, 15));
 			
 			lblOgre = new JLabel("   Ogre");
+			
 			lblOgre.setIcon(new ImageIcon(LevelEditor.class.getResource("/resources/Ogre32option.png")));
 			lblOgre.setForeground(Color.WHITE);
 			lblOgre.setFont(new Font("Tahoma", Font.PLAIN, 15));
 			
 			lblHero = new JLabel("   Hero");
+			
 			lblHero.setIcon(new ImageIcon(LevelEditor.class.getResource("/resources/knight32.png")));
 			lblHero.setForeground(Color.WHITE);
 			lblHero.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			
+			btnExit = new JButton("Exit");
+			
+			lblMapStatus = new JLabel("");
+			lblMapStatus.setHorizontalAlignment(SwingConstants.CENTER);
+			lblMapStatus.setForeground(Color.WHITE);
+			lblMapStatus.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			
 			GroupLayout gl_panel = new GroupLayout(panel);
 			gl_panel.setHorizontalGroup(
 				gl_panel.createParallelGroup(Alignment.LEADING)
 					.addGroup(gl_panel.createSequentialGroup()
 						.addContainerGap()
-						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-							.addComponent(lblKey)
-							.addComponent(lblWall)
+						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
+							.addComponent(lblHero, GroupLayout.PREFERRED_SIZE, 126, GroupLayout.PREFERRED_SIZE)
+							.addComponent(btnExit)
+							.addGroup(gl_panel.createSequentialGroup()
+								.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+									.addComponent(lblKey)
+									.addComponent(lblWall))
+								.addGap(18)
+								.addComponent(lblMapStatus, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE))
 							.addComponent(lblOgre)
-							.addComponent(lblDoor)
-							.addComponent(lblHero, GroupLayout.PREFERRED_SIZE, 126, GroupLayout.PREFERRED_SIZE))
-						.addContainerGap(196, Short.MAX_VALUE))
+							.addComponent(lblDoor))
+						.addContainerGap())
 			);
 			gl_panel.setVerticalGroup(
 				gl_panel.createParallelGroup(Alignment.LEADING)
 					.addGroup(gl_panel.createSequentialGroup()
+						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+							.addGroup(gl_panel.createSequentialGroup()
+								.addGap(16)
+								.addComponent(lblWall)
+								.addPreferredGap(ComponentPlacement.UNRELATED)
+								.addComponent(lblKey)
+								.addPreferredGap(ComponentPlacement.UNRELATED)
+								.addComponent(lblOgre)
+								.addGap(18)
+								.addComponent(lblDoor))
+							.addGroup(gl_panel.createSequentialGroup()
+								.addContainerGap()
+								.addComponent(lblMapStatus, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)))
 						.addGap(15)
-						.addComponent(lblWall)
-						.addPreferredGap(ComponentPlacement.UNRELATED)
-						.addComponent(lblKey)
-						.addPreferredGap(ComponentPlacement.UNRELATED)
-						.addComponent(lblOgre)
-						.addGap(18)
-						.addComponent(lblDoor)
-						.addPreferredGap(ComponentPlacement.UNRELATED)
 						.addComponent(lblHero, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
-						.addGap(58))
+						.addGap(18)
+						.addComponent(btnExit)
+						.addGap(17))
 			);
 			panel.setLayout(gl_panel);
 		
@@ -248,46 +282,62 @@ public class LevelEditor extends JFrame
 		topPanel.setLayout(gl_topPanel);
 		
 		gameScreen = new GameScreen();
+		
 		gameScreen.setGameState(new GameState(2));
 		gameScreen.setBackground(Color.BLACK);
 		gameScreen.setFocusable(true);
 		GroupLayout gl_leftPanel = new GroupLayout(leftPanel);
 		gl_leftPanel.setHorizontalGroup(
 			gl_leftPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_leftPanel.createSequentialGroup()
-					.addGap(24)
-					.addComponent(gameScreen, GroupLayout.PREFERRED_SIZE, 320, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(25, Short.MAX_VALUE))
+				.addComponent(gameScreen, GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
 		);
 		gl_leftPanel.setVerticalGroup(
-			gl_leftPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_leftPanel.createSequentialGroup()
-					.addContainerGap(29, Short.MAX_VALUE)
-					.addComponent(gameScreen, GroupLayout.PREFERRED_SIZE, 252, GroupLayout.PREFERRED_SIZE)
-					.addGap(21))
+			gl_leftPanel.createParallelGroup(Alignment.TRAILING)
+				.addComponent(gameScreen, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
 		);
 		leftPanel.setLayout(gl_leftPanel);
 		contentPane.setLayout(gl_contentPane);	
 		
-		
+		item = "_";
+		HeroPlaced = false;
+		KeyPlaced = false;
+		DoorPlaced = false;
 	}
 	
 	public Boolean checkRes()
 	{
 		if(txtHeight.getText().equals("") || txtWidth.getText().equals("") ||
 				Integer.parseInt(txtHeight.getText()) * 32 > 320 || Integer.parseInt(txtWidth.getText()) * 32 > 320 
-				|| Integer.parseInt(txtHeight.getText()) * 32 < 160 || Integer.parseInt(txtWidth.getText()) * 32 < 160)
+				|| Integer.parseInt(txtHeight.getText()) * 32 < 160 || Integer.parseInt(txtWidth.getText()) * 32 < 160
+				|| Integer.parseInt(txtHeight.getText()) != Integer.parseInt(txtWidth.getText()))
 		{
-			lblResStatus.setText("Map size must be between 5x5 and 10x10");
+			lblResStatus.setText("Map size must be between 5x5 and 10x10 (and even)");
 			return false;
 		}
 		else
 		{
 			lblResStatus.setText("");
-			gameScreen.setSize(new Dimension(Integer.parseInt(txtWidth.getText()) * 32, Integer.parseInt(txtHeight.getText()) * 32));
 			return true;
 		}
 			
+	}
+	
+	public boolean checkMap()
+	{
+		if(!HeroPlaced || !DoorPlaced || !KeyPlaced)
+		{
+			lblMapStatus.setText("Item(s) Missing!");
+			return false;
+		}
+		else
+			lblMapStatus.setText("");
+		
+		return true;
+	}
+	
+	public void close()
+	{
+		this.dispose();
 	}
 	
 	public void createEvents()
@@ -351,16 +401,101 @@ public class LevelEditor extends JFrame
 					Map.setLevel(2, new_map);
 					gs2 = new GameState(2);
 					gameScreen.setGameState(gs2);
-					
-					/*if(gameScreen.getGameState() == null)
-						gameScreen.setGameState(gs);
-					else
-						gameScreen.getGameState().setLevel_no(2);*/
-					
 					gameScreen.paint();
+					gameScreen.adjustSize();
+					HeroPlaced = false;
+					KeyPlaced = false;
+					DoorPlaced = false;
+				}
+			}
+		});
+		
+		lblWall.addMouseListener(new MouseAdapter() 
+		{
+			@Override
+			public void mousePressed(MouseEvent arg0) 
+			{
+				item = "X";
+			}
+		});
+		
+		lblKey.addMouseListener(new MouseAdapter() 
+		{
+			@Override
+			public void mousePressed(MouseEvent arg0) 
+			{
+				item = "k";
+			}
+		});
+		
+		lblOgre.addMouseListener(new MouseAdapter() 
+		{
+			@Override
+			public void mousePressed(MouseEvent arg0) 
+			{
+				item = "O";
+			}
+		});
+		
+		lblDoor.addMouseListener(new MouseAdapter() 
+		{
+			@Override
+			public void mousePressed(MouseEvent arg0) 
+			{
+				item = "I";
+			}
+		});
+		
+		lblHero.addMouseListener(new MouseAdapter() 
+		{
+			@Override
+			public void mousePressed(MouseEvent arg0) 
+			{
+				item = "A";
+			}
+		});
+		
+		gameScreen.addMouseListener(new MouseAdapter() 
+		{
+			@Override
+			public void mousePressed(MouseEvent arg0) 
+			{
+				String[][] map = Map.getLevel2();
+				map[arg0.getY() / 32][arg0.getX() / 32] = item;
+				
+				switch(item)
+				{
+					case "A":
+						HeroPlaced = true;
+						break;
+						
+					case "k":
+						KeyPlaced = true;
+						break;
+						
+					case "I":
+						DoorPlaced = true;
+						break;
+						
+					default:
+						break;
 				}
 				
+				Map.setLevel(2, map);
+				gameScreen.updateMap();
+				gameScreen.paint();
+				gameScreen.adjustSize();
+			}
+		});
+		
+		btnExit.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				if(!checkMap())
+					return;
 				
+				close();
 			}
 		});
 	}

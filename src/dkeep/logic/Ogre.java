@@ -4,14 +4,14 @@ import java.util.Random;
 
 public class Ogre extends Character
 {
-	public Character club;
-	public boolean club_on_key, on_top_of_key;
-	public int turns_stunned;
+	private Character club;
+	private boolean club_on_key, on_top_of_key;
+	private int turns_stunned;
 	
 	public Ogre(int x, int y)
 	{
 		super(x,y);
-		club = new Character(5,1);
+		club = new Character(x,y);
 		club_on_key = false;
 		on_top_of_key = false;
 		turns_stunned = 0;
@@ -19,6 +19,46 @@ public class Ogre extends Character
 		ny = y;
 	}
 	
+	public void setClub_on_key(boolean club_on_key) 
+	{
+		this.club_on_key = club_on_key;
+	}
+
+	public void setOn_top_of_key(boolean on_top_of_key) 
+	{
+		this.on_top_of_key = on_top_of_key;
+	}
+	
+	public Character getClub() 
+	{
+		return club;
+	}
+
+	public void setClub(Character club) 
+	{
+		this.club = club;
+	}
+
+	public int getTurns_stunned() 
+	{
+		return turns_stunned;
+	}
+
+	public void setTurns_stunned(int turns_stunned) 
+	{
+		this.turns_stunned = turns_stunned;
+	}
+
+	public boolean isClub_on_key() 
+	{
+		return club_on_key;
+	}
+
+	public boolean isOn_top_of_key() 
+	{
+		return on_top_of_key;
+	}
+
 	public void move(GameState gs)
 	{
 		Random rand = new Random();

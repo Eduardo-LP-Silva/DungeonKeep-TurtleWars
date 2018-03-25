@@ -1,5 +1,6 @@
 package dkeep.gui;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -25,6 +26,9 @@ public class GameScreen extends JPanel
 	private BufferedImage guard_sleeping;
 	private BufferedImage stick;
 	private BufferedImage lever;
+	private BufferedImage clubOnKey;
+	private BufferedImage ogreOnKey;
+	private BufferedImage ogreStunned;
 	
 	
 	public GameScreen() 
@@ -42,6 +46,9 @@ public class GameScreen extends JPanel
 			guard_sleeping  =  ImageIO.read(GameScreen.class.getResource("/resources/Sleep32.png"));
 			stick  =  ImageIO.read(GameScreen.class.getResource("/resources/Stick32.png"));
 			lever =  ImageIO.read(GameScreen.class.getResource("/resources/lever32.png"));
+			clubOnKey = ImageIO.read(GameScreen.class.getResource("/resources/clubOnKey32.png"));
+			ogreOnKey = ImageIO.read(GameScreen.class.getResource("/resources/ogreOnKey32.png"));
+			ogreStunned = ImageIO.read(GameScreen.class.getResource("/resources/ogreStunned32.png"));
 		}
 		catch (IOException ex)
 		{
@@ -95,7 +102,7 @@ public class GameScreen extends JPanel
 							g.drawImage(lever, n_images_y, n_images_x, this);
 						else
 							g.drawImage(key, n_images_y, n_images_x, this);
-						
+							
 						break;
 						
 					case "":
@@ -129,6 +136,22 @@ public class GameScreen extends JPanel
 					case "A":
 						g.drawImage(knight, n_images_y, n_images_x, this);
 						break;
+						
+					case "$":
+						
+						for(int k = 0; k < gs.getOgres().size(); k++)
+							if(gs.getOgres().get(k).isClub_on_key())
+								g.drawImage(clubOnKey, n_images_y, n_images_x, this);
+							else
+								if(gs.getOgres().get(k).isOn_top_of_key())
+									g.drawImage(ogreOnKey, n_images_y, n_images_x, this);
+						
+						break;
+						
+					case "8":
+						System.out.print("Entered 8");
+						g.drawImage(ogreStunned, n_images_y, n_images_x, this);
+						break;			
 							
 					default:
 						break;
@@ -161,4 +184,18 @@ public class GameScreen extends JPanel
 	{
 		repaint();
 	}	
+	
+	public void updateMap()
+	{
+		gs.setCurrent_map(Map.getLevel2());
+	}
+	
+	public void adjustSize()
+	{
+		if(getSize().getHeight() != gs.getCurrent_map().length * 32 
+				||  getSize().getWidth() != gs.getCurrent_map()[0].length * 32)
+			setSize(new Dimension(gs.getCurrent_map().length * 32, gs.getCurrent_map()[0].length * 32));
+			
+	}
+	
 }

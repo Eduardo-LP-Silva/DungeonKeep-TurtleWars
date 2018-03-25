@@ -1,5 +1,7 @@
 package dkeep.logic;
 import java.lang.String;
+import java.util.Arrays;
+
 import dkeep.logic.Character;
 
 public abstract class Map 
@@ -38,7 +40,7 @@ public abstract class Map
 		{"X", "_", "_", "_", "_", "_", "_", "_", "X"},
 		{"X", "_", "_", "_", "_", "_", "_", "_", "X"},
 		{"X", "_", "_", "_", "_", "_", "_", "_", "X"},
-		{"X", "H", "_", "_", "_", "_", "_", "_", "X"},
+		{"X", "A", "_", "_", "_", "_", "_", "_", "X"},
 		{"X", "X", "X", "X", "X", "X", "X", "X", "X"}};
 	
 	
@@ -76,6 +78,16 @@ public abstract class Map
 			default:
 				break;
 		}
+	}
+	
+	public static String[][] copyLevel(String[][] toCopy)
+	{
+		String[][] copy = new String[toCopy.length][];
+		
+		for(int i = 0; i < copy.length; i++)
+			copy[i] = Arrays.copyOf(toCopy[i], toCopy[i].length);
+		
+		return copy;
 	}
 
 	public static Character getDoor1_1() 
