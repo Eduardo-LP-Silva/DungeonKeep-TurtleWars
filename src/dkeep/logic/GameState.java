@@ -2,8 +2,11 @@ package dkeep.logic;
 
 import dkeep.logic.Hero;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -410,4 +413,28 @@ public class GameState
 		writer.print("");
 		writer.close();
 	}
+	
+	
+	
+	public String getMapFromFile() throws FileNotFoundException, IOException
+	{
+
+		String lineAndEnter = "";
+		try(BufferedReader br = new BufferedReader(new FileReader("/home/tomas/git/LPOO1718_T4G4/src/resources/save.txt")))
+		{
+		  String line;
+		  while( (line = br.readLine()) != null)
+		  {
+				lineAndEnter = lineAndEnter + line + '\n';
+		  }
+		}
+		return lineAndEnter;
+		
+	}
+	
+	public void test(String s)
+	{
+	   System.out.print(s);
+	}
+		
 }

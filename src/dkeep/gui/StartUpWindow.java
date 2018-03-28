@@ -31,6 +31,8 @@ import java.awt.event.InputMethodListener;
 import java.awt.event.InputMethodEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+
 import dkeep.cli.u_input;
 import dkeep.gui.GameScreen;
 import java.awt.event.KeyAdapter;
@@ -170,6 +172,14 @@ public class StartUpWindow extends JFrame
 		JButton btnLoad = new JButton("Load");
 		btnLoad.setBackground(Color.LIGHT_GRAY);
 		btnLoad.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnLoad.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{	
+				
+				// TO DO
+			}
+		});
 		
 		
 		GroupLayout gl_mainCP = new GroupLayout(mainCP);
