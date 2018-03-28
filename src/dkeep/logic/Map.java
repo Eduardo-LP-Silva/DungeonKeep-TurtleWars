@@ -16,12 +16,14 @@ public abstract class Map
 			door1_7 = new Character(4,8), 
 			door_t1 = new Character(0,2), 
 			door_t2 = new Character(0,3);
+	
 	private static String test_level[][] = new String[][]{
 		{"X", "X", "X", "X", "X"},
 		{"X", "H", "_", "G", "X"},
 		{"I", "_", "_", "_", "X"},
 		{"I", "k", "_", "_", "X"},
 		{"X", "X", "X", "X", "X"}};
+		
 	private static String level1[][] = new String[][]{ 
 		{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X"}, 
 		{"X", "H", "_", "_", "I", "_", "X", "_", "G", "X"},
@@ -33,6 +35,7 @@ public abstract class Map
 		{"X", "X", "X", "_", "X", "X", "X", "X", "_", "X"},
 		{"X","_","I","_","I","_","X","k","_","X"},
 		{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X"}};
+		
 	private static String level2[][] =  new String[][]{{"X", "X", "X", "X", "X", "X", "X", "X", "X"},
 		{"I", "_", "_", "_", "_", "_", "_", "k", "X"},
 		{"X", "_", "_", "_", "_", "_", "_", "_", "X"},

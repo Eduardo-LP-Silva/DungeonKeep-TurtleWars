@@ -13,12 +13,12 @@ public class GameState
 	private Hero hero;
 	private Guard guard;
 	private ArrayList<Ogre> ogres;
-	private boolean lever, key;
+	private boolean lever, key, test;
 	
 	public GameState(int level)
 	{
-		level_no = level;
 		victory = false;
+		test = false;
 		game_over = false;
 		setLevel_no(level);
 		ogres = new ArrayList<Ogre>();
@@ -48,6 +48,18 @@ public class GameState
 	{
 		this.key = key;
 	}
+	
+	
+	public void setOgres(ArrayList<Ogre> ogres) 
+	{
+		this.ogres = ogres;
+	}
+	
+	
+	public void setTest(boolean test) 
+	{
+		this.test = test;
+	}
 
 	public void setLevel_no(int level) 
 	{
@@ -59,6 +71,7 @@ public class GameState
 				current_map = Map.copyLevel(Map.getTestLevel());
 				hero = new Hero(1,1);
 				guard = new Guard(3,1, Guard.Guard_Type.Rookie);
+				break;
 		
 			case 1:
 				current_map = Map.copyLevel(Map.getLevel1());
@@ -198,7 +211,7 @@ public class GameState
 		switch(level_no)
 		{
 			case 0:
-				break;
+	
 				
 			case 1:
 				
@@ -240,6 +253,9 @@ public class GameState
 	public void moveOgres()
 	{
 		Random rand = new Random();
+		
+		if(test)
+			return;
 		
 		for(int i = 0; i < ogres.size(); i++)
 		{

@@ -1,5 +1,8 @@
 package dkeep.test;
 import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+
 import org.junit.Test;
 import dkeep.logic.*;
 
@@ -16,6 +19,7 @@ public class Tests
 		assertEquals(new Hero(1,2), gs.getHero());
 		assertEquals(gs.getCurrent_map()[1][1], "_");
 		assertEquals(gs.getCurrent_map()[2][1], "H");
+		
 	}
 	
 	
@@ -55,6 +59,7 @@ public class Tests
 		GameState gs = new GameState(0);
 		gs.getHero().heroMove("s", gs);
 		gs.getHero().heroMove("s", gs);
+		
 		assertTrue(gs.isLever());
 		assertEquals(gs.getCurrent_map()[2][0], "S");
 		assertEquals(gs.getCurrent_map()[3][0], "S");
@@ -76,13 +81,58 @@ public class Tests
 	public void deathByOgre()
 	{
 		GameState gs = new GameState(2);
+		ArrayList<Ogre> list = new ArrayList<Ogre>();
+		list.add(new Ogre(1,4));
+		gs.setOgres(list);
+		gs.setTest(true);
 		gs.getHero().setArmed(false);
-
+		
 		for(int i = 0; i < 2; i++)
 			gs.getHero().heroMove("w", gs);
+		
+		gs.updateMap();
 			
 		gs.test_game_over();
 		assertTrue(gs.isGame_over());
+	}
+	
+	@Test
+	public void stunOgre()
+	{
+		GameState gs = new GameState(2);
+		ArrayList<Ogre> list = new ArrayList<Ogre>();
+		list.add(new Ogre(1,4));
+		gs.setOgres(list);
+		gs.setTest(true);
+		
+		for(int i = 0; i < 2; i++)
+			{
+				gs.getHero().heroMove("w", gs);
+				gs.stunOgres();
+			}
+		
+		gs.updateMap();
+		
+		assertEquals(gs.getCurrent_map()[gs.getHero().getY() - 1][gs.getHero().getX()], "8");
+		assertEquals(gs.getOgres().get(0).getTurns_stunned(), 1);
+	}
+	
+	@Test
+	public void ogreOnKey()
+	{
+		GameState gs = new GameState(2);
+		ArrayList<Ogre> list = new ArrayList<Ogre>();
+		list.add(new Ogre(6,1));
+		gs.setOgres(list);
+		gs.setTest(true);
+		gs.getOgres().get(0).setNy(gs.getOgres().get(0).getY());
+		gs.getOgres().get(0).setNx(gs.getOgres().get(0).getX() + 1);
+		gs.getOgres().get(0).action(gs);
+		gs.updateMap();
+		
+		assertTrue(gs.getOgres().get(0).isOn_top_of_key());
+		assertEquals(gs.getCurrent_map()[gs.getOgres().get(0).getY()][gs.getOgres().get(0).getX()],
+				"$");
 	}
 	
 	
@@ -225,6 +275,23 @@ public class Tests
 	}
 	
 	@Test
+	public void testBackwardsGuardPath()
+	{
+		GameState gs = new GameState(1);
+		gs.getGuard().setType("Suspicious");
+		
+		for(int i = 0; i < 13; i++)
+		{
+			gs.getGuard().guard_move_backwards(gs);
+			gs.updateMap();
+		}
+		
+		assertEquals(gs.getCurrent_map()[5][1], "G");
+		assertEquals(gs.getGuard().getX(), 1);
+		assertEquals(gs.getGuard().getY(), 5);
+	}
+	
+	@Test
 	public void testGuardPath()
 	{
 		GameState gs = new GameState(1);
@@ -249,6 +316,15 @@ public class Tests
 		gs.addOgres(7);
 		assertEquals(7, gs.getOgres().size());
 		
+	}
+	
+	@Test
+	public void testAutomaticHeroPlacement()
+	{
+		GameState gs = new GameState(2);
+		
+		assertEquals(gs.getHero().getX(), 1);
+		assertEquals(gs.getHero().getY(), 7);
 	}
 	
 }
