@@ -152,15 +152,32 @@ public class StartUpWindow extends JFrame
 		
 		btnLevelEditor = new JButton("Level Editor");
 		
+		JButton btnSave = new JButton("Save");
+		btnSave.setBackground(Color.LIGHT_GRAY);
+		btnSave.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		btnSave.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{	
+				
+				gs.saveToFile();
+			}
+		});
+		
+		
+		
+		JButton btnLoad = new JButton("Load");
+		btnLoad.setBackground(Color.LIGHT_GRAY);
+		btnLoad.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		
 		GroupLayout gl_mainCP = new GroupLayout(mainCP);
 		gl_mainCP.setHorizontalGroup(
 			gl_mainCP.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_mainCP.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_mainCP.createParallelGroup(Alignment.TRAILING, false)
-						.addGroup(gl_mainCP.createSequentialGroup()
-							.addComponent(lblStatus, GroupLayout.PREFERRED_SIZE, 324, GroupLayout.PREFERRED_SIZE)
-							.addGap(230))
 						.addGroup(gl_mainCP.createSequentialGroup()
 							.addGroup(gl_mainCP.createParallelGroup(Alignment.LEADING)
 								.addComponent(lblNumberOfOgres, GroupLayout.PREFERRED_SIZE, 132, GroupLayout.PREFERRED_SIZE)
@@ -169,11 +186,19 @@ public class StartUpWindow extends JFrame
 							.addGroup(gl_mainCP.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_mainCP.createSequentialGroup()
 									.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED, 305, Short.MAX_VALUE)
+									.addPreferredGap(ComponentPlacement.RELATED, 317, Short.MAX_VALUE)
 									.addComponent(btnLevelEditor, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE))
 								.addGroup(gl_mainCP.createSequentialGroup()
 									.addComponent(personalityCB, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED, 392, Short.MAX_VALUE))))
+									.addPreferredGap(ComponentPlacement.RELATED, 432, Short.MAX_VALUE))))
+						.addGroup(Alignment.LEADING, gl_mainCP.createSequentialGroup()
+							.addGap(12)
+							.addComponent(btnSave)
+							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(btnLoad)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lblStatus, GroupLayout.PREFERRED_SIZE, 324, GroupLayout.PREFERRED_SIZE)
+							.addGap(230))
 						.addComponent(midCP, GroupLayout.PREFERRED_SIZE, 647, GroupLayout.PREFERRED_SIZE))
 					.addGap(151))
 		);
@@ -190,10 +215,13 @@ public class StartUpWindow extends JFrame
 						.addComponent(lblGuardPersonality, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
 						.addComponent(personalityCB, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(midCP, GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE)
+					.addComponent(midCP, GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(lblStatus, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
-					.addGap(18))
+					.addGroup(gl_mainCP.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblStatus, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnSave)
+						.addComponent(btnLoad))
+					.addGap(14))
 		);
 		
 		midRightCP = new JPanel();

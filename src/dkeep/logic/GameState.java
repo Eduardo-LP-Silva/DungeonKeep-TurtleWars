@@ -1,7 +1,14 @@
 package dkeep.logic;
 
 import dkeep.logic.Hero;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.Random;
 
 public class GameState 
@@ -14,6 +21,7 @@ public class GameState
 	private Guard guard;
 	private ArrayList<Ogre> ogres;
 	private boolean lever, key, test;
+	private File loader =  new File("/resources/save.txt");
 	
 	public GameState(int level)
 	{
@@ -356,5 +364,53 @@ public class GameState
 				
 			System.out.print("\n");
 		}
+	}
+	
+	//save to file
+	
+	private BufferedWriter file;
+	
+	
+	public String save_map()
+	{
+		String s = "";
+		
+		for(int j = 0; j < this.getCurrent_map().length; j++)
+		{
+			for(int i = 0; i < this.getCurrent_map()[j].length; i++)
+				
+			{
+				s += this.current_map[j][i];
+
+			}
+			s += '\n';
+
+		}
+		
+		return s;
+	}
+
+	public void saveToFile()
+	{
+		try 
+		{
+		
+			file = new BufferedWriter( new FileWriter("/home/tomas/git/LPOO1718_T4G4/src/resources/save.txt"));
+		
+		    file.write(save_map());
+		    
+		    file.close();
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void eraseFromFile()
+	{
+		PrintWriter writer = new PrintWriter(file);
+		writer.print("");
+		writer.close();
 	}
 }
