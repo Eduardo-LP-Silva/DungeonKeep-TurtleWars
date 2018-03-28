@@ -123,7 +123,7 @@ public class Ogre extends Character
 				x = nx;
 				y = ny;
 				gs.getCurrent_map()[y][x] = "$";
-				on_top_of_key = true;
+				setOn_top_of_key(true);
 				
 			case "S":
 				gs.getCurrent_map()[y][x] = "O";
@@ -197,7 +197,7 @@ public class Ogre extends Character
 				club.y = club.ny;
 				club.x = club.nx;
 				gs.getCurrent_map()[club.y][club.x] = "$";
-				club_on_key = true;
+				setClub_on_key(true);
 				break;
 				
 			default:

@@ -110,7 +110,6 @@ public class Hero extends Character
 			gs.getCurrent_map()[y][x] = "_";
 			x = nx;
 			y = ny;
-			gs.setLever(true);
 			
 			if(gs.getLevel_no() == 1)
 			{

@@ -22,6 +22,7 @@ public class GameState
 	private ArrayList<Ogre> ogres;
 	private boolean lever, key, test;
 	private File loader =  new File("/resources/save.txt");
+	private BufferedWriter file;
 	
 	public GameState(int level)
 	{
@@ -365,10 +366,6 @@ public class GameState
 			System.out.print("\n");
 		}
 	}
-	
-	//save to file
-	
-	private BufferedWriter file;
 	
 	
 	public String save_map()

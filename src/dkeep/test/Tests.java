@@ -102,6 +102,7 @@ public class Tests
 		GameState gs = new GameState(2);
 		ArrayList<Ogre> list = new ArrayList<Ogre>();
 		list.add(new Ogre(1,4));
+		list.add(new Ogre(4,4));
 		gs.setOgres(list);
 		gs.setTest(true);
 		
@@ -115,6 +116,30 @@ public class Tests
 		
 		assertEquals(gs.getCurrent_map()[gs.getHero().getY() - 1][gs.getHero().getX()], "8");
 		assertEquals(gs.getOgres().get(0).getTurns_stunned(), 1);
+		
+		gs.getHero().heroMove("d", gs);
+		gs.stunOgres();
+		gs.getHero().heroMove("w", gs);
+		gs.stunOgres();
+		gs.getHero().heroMove("d", gs);
+		gs.stunOgres();
+		gs.updateMap();
+		
+		assertEquals(gs.getCurrent_map()[gs.getHero().getY()][gs.getHero().getX() + 1], "8");
+		assertEquals(gs.getOgres().get(1).getTurns_stunned(), 1);
+		
+		gs.getHero().heroMove("w", gs);
+		gs.stunOgres();
+		
+		for(int j = 0; j < 2; j++)
+		{
+			gs.getHero().heroMove("a", gs);
+			gs.stunOgres();
+		}
+		
+		gs.updateMap();
+		
+		assertEquals(gs.getCurrent_map()[gs.getHero().getY() + 1][gs.getHero().getX()], "8");
 	}
 	
 	@Test
@@ -289,6 +314,18 @@ public class Tests
 		assertEquals(gs.getCurrent_map()[5][1], "G");
 		assertEquals(gs.getGuard().getX(), 1);
 		assertEquals(gs.getGuard().getY(), 5);
+		
+		for(int j = 0; j < 11; j++)
+		{
+			gs.getGuard().guard_move_backwards(gs);
+			gs.updateMap();
+		}
+		
+		
+		assertEquals(gs.getCurrent_map()[1][8], "G");
+		assertEquals(gs.getGuard().getX(), 8);
+		assertEquals(gs.getGuard().getY(), 1);
+		
 	}
 	
 	@Test
@@ -325,6 +362,73 @@ public class Tests
 		
 		assertEquals(gs.getHero().getX(), 1);
 		assertEquals(gs.getHero().getY(), 7);
+	}
+	
+	@Test
+	public void ogresMove()
+	{
+		GameState gs = new GameState(2);
+		ArrayList<Ogre> list = new ArrayList<Ogre>();
+		Ogre o1_1 = new Ogre(3,3);
+		Ogre o1_2 = new Ogre(5,5);
+		Ogre o1_3 = new Ogre(2,2);
+		Ogre o2_1 = new Ogre(3,3);
+		Ogre o2_2 = new Ogre(5,5);
+		Ogre o2_3 = new Ogre(2,2);
+		
+		list.add(o1_1);
+		list.add(o1_2);
+		list.add(o1_3);
+		
+		gs.setOgres(list);
+		gs.setHero(new Hero(6,1));
+		gs.updateMap();
+		gs.getHero().heroMove("d", gs);
+		gs.updateMap();
+		
+		assertTrue(o1_1 != o2_1 || o1_2 != o2_2 || o1_3 != o2_3);
+	}
+	
+	@Test
+	public void ogreRecoverFromStun()
+	{
+		GameState gs = new GameState(2);
+		gs.setHero(new Hero(2,2));
+		ArrayList<Ogre> l = new ArrayList<Ogre>();
+		l.add(new Ogre(3,2));
+		gs.setOgres(l);
+		gs.updateMap();
+		gs.stunOgres();
+		
+		assertEquals(gs.getOgres().get(0).getTurns_stunned(), 1);
+		
+		for(int i = 0; i < 3; i++)
+		{
+			gs.getHero().heroMove("s", gs);
+			gs.updateMap();
+		}
+		
+		assertEquals(gs.getOgres().get(0).getTurns_stunned(), 0);
+	}
+	
+	@Test
+	public void ogreSmashKey()
+	{
+		GameState gs = new GameState(2);
+		ArrayList<Ogre> l = new ArrayList<Ogre>();
+		l.add(new Ogre(6,1));
+		gs.setOgres(l);
+		gs.updateMap();
+		
+		gs.getOgres().get(0).getClub().setNx(gs.getOgres().get(0).getX() + 1);
+		gs.getOgres().get(0).getClub().setNy(gs.getOgres().get(0).getY());
+		gs.getOgres().get(0).smash(gs);
+		gs.updateMap();
+		
+		assertTrue(gs.getOgres().get(0).isClub_on_key());
+		assertEquals(gs.getCurrent_map()
+				[gs.getOgres().get(0).getClub().getY()][gs.getOgres().get(0).getClub().getX()],
+				"$");
 	}
 	
 }
