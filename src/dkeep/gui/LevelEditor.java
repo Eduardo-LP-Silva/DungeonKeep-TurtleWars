@@ -27,6 +27,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import javax.swing.SwingConstants;
 
 public class LevelEditor extends JFrame 
@@ -481,7 +484,16 @@ public class LevelEditor extends JFrame
 						break;
 				}
 				
+				if(gs.getLoadActivated() == true)
+					try {
+						Map.setLevel(2, gs.stringToStringArray(gs.getMapFromFile()));
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				else
 				Map.setLevel(2, map);
+				
 				gameScreen.updateMap();
 				gameScreen.paint();
 				gameScreen.adjustSize();

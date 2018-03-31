@@ -16,6 +16,7 @@ public class u_input
 		GameState gs = new GameState(1);
 		gs.print_map();
 		
+		
 		while(!move.equalsIgnoreCase("exit") && gs.getLevel_no() == 1)
 		{
 			move =  in.next();

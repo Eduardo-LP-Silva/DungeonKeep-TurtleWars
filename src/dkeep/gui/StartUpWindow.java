@@ -12,6 +12,8 @@ import javax.swing.event.DocumentListener;
 
 import dkeep.logic.GameState;
 import dkeep.logic.Guard;
+import dkeep.logic.Map;
+
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import java.awt.Color;
@@ -31,6 +33,7 @@ import java.awt.event.InputMethodListener;
 import java.awt.event.InputMethodEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import dkeep.cli.u_input;
@@ -55,6 +58,8 @@ public class StartUpWindow extends JFrame
 	private JButton btnDown;
 	private JButton buttonRight;
     private JButton btnExit;
+    private JButton btnLoad; 
+    private JButton btnSave; 
 	private JLabel lblStatus;
 	private JButton btnLevelEditor;
 	private LevelEditor gw;
@@ -154,32 +159,16 @@ public class StartUpWindow extends JFrame
 		
 		btnLevelEditor = new JButton("Level Editor");
 		
-		JButton btnSave = new JButton("Save");
+		btnSave = new JButton("Save");
 		btnSave.setBackground(Color.LIGHT_GRAY);
 		btnSave.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
-		btnSave.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent e) 
-			{	
-				
-				gs.saveToFile();
-			}
-		});
 		
 		
-		
-		JButton btnLoad = new JButton("Load");
+		btnLoad = new JButton("Load");
 		btnLoad.setBackground(Color.LIGHT_GRAY);
 		btnLoad.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnLoad.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent e) 
-			{	
-				
-				// TO DO
-			}
-		});
+		
 		
 		
 		GroupLayout gl_mainCP = new GroupLayout(mainCP);
@@ -370,6 +359,49 @@ public class StartUpWindow extends JFrame
 
 	private void createEvents() 
 	{
+		btnSave.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{	
+
+				int i = gs.getLevel_no();
+				gs.saveToFile();
+			}
+		});
+		
+		btnLoad.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{	 
+			
+				
+				try {
+					
+					String s[] = gs.getLevelAndGuardFromFile();
+					int level = Integer.parseInt(s[0]);
+					
+				
+					gs = new GameState(level);
+					
+					gs.setCurrent_map(gs.stringToStringArray(gs.getMapFromFile()));
+					gs.getGuard().setType(s[1]);
+					
+					gameScreen.setGameState(gs);
+					
+					gameScreen.paint();
+					gameScreen.requestFocus(true);
+					
+					
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				gs.setLoadActivated();
+				
+			}
+		});
+		
 		btnNewGame.addActionListener(new ActionListener() 
 		{	
 			public void actionPerformed(ActionEvent e) 

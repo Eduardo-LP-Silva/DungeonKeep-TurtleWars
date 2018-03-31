@@ -25,7 +25,9 @@ public class GameState
 	private ArrayList<Ogre> ogres;
 	private boolean lever, key, test;
 	private File loader =  new File("/resources/save.txt");
-	private BufferedWriter file;
+	private BufferedWriter file; // map_file
+	private BufferedWriter level_file; // map_file
+	private boolean load_activated = false;
 	
 	public GameState(int level)
 	{
@@ -371,6 +373,8 @@ public class GameState
 	}
 	
 	
+	//file part
+	
 	public String save_map()
 	{
 		String s = "";
@@ -387,7 +391,8 @@ public class GameState
 
 		}
 		
-		return s;
+		String final_s = s.substring(0, s.length() - 1);
+		return final_s;
 	}
 
 	public void saveToFile()
@@ -396,10 +401,18 @@ public class GameState
 		{
 		
 			file = new BufferedWriter( new FileWriter("/home/tomas/git/LPOO1718_T4G4/src/resources/save.txt"));
-		
+			level_file = new BufferedWriter( new FileWriter("/home/tomas/git/LPOO1718_T4G4/src/resources/level.txt")); 
+			
 		    file.write(save_map());
-		    
 		    file.close();
+		    
+		    String s = "";
+		    s += this.getLevel_no();
+		    s +='\n';
+		    s += this.getGuard().getType();
+		    
+		    level_file.write(s);
+		    level_file.close();
 		}
 		catch(IOException e)
 		{
@@ -412,6 +425,32 @@ public class GameState
 		PrintWriter writer = new PrintWriter(file);
 		writer.print("");
 		writer.close();
+	}
+
+	
+
+	public String[] getLevelAndGuardFromFile() throws FileNotFoundException, IOException
+	{ 
+		String s[] = new String[2];
+		try(BufferedReader br = new BufferedReader(new FileReader("/home/tomas/git/LPOO1718_T4G4/src/resources/level.txt")))
+		{
+		  String line;
+
+		  int i = 0;
+		  while( (line = br.readLine()) != null)
+		  {
+			  s[i] = line;  
+
+			  i++;	
+		 
+		  }
+		}
+		
+		for (int i = 0; i < s.length; i++)
+		{
+			System.out.print(s[i]);
+		}
+		return s;
 	}
 	
 	
@@ -431,10 +470,47 @@ public class GameState
 		return lineAndEnter;
 		
 	}
+
 	
-	public void test(String s)
+	public String[][] stringToStringArray(String s) throws FileNotFoundException, IOException
 	{
-	   System.out.print(s);
-	}
+		s = this.getMapFromFile();
 		
+        int index_line = s.indexOf("\n");
+		
+		String[][] map = new String[1][index_line];
+		
+		String[] array = new String[index_line];
+		
+		
+		int begin = 0;
+		int end = 0;
+		for (int j = 0; j < index_line; j++)
+		{
+			
+		     end = s.indexOf('\n', begin);
+		     
+		     if (end == -1)
+		    	 break;
+		     
+		     array[j] = s.substring(begin, end+1);
+		     begin = end + 1;
+		}
+		
+		
+		map[0] = array;
+		
+	   return map;	
+	}
+	
+	public boolean getLoadActivated()
+	{
+		return this.load_activated;
+	}
+	
+	public void setLoadActivated()
+	{
+		this.load_activated = true;
+	}
+	
 }

@@ -45,6 +45,24 @@ public class Guard extends Character
 				break;
 		}
 	}
+	
+	public String getType()
+	{
+         switch(type)
+         {
+           case Rookie:
+		        return "Rookie";
+			case Drunken:
+				return "Drunken";		
+			case Suspicious:
+				return "Suspicious";
+			
+			default:
+				break;
+         }
+         
+         return "";
+	}
 
 	
 	public String getMovement() 
