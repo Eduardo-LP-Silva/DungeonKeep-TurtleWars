@@ -151,7 +151,6 @@ public class GameScreen extends JPanel
 						break;
 						
 					case "8":
-						System.out.print("Entered 8");
 						g.drawImage(ogreStunned, n_images_y, n_images_x, this);
 						break;			
 							

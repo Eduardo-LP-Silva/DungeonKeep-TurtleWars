@@ -55,6 +55,7 @@ public class LevelEditor extends JFrame
 	private JButton btnGenerate;
 	private String item;
 	private JButton btnExit;
+	private JLabel lblHerowarning; 
 	private boolean HeroPlaced;
 	private boolean DoorPlaced;
 	private boolean KeyPlaced;
@@ -176,29 +177,37 @@ public class LevelEditor extends JFrame
 			lblHero.setForeground(Color.WHITE);
 			lblHero.setFont(new Font("Tahoma", Font.PLAIN, 15));
 			
-			btnExit = new JButton("Exit");
+			btnExit = new JButton("Save and exit");
 			
 			lblMapStatus = new JLabel("");
 			lblMapStatus.setHorizontalAlignment(SwingConstants.CENTER);
 			lblMapStatus.setForeground(Color.WHITE);
 			lblMapStatus.setFont(new Font("Tahoma", Font.PLAIN, 15));
 			
+			lblHerowarning = new JLabel("");
+			lblHerowarning.setForeground(Color.WHITE);
+			lblHerowarning.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			
 			GroupLayout gl_panel = new GroupLayout(panel);
 			gl_panel.setHorizontalGroup(
 				gl_panel.createParallelGroup(Alignment.LEADING)
 					.addGroup(gl_panel.createSequentialGroup()
 						.addContainerGap()
-						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
-							.addComponent(lblHero, GroupLayout.PREFERRED_SIZE, 126, GroupLayout.PREFERRED_SIZE)
-							.addComponent(btnExit)
+						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+							.addComponent(lblOgre)
+							.addComponent(lblDoor)
 							.addGroup(gl_panel.createSequentialGroup()
 								.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 									.addComponent(lblKey)
 									.addComponent(lblWall))
-								.addGap(18)
+								.addPreferredGap(ComponentPlacement.RELATED)
 								.addComponent(lblMapStatus, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE))
-							.addComponent(lblOgre)
-							.addComponent(lblDoor))
+							.addGroup(gl_panel.createSequentialGroup()
+								.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING, false)
+									.addComponent(lblHero, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addComponent(btnExit, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(lblHerowarning, GroupLayout.PREFERRED_SIZE, 225, GroupLayout.PREFERRED_SIZE)))
 						.addContainerGap())
 			);
 			gl_panel.setVerticalGroup(
@@ -218,10 +227,12 @@ public class LevelEditor extends JFrame
 								.addContainerGap()
 								.addComponent(lblMapStatus, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)))
 						.addGap(15)
-						.addComponent(lblHero, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
+							.addComponent(lblHerowarning, GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
+							.addComponent(lblHero, GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE))
 						.addGap(18)
 						.addComponent(btnExit)
-						.addGap(17))
+						.addGap(12))
 			);
 			panel.setLayout(gl_panel);
 		
@@ -286,7 +297,7 @@ public class LevelEditor extends JFrame
 		
 		gameScreen = new GameScreen();
 		
-		gameScreen.setGameState(new GameState(2));
+		//gameScreen.setGameState(new GameState(2));
 		gameScreen.setBackground(Color.BLACK);
 		gameScreen.setFocusable(true);
 		GroupLayout gl_leftPanel = new GroupLayout(leftPanel);
@@ -463,7 +474,35 @@ public class LevelEditor extends JFrame
 			@Override
 			public void mousePressed(MouseEvent arg0) 
 			{
+				if(gameScreen.getGameState() == null)
+					{
+						lblResStatus.setText("Must generate a map");
+						return;
+					}
+				
 				String[][] map = Map.getLevel2();
+				
+				if(item.equals("A") && HeroPlaced)
+				{
+					lblHerowarning.setText("You can only place one hero.");
+					return;
+				}
+				
+				if(!item.equals("A") && map[arg0.getY() / 32][arg0.getX() / 32].equals("A") && HeroPlaced)
+					HeroPlaced = false;
+				
+				lblHerowarning.setText("");
+				
+				if(item != "I")
+					if(arg0.getY() / 32 == 0 || arg0.getY() / 32 == map.length - 1 
+							|| arg0.getX() / 32 == 0 || arg0.getX() / 32 == map.length - 1)
+					{
+						lblResStatus.setText("Cannont place items on the edge");
+						return;
+					}
+					
+				lblResStatus.setText("");
+				
 				map[arg0.getY() / 32][arg0.getX() / 32] = item;
 				
 				switch(item)

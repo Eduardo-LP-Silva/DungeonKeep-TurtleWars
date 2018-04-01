@@ -1,9 +1,8 @@
-XXXXXXXXX
-I_A____kX
-X_______X
-X___*___X
-X___O___X
-X____O*_X
-X_______X
-X_______X
-XXXXXXXXX
+XXXXXXXX
+X___A__X
+X_X_X__X
+X__X___X
+X_X_X__X
+X______I
+X____$OX
+XXXXXXXX
