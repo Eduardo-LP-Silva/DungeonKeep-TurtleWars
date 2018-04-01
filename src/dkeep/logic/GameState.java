@@ -72,6 +72,12 @@ public class GameState
 	{
 		this.test = test;
 	}
+	
+	
+	public boolean isTest() 
+	{
+		return test;
+	}
 
 	public void setLevel_no(int level) 
 	{

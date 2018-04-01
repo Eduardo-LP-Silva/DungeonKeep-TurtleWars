@@ -10,11 +10,16 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import dkeep.logic.GameState;
+import dkeep.logic.Guard;
+import dkeep.logic.Hero;
 
 public abstract class SaveFile 
 {
-	private static BufferedWriter file; // map_file
+	private static BufferedWriter map_file; 
 	private static BufferedWriter level_file;
+	private static BufferedWriter hero_file;
+	private static BufferedWriter guard_file;
+	private static BufferedWriter ogre_file;
 	
 	public static String save_map(GameState gs)
 	{
@@ -39,11 +44,11 @@ public abstract class SaveFile
 	{
 		try 
 		{
-			file = new BufferedWriter(new FileWriter("src/resources/save.txt"));
+			map_file = new BufferedWriter(new FileWriter("src/resources/map.txt"));
 			level_file = new BufferedWriter( new FileWriter("src/resources/level.txt")); 
 			
-		    file.write(save_map(gs));
-		    file.close();
+		    map_file.write(save_map(gs));
+		    map_file.close();
 		    
 		    level_file.write(Integer.toString(gs.getLevel_no()));
 		    String s = "";
@@ -59,9 +64,45 @@ public abstract class SaveFile
 		}
 	}
 	
+	public static void saveGameState(GameState gs) throws IOException
+	{
+		level_file = new BufferedWriter( new FileWriter("src/resources/level.txt"));
+		level_file.write(Integer.toString(gs.getLevel_no()));
+		level_file.write("\n");
+		level_file.write(gs.isVictory() ? 1 : 0);
+		level_file.write("\n");
+		level_file.write(gs.isGame_over() ? 1 : 0);
+		level_file.write("\n");
+		level_file.write(gs.isLever() ? 1 : 0);
+		level_file.write("\n");
+		level_file.write(gs.isKey() ? 1 : 0);
+		level_file.write("\n");
+		level_file.write(gs.isTest() ? 1 : 0);
+	}
+		
+	public static void saveHero(Hero hero) throws IOException
+	{
+		hero_file = new BufferedWriter( new FileWriter("src/resources/hero.txt"));
+		hero_file.write(hero.getX());
+		hero_file.write("\n");
+		hero_file.write(hero.getY());
+		hero_file.write("\n");
+		hero_file.write(hero.isArmed() ? 1 : 0);
+	}
+	
+	public static void sabeGuard(Guard guard) throws IOException
+	{
+		guard_file = new BufferedWriter( new FileWriter("src/resources/guard.txt"));
+		guard_file.write(guard.getX());
+		guard_file.write("\n");
+		guard_file.write(guard.getY());
+		guard_file.write("\n");
+		guard_file.write(guard.getMovement() + "\n");
+	}
+	
 	public static void eraseFromFile()
 	{
-		PrintWriter writer = new PrintWriter(file);
+		PrintWriter writer = new PrintWriter(map_file);
 		writer.print("");
 		writer.close();
 	}
@@ -90,7 +131,7 @@ public abstract class SaveFile
 	{
 		String lineAndEnter = "";
 		
-		try(BufferedReader br = new BufferedReader(new FileReader("src/resources/save.txt")))
+		try(BufferedReader br = new BufferedReader(new FileReader("src/resources/map.txt")))
 		{
 		  String line;
 		  
