@@ -493,7 +493,7 @@ public class LevelEditor extends JFrame
 				
 				lblHerowarning.setText("");
 				
-				if(item != "I")
+				if(item != "I" && item != "X")
 					if(arg0.getY() / 32 == 0 || arg0.getY() / 32 == map.length - 1 
 							|| arg0.getX() / 32 == 0 || arg0.getX() / 32 == map.length - 1)
 					{
