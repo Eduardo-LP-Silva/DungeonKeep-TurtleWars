@@ -98,6 +98,11 @@ public class Ogre extends Character
 	{
 		Random rand = new Random();
 		
+		if(this.club_on_key)
+			gs.getCurrent_map()[club.getY()][club.getX()] = "k";
+		else
+			gs.getCurrent_map()[club.getY()][club.getX()] = "_";
+		
 		switch(gs.getCurrent_map()[ny][nx])
 		{
 			case "X":
