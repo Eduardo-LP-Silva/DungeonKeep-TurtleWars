@@ -58,6 +58,11 @@ public class Ogre extends Character
 	{
 		return on_top_of_key;
 	}
+	
+	public void addClub(int x, int y)
+	{
+		club = new Character(x,y);
+	}
 
 	public void move(GameState gs)
 	{

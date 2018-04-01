@@ -356,17 +356,12 @@ public class StartUpWindow extends JFrame
 			return true;
 	  }
 	
-	
-
 	private void createEvents() 
 	{
 		btnSave.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e) 
 			{	
-
-				int i = gs.getLevel_no();
-				
 				try 
 				{
 					SaveFile.saveToFile(gs);
@@ -382,26 +377,11 @@ public class StartUpWindow extends JFrame
 		{
 			public void actionPerformed(ActionEvent e) 
 			{	 
-				try 
-				{
-					String s[] = SaveFile.getLevelAndGuardFromFile();
-					int level = Integer.parseInt(s[0]);
-					
-					gs = new GameState(level);
-					gs.setCurrent_map(SaveFile.stringToStringArray(SaveFile.getMapFromFile()));
-					gs.getGuard().setType(s[1]);
-										
-					gameScreen.setGameState(gs);
-					gameScreen.paint();
-					gameScreen.requestFocus(true);
-				} 
-				catch (IOException e1) 
-				{
-					e1.printStackTrace();
-				}
-				
+				SaveFile.loadGame(gs);		
+				gameScreen.setGameState(gs);
+				gameScreen.paint();
+				gameScreen.requestFocus(true);
 				gs.setLoadActivated();
-				
 			}
 		});
 		

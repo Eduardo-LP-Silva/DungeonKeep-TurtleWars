@@ -19,12 +19,26 @@ public class Guard extends Character
 		type = t;
 	}
 	
+	public void setMovement(String movement) 
+	{
+		this.movement = movement;
+	}
+
 	public boolean isAsleep() 
 	{
 		return asleep;
 	}
 
-	
+	public int getTurns_asleep() 
+	{
+		return turns_asleep;
+	}
+
+	public void setTurns_asleep(int turns_asleep) 
+	{
+		this.turns_asleep = turns_asleep;
+	}
+
 	public void setAsleep(boolean asleep) 
 	{
 		this.asleep = asleep;
@@ -83,29 +97,29 @@ public class Guard extends Character
 			 x -= 1;
 		 }
 		 else
-			 if(gs.getCurrent_map()[y][x - 1] == "X")
+			 if(gs.getCurrent_map()[y][x - 1].equals("X"))
 			 {
 				 gs.getCurrent_map()[y][x] = "_";
 				 y += 1;
 			 }
 			 else
-				 if((gs.getCurrent_map()[y][x - 1] == "_") 
+				 if((gs.getCurrent_map()[y][x - 1].equals("_"))
 						 && (y == 5) 
-						 && (gs.getCurrent_map()[y][x + 1] != "X"))
+						 && (!gs.getCurrent_map()[y][x + 1].equals("X")))
 				 {
 					 gs.getCurrent_map()[y][x] = "_";
 					 x -= 1;
 				 }
 				 else
-					 if(((gs.getCurrent_map()[y][x - 1] == "I") 
-							 || (gs.getCurrent_map()[y][x - 1] == "S"))
-							 && (gs.getCurrent_map()[y + 1][x] == "_"))
+					 if(((gs.getCurrent_map()[y][x - 1].equals("I")) 
+							 || (gs.getCurrent_map()[y][x - 1].equals("S")))
+							 && (gs.getCurrent_map()[y + 1][x].equals("_")))
 					 {
 						 gs.getCurrent_map()[y][x] = "_";
 						 y += 1;
 					 }
 					 else
-						 if(gs.getCurrent_map()[y][x + 1] == "_")
+						 if(gs.getCurrent_map()[y][x + 1].equals("_"))
 						 {
 							 gs.getCurrent_map()[y][x] = "_";
 							 x += 1;
@@ -119,32 +133,32 @@ public class Guard extends Character
 	
 	public void guard_move_backwards(GameState gs)
 	{
-		if(gs.getCurrent_map()[y][x + 1] == "X" && y < 6)
+		if(gs.getCurrent_map()[y][x + 1].equals("X") && y < 6)
 		{
 			gs.getCurrent_map()[y][x] = "_";
 			y++;
 		}
 		else
-			if(y == 6 && gs.getCurrent_map()[y][x - 1] == "_")
+			if(y == 6 && gs.getCurrent_map()[y][x - 1].equals("_"))
 			{
 				gs.getCurrent_map()[y][x] = "_";
 				x--;
 			}
 			else
-				if(y == 6 && (gs.getCurrent_map()[y][x - 1] == "I" 
-				|| gs.getCurrent_map()[y][x - 1] == "S"))
+				if(y == 6 && (gs.getCurrent_map()[y][x - 1].equals("I") 
+				|| gs.getCurrent_map()[y][x - 1].equals("S")))
 				{
 					gs.getCurrent_map()[y][x] = "_";
 					y--;
 				}
 				else
-					if(gs.getCurrent_map()[y][x + 2] == "_")
+					if(gs.getCurrent_map()[y][x + 2].equals("_"))
 					{
 						gs.getCurrent_map()[y][x] = "_";
 						x++;
 					}
 					else
-						if(gs.getCurrent_map()[y - 1][x] == "_")
+						if(gs.getCurrent_map()[y - 1][x].equals("_"))
 						{
 							gs.getCurrent_map()[y][x] = "_";
 							y--;
