@@ -25,6 +25,11 @@ public class Guard extends Character
 	}
 
 	
+	public void setAsleep(boolean asleep) 
+	{
+		this.asleep = asleep;
+	}
+
 	public void setType(String tp) 
 	{
 		switch(tp)

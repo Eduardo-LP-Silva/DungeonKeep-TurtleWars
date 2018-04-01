@@ -484,14 +484,6 @@ public class LevelEditor extends JFrame
 						break;
 				}
 				
-				if(gs.getLoadActivated() == true)
-					try {
-						Map.setLevel(2, gs.stringToStringArray(gs.getMapFromFile()));
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				else
 				Map.setLevel(2, map);
 				
 				gameScreen.updateMap();

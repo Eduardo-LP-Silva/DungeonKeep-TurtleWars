@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Formatter;
@@ -24,9 +25,6 @@ public class GameState
 	private Guard guard;
 	private ArrayList<Ogre> ogres;
 	private boolean lever, key, test;
-	private File loader =  new File("/resources/save.txt");
-	private BufferedWriter file; // map_file
-	private BufferedWriter level_file; // map_file
 	private boolean load_activated = false;
 	
 	public GameState(int level)
@@ -78,6 +76,7 @@ public class GameState
 	public void setLevel_no(int level) 
 	{
 		boolean found = false;
+		int[] coords;
 		
 		switch(level)
 		{
@@ -91,6 +90,7 @@ public class GameState
 				current_map = Map.copyLevel(Map.getLevel1());
 				hero = new Hero(1,1);
 				guard = new Guard(8,1, Guard.Guard_Type.Drunken);
+				
 				break;
 				
 			case 2:
@@ -151,6 +151,16 @@ public class GameState
 			
 			ogres.add(new Ogre(x,y));
 		}
+	}
+	
+	public boolean getLoadActivated()
+	{
+		return this.load_activated;
+	}
+	
+	public void setLoadActivated()
+	{
+		this.load_activated = true;
 	}
 	
 	public String[][] getCurrent_map() 
@@ -219,7 +229,7 @@ public class GameState
 	{
 		this.game_over = game_over;
 	}
-	
+		
 	public void updateMap()
 	{
 		switch(level_no)
@@ -372,145 +382,50 @@ public class GameState
 		}
 	}
 	
-	
-	//file part
-	
-	public String save_map()
+	/*
+	public int[] findCharacter(String c)
 	{
-		String s = "";
+		int[] coords = new int[2];
 		
-		for(int j = 0; j < this.getCurrent_map().length; j++)
-		{
-			for(int i = 0; i < this.getCurrent_map()[j].length; i++)
-				
-			{
-				s += this.current_map[j][i];
-
-			}
-			s += '\n';
-
-		}
+		for(int i = 0; i < this.getCurrent_map().length; i++)
+			for(int j = 0; j < this.getCurrent_map()[i].length; j++)
+				if(this.getCurrent_map()[i][j].equals(c))
+				{
+					coords[0] = i;
+					coords[1] = j;
+					
+					return coords;
+				}
 		
-		String final_s = s.substring(0, s.length() - 1);
-		return final_s;
+		coords[0] = -1;
+		coords[1] = -1;
+		
+		return coords;
 	}
-
-	public void saveToFile()
+	
+	
+	public void updateCharacters()
 	{
-		try 
-		{
-		
-			file = new BufferedWriter( new FileWriter("/home/tomas/git/LPOO1718_T4G4/src/resources/save.txt"));
-			level_file = new BufferedWriter( new FileWriter("/home/tomas/git/LPOO1718_T4G4/src/resources/level.txt")); 
-			
-		    file.write(save_map());
-		    file.close();
-		    
-		    String s = "";
-		    s += this.getLevel_no();
-		    s +='\n';
-		    s += this.getGuard().getType();
-		    
-		    level_file.write(s);
-		    level_file.close();
-		}
-		catch(IOException e)
-		{
-			e.printStackTrace();
-		}
-	}
-	
-	public void eraseFromFile()
-	{
-		PrintWriter writer = new PrintWriter(file);
-		writer.print("");
-		writer.close();
-	}
-
-	
-
-	public String[] getLevelAndGuardFromFile() throws FileNotFoundException, IOException
-	{ 
-		String s[] = new String[2];
-		try(BufferedReader br = new BufferedReader(new FileReader("/home/tomas/git/LPOO1718_T4G4/src/resources/level.txt")))
-		{
-		  String line;
-
-		  int i = 0;
-		  while( (line = br.readLine()) != null)
-		  {
-			  s[i] = line;  
-
-			  i++;	
-		 
-		  }
-		}
-		
-		for (int i = 0; i < s.length; i++)
-		{
-			System.out.print(s[i]);
-		}
-		return s;
-	}
-	
-	
-	
-	public String getMapFromFile() throws FileNotFoundException, IOException
-	{
-
-		String lineAndEnter = "";
-		try(BufferedReader br = new BufferedReader(new FileReader("/home/tomas/git/LPOO1718_T4G4/src/resources/save.txt")))
-		{
-		  String line;
-		  while( (line = br.readLine()) != null)
-		  {
-				lineAndEnter = lineAndEnter + line + '\n';
-		  }
-		}
-		return lineAndEnter;
-		
-	}
-
-	
-	public String[][] stringToStringArray(String s) throws FileNotFoundException, IOException
-	{
-		s = this.getMapFromFile();
-		
-        int index_line = s.indexOf("\n");
-		
-		String[][] map = new String[1][index_line];
-		
-		String[] array = new String[index_line];
-		
-		
-		int begin = 0;
-		int end = 0;
-		for (int j = 0; j < index_line; j++)
-		{
-			
-		     end = s.indexOf('\n', begin);
-		     
-		     if (end == -1)
-		    	 break;
-		     
-		     array[j] = s.substring(begin, end+1);
-		     begin = end + 1;
-		}
-		
-		
-		map[0] = array;
-		
-	   return map;	
-	}
-	
-	public boolean getLoadActivated()
-	{
-		return this.load_activated;
-	}
-	
-	public void setLoadActivated()
-	{
-		this.load_activated = true;
-	}
+		for(int i = 0; i < this.getCurrent_map().length; i++)
+			for(int j = 0; j < this.getCurrent_map()[i].length; j++)
+				switch(this.getCurrent_map()[i][j])
+				{
+					case "K":
+						
+					case "H":
+						hero = new Hero(j,i);
+						break;
+						
+					case "A":
+						hero = new Hero(j,i);
+						hero.setArmed(true);
+						break;
+						
+					case "G":
+						guard = new Guard(j,i, Guard.Guard_Type.Drunken);
+						
+						
+				}
+	}*/
 	
 }

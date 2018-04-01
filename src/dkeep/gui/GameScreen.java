@@ -78,7 +78,8 @@ public class GameScreen extends JPanel
 		for(int j = 0; j < gs.getCurrent_map().length; j++)
 		{
 			for(int i = 0; i < gs.getCurrent_map()[j].length; i++)
-			{
+			{	
+					
 				switch(gs.getCurrent_map()[i][j])
 				{
 					case "X":

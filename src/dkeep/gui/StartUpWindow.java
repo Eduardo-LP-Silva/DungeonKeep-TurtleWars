@@ -37,6 +37,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import dkeep.cli.u_input;
+import dkeep.file.SaveFile;
 import dkeep.gui.GameScreen;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -365,7 +366,15 @@ public class StartUpWindow extends JFrame
 			{	
 
 				int i = gs.getLevel_no();
-				gs.saveToFile();
+				
+				try 
+				{
+					SaveFile.saveToFile(gs);
+				} 
+				catch (FileNotFoundException e1) 
+				{
+					e1.printStackTrace();
+				}
 			}
 		});
 		
@@ -373,27 +382,21 @@ public class StartUpWindow extends JFrame
 		{
 			public void actionPerformed(ActionEvent e) 
 			{	 
-			
-				
-				try {
-					
-					String s[] = gs.getLevelAndGuardFromFile();
+				try 
+				{
+					String s[] = SaveFile.getLevelAndGuardFromFile();
 					int level = Integer.parseInt(s[0]);
 					
-				
 					gs = new GameState(level);
-					
-					gs.setCurrent_map(gs.stringToStringArray(gs.getMapFromFile()));
+					gs.setCurrent_map(SaveFile.stringToStringArray(SaveFile.getMapFromFile()));
 					gs.getGuard().setType(s[1]);
-					
+										
 					gameScreen.setGameState(gs);
-					
 					gameScreen.paint();
 					gameScreen.requestFocus(true);
-					
-					
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
+				} 
+				catch (IOException e1) 
+				{
 					e1.printStackTrace();
 				}
 				
