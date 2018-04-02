@@ -7,22 +7,49 @@ public class Hero extends Character
 {
 	private boolean armed;
 	
+	/* 
+	 * Constructor of the class.
+	 * 
+	 * @param x The x coordinate of the new hero.
+	 * @param y The y coordinate of the new hero.
+	 * 
+	 */
 	public Hero(int x, int y)
 	{
 		super(x,y);
 		armed = false;
 	}
 	
+	/*
+	 * Returns true if the the hero is armed.
+	 * 
+	 * @return The value of variable armed.
+	 * 
+	 */	
 	public boolean isArmed() 
 	{
 		return armed;
 	}
 
+	
+	/*
+	 * Modifies the value of the variable armed.
+	 * 
+	 * @param armed New value for the armed variable.
+	 * 
+	 */
 	public void setArmed(boolean armed) 
 	{
 		this.armed = armed;
 	}
 
+	
+	/*
+	 * Sets the value of the (possible) next X and Y coordinates.
+	 * 
+	 * @param move The string correspondent to the side which the hero should move.
+	 * @param gs The current gamestate.
+	 */
 	public void heroMove(String move, GameState gs)
 	{
 		if(gs.isGame_over() || gs.isVictory())
@@ -54,6 +81,11 @@ public class Hero extends Character
 		action(gs);
 	}
 	
+	/*
+	 * Define what will the hero do according to level and coordinates.
+	 * 
+	 * @param gs The current gamestate.
+	 */
 	public void action(GameState gs)
 	{
 		switch(gs.getLevel_no())
@@ -76,7 +108,11 @@ public class Hero extends Character
 		
 	}
 	
-	
+	/*
+	 * Define what will the hero do if playing the first level.
+	 * 
+	 * @param gs The current gamestate.
+	 */
 	public void actionLevel1(GameState gs)
 	{
 		switch(gs.getCurrent_map()[ny][nx])
@@ -142,6 +178,11 @@ public class Hero extends Character
 		
 	}
 	
+	/*
+	 * Define what will the hero do if playing the second level.
+	 * 
+	 * @param gs The current gamestate.
+	 */
 	public void actionLevel2(GameState gs)
 	{
 		switch(gs.getCurrent_map()[ny][nx])

@@ -8,6 +8,13 @@ public class Ogre extends Character
 	private boolean club_on_key, on_top_of_key;
 	private int turns_stunned;
 	
+	/* 
+	 * Constructor of the class.
+	 * 
+	 * @param x The x coordinate of the new ogre.
+	 * @param y The y coordinate of the new ogre.
+	 * 
+	 */
 	public Ogre(int x, int y)
 	{
 		super(x,y);
@@ -19,51 +26,113 @@ public class Ogre extends Character
 		ny = y;
 	}
 	
-	public void setClub_on_key(boolean club_on_key) 
-	{
-		this.club_on_key = club_on_key;
-	}
 
+	/*
+	 * Sets that the ogre has the same X and Y coordinates thant the key.
+	 * 
+	 * @param on_top_of_key New boolean value for on_top_of_key variable.
+	 * 
+	 */
 	public void setOn_top_of_key(boolean on_top_of_key) 
 	{
 		this.on_top_of_key = on_top_of_key;
 	}
 	
+	/*
+	 * Sets that the club has the same X and Y coordinates thant the key.
+	 * 
+	 * @param club_on_key New boolean value for club_on_key variable.
+	 * 
+	 */
+	public void setClub_on_key(boolean club_on_key) 
+	{
+		this.club_on_key = club_on_key;
+	}
+
+	/*
+	 * Returns the ogre club.
+	 * 
+	 * @return The ogre club.
+	 * 
+	 */	
 	public Character getClub() 
 	{
 		return club;
 	}
 
+	/*
+	 * Modifies the value of the variable club.
+	 * 
+	 * @param club New ogre's club .
+	 * 
+	 */
 	public void setClub(Character club) 
 	{
 		this.club = club;
 	}
 
+	/*
+	 * Returns 1 if the ogre is stunned and 0 if not.
+	 * 
+	 * @return The stun status.
+	 * 
+	 */	
 	public int getTurns_stunned() 
 	{
 		return turns_stunned;
 	}
 
+	/*
+	 * Modifies the stun status of the ogre.
+	 * 
+	 * @param turns_stunned New value for turns_stunned variable.
+	 * 
+	 */
 	public void setTurns_stunned(int turns_stunned) 
 	{
 		this.turns_stunned = turns_stunned;
 	}
-
-	public boolean isClub_on_key() 
-	{
-		return club_on_key;
-	}
-
+	
+	/*
+	 * Returns true if the ogre is above the key.
+	 * 
+	 * @return The boolean value of on_top_of_key variable.
+	 * 
+	 */
 	public boolean isOn_top_of_key() 
 	{
 		return on_top_of_key;
 	}
 	
+	/*
+	 * Returns true if the club is above the key.
+	 * 
+	 * @return The boolean value of club_on_key variable.
+	 * 
+	 */
+	public boolean isClub_on_key() 
+	{
+		return club_on_key;
+	}
+
+	/* 
+	 * Adds club to ogre.
+	 * 
+	 * @param x The x coordinate of the new club.
+	 * @param y The y coordinate of the new club.
+	 * 
+	 */
 	public void addClub(int x, int y)
 	{
 		club = new Character(x,y);
 	}
 
+	/*
+	 * Moves the ogre.
+	 * 
+	 * @param The current gamestate.
+	 * 
+	 */
 	public void move(GameState gs)
 	{
 		Random rand = new Random();
@@ -94,6 +163,11 @@ public class Ogre extends Character
 		action(gs);
 	}
 	
+	/*
+	 * Define what will the ogre do according to level and coordinates.
+	 * 
+	 * @param gs The current gamestate.
+	 */
 	public void action(GameState gs)
 	{
 		Random rand = new Random();
@@ -154,6 +228,11 @@ public class Ogre extends Character
 		smash(gs);
 	}
 	
+	/*
+	 * Defines the club new adjacent coordinates randomly.
+	 * 
+	 * @param cn A random int from 1 to 4.
+	 */
 	public void swing_club(int cn)
 	{
 		switch(cn)
@@ -183,6 +262,11 @@ public class Ogre extends Character
 		}
 	}
 	
+	/*
+	 * Checks when the club must smash the hero.
+	 * 
+	 * @param gs The current gamestate.
+	 */
 	public void smash(GameState gs)
 	{
 		switch(gs.getCurrent_map()[club.ny][club.nx])

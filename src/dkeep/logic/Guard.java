@@ -9,6 +9,14 @@ public class Guard extends Character
 	private boolean asleep;
 	private int turns_asleep;
 	
+	/* 
+	 * Constructor of the class.
+	 * 
+	 * @param x The x coordinate of the new guard.
+	 * @param y The y coordinate of the new guard.
+	 * @param t The type of the new guard.
+	 * 
+	 */
 	public Guard(int x, int y, Guard_Type t)
 	{
 		super(x,y);
@@ -19,16 +27,32 @@ public class Guard extends Character
 		type = t;
 	}
 	
+	/*
+	 * Modifies the movement of the guard.
+	 * 
+	 * @param movement New value for the guard's movement.
+	 * 
+	 */
 	public void setMovement(String movement) 
 	{
 		this.movement = movement;
 	}
 
+	/*
+	 * Returns true if the guard fell asleep.
+	 * 
+	 * @return The value of the asleep variable.
+	 */
 	public boolean isAsleep() 
 	{
 		return asleep;
 	}
 
+	/*
+	 * Returns the value of the Y coordinate.
+	 * 
+	 * @return The value of the Y coordinate.
+	 */
 	public int getTurns_asleep() 
 	{
 		return turns_asleep;
@@ -84,11 +108,18 @@ public class Guard extends Character
 	}
 
 	
+	/*
+	 * Returns the guards movement.
+	 * 
+	 * @return The movement of the guard.
+	 */
 	public String getMovement() 
 	{
 		return movement;
 	}
 
+	
+	
 	public void guard_move_forward(GameState gs)
 	{
 		 if((y == 1) && (x == 8))

@@ -47,21 +47,42 @@ public abstract class Map
 		{"X", "X", "X", "X", "X", "X", "X", "X", "X"}};
 	
 	
+	/*
+	 * Returns leve1.
+	 * 
+	 * @return level1.
+	 */
 	public static String[][] getLevel1() 
 	{
 		return level1;
 	}
 	
+	/*
+	 * Returns level2.
+	 * 
+	 * @return level2.
+	 */
 	public static String[][] getLevel2() 
 	{
 		return level2;
 	}
 	
+	/*
+	 * Returns the test leve1.
+	 * 
+	 * @return The test level.
+	 */
 	public static String[][] getTestLevel() 
 	{
 		return test_level;
 	}
 	
+	/*
+	 * Sets the level.
+	 * 
+	 * @param level_no The number of the level which be played.
+	 * @param new_level The double string array containing the map.
+	 */
 	public static void setLevel(int level_no, String[][] new_level)
 	{
 		switch(level_no)
@@ -83,6 +104,11 @@ public abstract class Map
 		}
 	}
 	
+	/*
+	 * Copies the level
+	 * 
+	 * @param toCopy The level to be copied.
+	 */
 	public static String[][] copyLevel(String[][] toCopy)
 	{
 		String[][] copy = new String[toCopy.length][];
@@ -93,46 +119,92 @@ public abstract class Map
 		return copy;
 	}
 
+	/*
+	 * Returns the door number 1 of level 1.
+	 * 
+	 * @return The door number 1.
+	 */
 	public static Character getDoor1_1() 
 	{
 		return door1_1;
 	}
 
+	/*
+	 * Returns the door number 2 of level 1.
+	 * 
+	 * @return The door number 2.
+	 */
 	public static Character getDoor1_2() 
 	{
 		return door1_2;
 	}
 
+	/*
+	 * Returns the door number 3 of level 1.
+	 * 
+	 * @return The door number 3.
+	 */
 	public static Character getDoor1_3() 
 	{
 		return door1_3;
 	}
 
+	
+	/*
+	 * Returns the door number 4 of level 1.
+	 * 
+	 * @return The door number 4.
+	 */
 	public static Character getDoor1_4() 
 	{
 		return door1_4;
 	}
 
+	/*
+	 * Returns the door number 5 of level 1.
+	 * 
+	 * @return The door number 5.
+	 */
 	public static Character getDoor1_5() 
 	{
 		return door1_5;
 	}
 
+	/*
+	 * Returns the door number 6 of level 1.
+	 * 
+	 * @return The door number 6.
+	 */
 	public static Character getDoor1_6() 
 	{
 		return door1_6;
 	}
 
+	/*
+	 * Returns the door number 7 of level 1.
+	 * 
+	 * @return The door number 7.
+	 */
 	public static Character getDoor1_7() 
 	{
 		return door1_7;
 	}
 
+	/*
+	 * Returns the door number 1 of test level.
+	 * 
+	 * @return The door number 1.
+	 */
 	public static Character getDoor_t1() 
 	{
 		return door_t1;
 	}
 
+	/*
+	 * Returns the door number 2 of test level.
+	 * 
+	 * @return The door number 2.
+	 */
 	public static Character getDoor_t2() 
 	{
 		return door_t2;
