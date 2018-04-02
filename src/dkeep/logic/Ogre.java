@@ -8,8 +8,11 @@ public class Ogre extends Character
 	private boolean club_on_key, on_top_of_key;
 	private int turns_stunned;
 	
-	/* 
-	 * Constructor of the class.
+	/** 
+	 * Constructor of the class. The respective club is initiated with the same coordinates as the 
+	 * ogre.
+	 * It is assumed the ogre is not of top of the key neither is its club.
+	 * The ogre starts unstunned.
 	 * 
 	 * @param x The x coordinate of the new ogre.
 	 * @param y The y coordinate of the new ogre.
@@ -22,13 +25,11 @@ public class Ogre extends Character
 		club_on_key = false;
 		on_top_of_key = false;
 		turns_stunned = 0;
-		nx = x;
-		ny = y;
 	}
 	
 
-	/*
-	 * Sets that the ogre has the same X and Y coordinates thant the key.
+	/**
+	 * Changes the value of the on_top_of_key variable.
 	 * 
 	 * @param on_top_of_key New boolean value for on_top_of_key variable.
 	 * 
@@ -38,8 +39,8 @@ public class Ogre extends Character
 		this.on_top_of_key = on_top_of_key;
 	}
 	
-	/*
-	 * Sets that the club has the same X and Y coordinates thant the key.
+	/**
+	 * Changes the value of the club_on_key variable.
 	 * 
 	 * @param club_on_key New boolean value for club_on_key variable.
 	 * 
@@ -49,7 +50,7 @@ public class Ogre extends Character
 		this.club_on_key = club_on_key;
 	}
 
-	/*
+	/**
 	 * Returns the ogre club.
 	 * 
 	 * @return The ogre club.
@@ -60,8 +61,8 @@ public class Ogre extends Character
 		return club;
 	}
 
-	/*
-	 * Modifies the value of the variable club.
+	/**
+	 * Changes the ogre's club.
 	 * 
 	 * @param club New ogre's club .
 	 * 
@@ -71,10 +72,10 @@ public class Ogre extends Character
 		this.club = club;
 	}
 
-	/*
-	 * Returns 1 if the ogre is stunned and 0 if not.
+	/**
+	 * Returns the number of turns the ogre has been stunned consecutively since last time.
 	 * 
-	 * @return The stun status.
+	 * @return The value of the turns_stunned variable.
 	 * 
 	 */	
 	public int getTurns_stunned() 
@@ -82,8 +83,8 @@ public class Ogre extends Character
 		return turns_stunned;
 	}
 
-	/*
-	 * Modifies the stun status of the ogre.
+	/**
+	 * Modifies the number of turns the ogre has been stunned consecutively since last time.
 	 * 
 	 * @param turns_stunned New value for turns_stunned variable.
 	 * 
@@ -93,10 +94,10 @@ public class Ogre extends Character
 		this.turns_stunned = turns_stunned;
 	}
 	
-	/*
-	 * Returns true if the ogre is above the key.
+	/**
+	 * Returns true if the ogre is on top of the key.
 	 * 
-	 * @return The boolean value of on_top_of_key variable.
+	 * @return The boolean value of the on_top_of_key variable.
 	 * 
 	 */
 	public boolean isOn_top_of_key() 
@@ -104,8 +105,8 @@ public class Ogre extends Character
 		return on_top_of_key;
 	}
 	
-	/*
-	 * Returns true if the club is above the key.
+	/**
+	 * Returns true if the club is on top of the key.
 	 * 
 	 * @return The boolean value of club_on_key variable.
 	 * 
@@ -115,8 +116,10 @@ public class Ogre extends Character
 		return club_on_key;
 	}
 
-	/* 
-	 * Adds club to ogre.
+	/**
+	 * Adds a new club to the ogre. This function serves the same purpose as setClub(), however, due to
+	 * the name of the Character class, it was needed to create another function that constructed the
+	 * club itself. 
 	 * 
 	 * @param x The x coordinate of the new club.
 	 * @param y The y coordinate of the new club.
@@ -127,10 +130,10 @@ public class Ogre extends Character
 		club = new Character(x,y);
 	}
 
-	/*
-	 * Moves the ogre.
+	/**
+	 * Sets the value of the (possible) next X and Y coordinates in a random fashion.
 	 * 
-	 * @param The current gamestate.
+	 * @param gs The current gamestate.
 	 * 
 	 */
 	public void move(GameState gs)
@@ -163,8 +166,12 @@ public class Ogre extends Character
 		action(gs);
 	}
 	
-	/*
-	 * Define what will the ogre do according to level and coordinates.
+	/**
+	 * Defines what the ogre will do according to its possible coordinates.
+	 * The Ogre will only move if the nx and ny coordinates point to an empty space, the key or
+	 * another ogre.
+	 * After the ogre has moved (or not!) he will swing its club and perform the correspondent action
+	 * with it.
 	 * 
 	 * @param gs The current gamestate.
 	 */
@@ -228,10 +235,10 @@ public class Ogre extends Character
 		smash(gs);
 	}
 	
-	/*
-	 * Defines the club new adjacent coordinates randomly.
+	/**
+	 * Defines the club's new possible coordinates randomly.
 	 * 
-	 * @param cn A random int from 1 to 4.
+	 * @param cn A random int from 1 to 4: 1 - Above; 2 - To the right; 3 - Below; 4 - To the left.
 	 */
 	public void swing_club(int cn)
 	{
@@ -262,8 +269,10 @@ public class Ogre extends Character
 		}
 	}
 	
-	/*
-	 * Checks when the club must smash the hero.
+	/**
+	 * Checks the club's action according to the next possible coordinates.
+	 * The club will only appear on the map if the value of its nx and ny coordinates point to an
+	 * empty space or to the key.
 	 * 
 	 * @param gs The current gamestate.
 	 */

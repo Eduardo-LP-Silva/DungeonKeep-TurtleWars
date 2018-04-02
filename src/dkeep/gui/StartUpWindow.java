@@ -379,6 +379,10 @@ public class StartUpWindow extends JFrame
 			{	 
 				SaveFile.loadGame(gs);		
 				gameScreen.setGameState(gs);
+				
+				if(!gs.isGame_over())
+					lblStatus.setText("");
+				
 				gameScreen.paint();
 				gameScreen.requestFocus(true);
 				gs.setLoadActivated();

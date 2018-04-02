@@ -9,7 +9,7 @@ public class Guard extends Character
 	private boolean asleep;
 	private int turns_asleep;
 	
-	/* 
+	/**
 	 * Constructor of the class.
 	 * 
 	 * @param x The x coordinate of the new guard.
@@ -27,10 +27,10 @@ public class Guard extends Character
 		type = t;
 	}
 	
-	/*
+	/**
 	 * Modifies the movement of the guard.
 	 * 
-	 * @param movement New value for the guard's movement.
+	 * @param movement New value for the guard's type of movement (forwards or backwards).
 	 * 
 	 */
 	public void setMovement(String movement) 
@@ -38,7 +38,7 @@ public class Guard extends Character
 		this.movement = movement;
 	}
 
-	/*
+	/**
 	 * Returns true if the guard fell asleep.
 	 * 
 	 * @return The value of the asleep variable.
@@ -48,26 +48,41 @@ public class Guard extends Character
 		return asleep;
 	}
 
-	/*
-	 * Returns the value of the Y coordinate.
+	/**
+	 * Returns the number of turns the guard has been asleep for since the last time.
 	 * 
-	 * @return The value of the Y coordinate.
+	 * @return The value of of the turns_asleep variable.
 	 */
 	public int getTurns_asleep() 
 	{
 		return turns_asleep;
 	}
 
+	/**
+	 * Modifies the number of turns the guard has been asleep for since the last time.
+	 * 
+	 * @param turns_asleep The new number of turns the guard has been asleep for since last time.
+	 */
 	public void setTurns_asleep(int turns_asleep) 
 	{
 		this.turns_asleep = turns_asleep;
 	}
-
+	
+	/**
+	 * Puts guard to sleep or wakes him up.
+	 * 
+	 * @param asleep The new value for the boolean variable asleep.
+	 */
 	public void setAsleep(boolean asleep) 
 	{
 		this.asleep = asleep;
 	}
-
+	
+	/**
+	 * Changes the personality of the guard.
+	 * 
+	 * @param tp The new personality in string format.
+	 */
 	public void setType(String tp) 
 	{
 		switch(tp)
@@ -89,6 +104,11 @@ public class Guard extends Character
 		}
 	}
 	
+	/**
+	 * Returns the personality of the guard in string format.
+	 * 
+	 * @return The personality of the guard.
+	 */
 	public String getType()
 	{
          switch(type)
@@ -108,18 +128,21 @@ public class Guard extends Character
 	}
 
 	
-	/*
-	 * Returns the guards movement.
+	/**
+	 * Returns the guards type of movement (forwards or backwards).
 	 * 
-	 * @return The movement of the guard.
+	 * @return The type of movement of the guard.
 	 */
 	public String getMovement() 
 	{
 		return movement;
 	}
 
-	
-	
+	/**
+	 * Moves the guard forwards (counter-clock wise) through a predefined path.
+	 * 
+	 * @param gs The current gamestate.
+	 */
 	public void guard_move_forward(GameState gs)
 	{
 		 if((y == 1) && (x == 8))
@@ -162,6 +185,11 @@ public class Guard extends Character
 						 }
 	}
 	
+	/**
+	 * Moves the guard backwards (clock wise) through a predefined path.
+	 * 
+	 * @param gs The current gamestate.
+	 */
 	public void guard_move_backwards(GameState gs)
 	{
 		if(gs.getCurrent_map()[y][x + 1].equals("X") && y < 6)
@@ -202,6 +230,12 @@ public class Guard extends Character
 			
 	}
 	
+	/**
+	 * Decides the guard's actions depending on its personality.
+	 * He can move, fall asleep or turn backwards.
+	 * 
+	 * @param gs The current gamestate.
+	 */
 	public void guard_move(GameState gs)
 	{
 		Random rand = new Random();

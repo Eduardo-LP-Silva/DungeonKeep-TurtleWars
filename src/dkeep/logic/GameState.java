@@ -28,10 +28,12 @@ public class GameState
 	private boolean load_activated = false;
 	
 	
-	/* 
-	 * Constructor of the class.
+	/**
+	 * Constructor of the class. Initializes the ogres ArrayList. 
+	 * By default, victory has not been achieved, it isn't game-over and it
+	 * isn't a test level.
 	 * 
-	 * @param level The level of the gamestate created.
+	 * @param level The number of the level to which the game will be initiated.
 	 * 
 	 */
 	public GameState(int level)
@@ -43,7 +45,7 @@ public class GameState
 		ogres = new ArrayList<Ogre>();
 	}
 	
-	/*
+	/**
 	 * Returns the number of the level.
 	 * 
 	 * @return The number of the level.
@@ -54,10 +56,10 @@ public class GameState
 		return level_no;
 	}
 	
-	/*
-	 * Checks if is lever.
+	/**
+	 * Checks if the hero is top of the lever.
 	 * 
-	 * @return True if is lever.
+	 * @return True if the hero is on top of the lever, false otherwise.
 	 * 
 	 */	
 	public boolean isLever() 
@@ -65,10 +67,10 @@ public class GameState
 		return lever;
 	}
 
-	/*
+	/**
 	 * Modifies the boolean value of lever variable.
 	 * 
-	 * @param lever The value.
+	 * @param lever The new value for the boolean lever variable.
 	 * 
 	 */
 	public void setLever(boolean lever) 
@@ -76,10 +78,10 @@ public class GameState
 		this.lever = lever;
 	}
 
-	/*
-	 * Checks if is key.
+	/**
+	 * Checks if the hero has the key.
 	 * 
-	 * @return True if is key.
+	 * @return True if the hero has the key, false otherwise.
 	 * 
 	 */	
 	public boolean isKey() 
@@ -87,10 +89,10 @@ public class GameState
 		return key;
 	}
 	
-	/*
+	/**
 	 * Modifies the boolean value of key variable.
 	 * 
-	 * @param key The value.
+	 * @param key The new value for the boolean key variable.
 	 * 
 	 */
 	public void setKey(boolean key) 
@@ -98,10 +100,10 @@ public class GameState
 		this.key = key;
 	}
 	
-	/*
-	 * Modifies array containing the ogres.
+	/**
+	 * Sets a new ogre ArrayList.
 	 * 
-	 * @param ogres The array with the ogres.
+	 * @param ogres The new ogres ArrayList.
 	 * 
 	 */
 	public void setOgres(ArrayList<Ogre> ogres) 
@@ -109,10 +111,10 @@ public class GameState
 		this.ogres = ogres;
 	}
 	
-	/*
+	/**
 	 * Modifies the boolean value of test.
 	 * 
-	 * @param test The boolean value.
+	 * @param test The new value of the boolean test variable.
 	 * 
 	 */
 	public void setTest(boolean test) 
@@ -120,10 +122,10 @@ public class GameState
 		this.test = test;
 	}
 	
-	/*
+	/**
 	 * Checks if it's the test level.
 	 * 
-	 * @return True if it's the test level.
+	 * @return True if it's the test level, false otherwise.
 	 * 
 	 */
 	public boolean isTest() 
@@ -131,16 +133,17 @@ public class GameState
 		return test;
 	}
 
-	/*
-	 * Sets the level of the gamestate.
+	/**
+	 * Sets the level of the gamestate as well as it's current map by copying it from the Map class.
+	 * It also changes the position of the Hero/Guard to the default position of the corresponding 
+	 * level.
 	 * 
-	 * @param level The level.
+	 * @param level The number of the level.
 	 * 
 	 */
 	public void setLevel_no(int level) 
 	{
 		boolean found = false;
-		int[] coords;
 		
 		switch(level)
 		{
@@ -182,10 +185,10 @@ public class GameState
 		level_no = level;
 	}
 	
-	/*
-	 * Sets the number of ogres to add to level.
+	/**
+	 * Adds the specified number of ogres to the level 2 map.
 	 * 
-	 * @param n The number of ogres.
+	 * @param n The number of ogres to add.
 	 * 
 	 */
 	public void addOgres(int n)
@@ -223,10 +226,10 @@ public class GameState
 		}
 	}
 	
-	/*
-	 * Checks if the load button is pressed.
+	/**
+	 * Checks if the load button has been pressed.
 	 * 
-	 * @return True if it was pressed.
+	 * @return True if it was pressed, false otherwise.
 	 * 
 	 */
 	public boolean getLoadActivated()
@@ -234,8 +237,8 @@ public class GameState
 		return this.load_activated;
 	}
 	
-	/*
-	 * Sets that the load button was pressed .
+	/**
+	 * Sets that the load button has been pressed.
 	 * 
 	 */
 	public void setLoadActivated()
@@ -243,7 +246,7 @@ public class GameState
 		this.load_activated = true;
 	}
 	
-	/*
+	/**
 	 * Returns the current map.
 	 * 
 	 * @return The current map.
@@ -254,10 +257,10 @@ public class GameState
 		return current_map;
 	}
 	
-	/*
+	/**
 	 * Checks if the game is over.
 	 * 
-	 * @return True if the game is over..
+	 * @return True if the game is over.
 	 * 
 	 */
 	public boolean getGameOver()
@@ -265,7 +268,7 @@ public class GameState
 		return this.game_over;
 	}
 	
-	/*
+	/**
 	 * Sets that the game is over.
 	 * 
 	 */
@@ -274,8 +277,8 @@ public class GameState
 		this.game_over = true;
 	}
 	
-	/*
-	 * Modifies the current map.
+	/**
+	 * Changes the current map.
 	 * 
 	 * @param current_map The new map.
 	 * 
@@ -285,10 +288,10 @@ public class GameState
 		this.current_map = current_map;
 	}
 
-	/*
-	 * Returns the array containing the ogres.
+	/**
+	 * Returns the ArrayList containing the ogres.
 	 * 
-	 * @return The array with ogres.
+	 * @return The ArrayList with the ogres.
 	 * 
 	 */
 	public ArrayList<Ogre> getOgres() 
@@ -296,7 +299,7 @@ public class GameState
 		return ogres;
 	}
 
-	/*
+	/**
 	 * Returns the hero.
 	 * 
 	 * @return The hero.
@@ -307,8 +310,8 @@ public class GameState
 		return hero;
 	}
 
-	/*
-	 * Modifies the hero.
+	/**
+	 * Changes the hero.
 	 * 
 	 * @param hero The new hero.
 	 * 
@@ -318,7 +321,7 @@ public class GameState
 		this.hero = hero;
 	}
 
-	/*
+	/**
 	 * Returns the guard.
 	 * 
 	 * @return The guard.
@@ -329,8 +332,8 @@ public class GameState
 		return guard;
 	}
 
-	/*
-	 * Modifies the guard.
+	/**
+	 * Changes the guard.
 	 * 
 	 * @param guard The new guard.
 	 * 
@@ -340,20 +343,20 @@ public class GameState
 		this.guard = guard;
 	}
 
-	/*
+	/**
 	 * Checks if the game ended with a victory.
 	 * 
-	 * @return The boolean value of victory(true if the game is over with victory).
+	 * @return True if the player was victorious.
 	 */
 	public boolean isVictory() 
 	{
 		return victory;
 	}
 
-	/*
-	 * Sets the game ended with a victory.
+	/**
+	 * Changes the value of the boolean victory variable.
 	 * 
-	 * @param vic The boolean value that can be true or false.
+	 * @param vic The new value of the boolean victory variable.
 	 *
 	 */
 	public void setVictory(boolean vic) 
@@ -361,20 +364,20 @@ public class GameState
 		victory = vic;
 	}
 
-	/*
+	/**
 	 * Checks if the game is over.
 	 * 
-	 * @return The boolean value of game_over(true if the game is over).
+	 * @return True if the game is over.
 	 */
 	public boolean isGame_over() 
 	{
 		return game_over;
 	}
 
-	/*
-	 * Sets the game over.
+	/**
+	 * Sets the value of the boolean variable game_over.
 	 * 
-	 * @param game_over The boolean value that can be true or false.
+	 * @param game_over The boolean value of the variable game_over.
 	 * 
 	 */	
 	public void setGame_over(boolean game_over) 
@@ -382,8 +385,8 @@ public class GameState
 		this.game_over = game_over;
 	}
 	
-	/*
-	 * Updates the map.
+	/**
+	 * Updates the map with regards to the position of each character.
 	 * 
 	 */	
 	public void updateMap()
@@ -430,8 +433,8 @@ public class GameState
 		}
 	}
 	
-	/*
-	 * Moves the ogres.
+	/**
+	 * Moves the ogres or not depending on their stunned status (which also updates).
 	 * 
 	 */	
 	public void moveOgres()
@@ -461,8 +464,8 @@ public class GameState
 			stunOgres();
 	}
 
-	/*
-	 * Stuns ogre if the coordinates of the hero are adjacent to him.
+	/**
+	 * Stuns the correspondent ogre if the coordinates of the hero are adjacent to him.
 	 * 
 	 */	
 	public void stunOgres()
@@ -480,8 +483,9 @@ public class GameState
 	
 		}
 	}
-	/*
-	 * Checks if the game is over.
+	
+	/**
+	 * Checks game-over conditions.
 	 * 
 	 * @return True if the game is over.
 	 * 
@@ -513,10 +517,10 @@ public class GameState
 		}
 	}
 	
-	/*
+	/**
 	 * Checks if the hero collides with an enemy.
 	 * 
-	 * @param enemy The object to test the collision with.
+	 * @param enemy The string representing the enemy character to test the collision with.
 	 * .
 	 * @return True if the coordinates of the hero and the enemy are adjacent.
 	 * 
@@ -532,9 +536,10 @@ public class GameState
 			return false;
 	}	
 	
-	/*
+	/**
 	 * Auxiliary function that converts the current map to a string.
 	 * 
+	 * @return The map in string format.
 	 */	
 	public String map_to_string()
 	{
@@ -552,8 +557,8 @@ public class GameState
 		return map;	
 	}
 	
-	/*
-	 * Auxiliary function to check if current map is printing the right way.
+	/**
+	 * Prints the current map in the console.
 	 * 
 	 */	 
 	public void print_map()

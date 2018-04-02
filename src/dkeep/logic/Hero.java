@@ -7,8 +7,8 @@ public class Hero extends Character
 {
 	private boolean armed;
 	
-	/* 
-	 * Constructor of the class.
+	/**
+	 * Constructor of the class. The Hero is initially unarmed.
 	 * 
 	 * @param x The x coordinate of the new hero.
 	 * @param y The y coordinate of the new hero.
@@ -20,7 +20,7 @@ public class Hero extends Character
 		armed = false;
 	}
 	
-	/*
+	/**
 	 * Returns true if the the hero is armed.
 	 * 
 	 * @return The value of variable armed.
@@ -32,7 +32,7 @@ public class Hero extends Character
 	}
 
 	
-	/*
+	/**
 	 * Modifies the value of the variable armed.
 	 * 
 	 * @param armed New value for the armed variable.
@@ -44,10 +44,10 @@ public class Hero extends Character
 	}
 
 	
-	/*
-	 * Sets the value of the (possible) next X and Y coordinates.
+	/**
+	 * Sets the value of the (possible) next X and Y coordinates according to the move argument.
 	 * 
-	 * @param move The string correspondent to the side which the hero should move.
+	 * @param move The string correspondent to the side which the hero should move to.
 	 * @param gs The current gamestate.
 	 */
 	public void heroMove(String move, GameState gs)
@@ -81,8 +81,8 @@ public class Hero extends Character
 		action(gs);
 	}
 	
-	/*
-	 * Define what will the hero do according to level and coordinates.
+	/**
+	 * Defines what the hero will do according to level and coordinates.
 	 * 
 	 * @param gs The current gamestate.
 	 */
@@ -108,8 +108,10 @@ public class Hero extends Character
 		
 	}
 	
-	/*
-	 * Define what will the hero do if playing the first level.
+	/**
+	 * Defines what the hero will do if playing on the first level. The hero will only move if the
+	 * ny and nx coordinates point to an empty space, lever or open door. 
+	 * If the hero moves, the guard will also move. 
 	 * 
 	 * @param gs The current gamestate.
 	 */
@@ -178,8 +180,11 @@ public class Hero extends Character
 		
 	}
 	
-	/*
-	 * Define what will the hero do if playing the second level.
+	/**
+	 * Defines what the hero will do if playing on the second level. The hero will only move if the
+	 * ny and nx coordinates point to an empty space, an open door (or closed if he has the key) or
+	 * the key.
+	 * When the hero moves the ogres also move (or try to at least).
 	 * 
 	 * @param gs The current gamestate.
 	 */
