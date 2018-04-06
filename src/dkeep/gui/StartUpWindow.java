@@ -334,6 +334,7 @@ public class StartUpWindow extends JFrame
 		setBackground(Color.DARK_GRAY);
 		setTitle("DungeonKeep");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(StartUpWindow.class.getResource("/resources/knight32.png")));
+		setResizable(false);
 		
 	}
 	
