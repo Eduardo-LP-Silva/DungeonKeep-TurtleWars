@@ -447,6 +447,11 @@ public class LevelEditor extends JFrame
 					return;
 				}
 				
+				if(arg0.getY() / 32 >= map.length || arg0.getX() / 32 >= map.length)
+				{
+					return;
+				}
+				
 				if(!item.equals("A") && map[arg0.getY() / 32][arg0.getX() / 32].equals("A") && HeroPlaced)
 					HeroPlaced = false;
 				
