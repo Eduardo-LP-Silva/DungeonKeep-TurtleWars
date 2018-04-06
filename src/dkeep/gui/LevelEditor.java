@@ -31,17 +31,15 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.swing.SwingConstants;
+import javax.swing.JComboBox;
 
 public class LevelEditor extends JFrame 
 {
 	private JPanel contentPane;
-	private JTextField txtWidth;
-	private JTextField txtHeight;
 	private GameScreen gameScreen;
 	private GameState gs;
 	private GameState gs2;
-	private JLabel lblWidth;
-	private JLabel lblHeight;
+	private JLabel lblSize;
 	private JLabel lblStatus;
 	private JLabel lblWall;
 	private JLabel lblDoor;
@@ -60,7 +58,9 @@ public class LevelEditor extends JFrame
 	private boolean DoorPlaced;
 	private boolean KeyPlaced;
 	private JLabel lblMapStatus;
-
+	private JComboBox cbSize;
+	private JLabel lblFloor;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -179,14 +179,15 @@ public class LevelEditor extends JFrame
 			
 			btnExit = new JButton("Save and exit");
 			
-			lblMapStatus = new JLabel("");
-			lblMapStatus.setHorizontalAlignment(SwingConstants.CENTER);
-			lblMapStatus.setForeground(Color.WHITE);
-			lblMapStatus.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			
 			lblHerowarning = new JLabel("");
 			lblHerowarning.setForeground(Color.WHITE);
 			lblHerowarning.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			
+			lblFloor = new JLabel("Floor");
+			
+			lblFloor.setIcon(new ImageIcon(LevelEditor.class.getResource("/resources/Floor32.png")));
+			lblFloor.setForeground(Color.WHITE);
+			lblFloor.setFont(new Font("Tahoma", Font.PLAIN, 15));
 			
 			GroupLayout gl_panel = new GroupLayout(panel);
 			gl_panel.setHorizontalGroup(
@@ -196,36 +197,32 @@ public class LevelEditor extends JFrame
 						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 							.addComponent(lblOgre)
 							.addComponent(lblDoor)
+							.addComponent(lblKey)
 							.addGroup(gl_panel.createSequentialGroup()
 								.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-									.addComponent(lblKey)
+									.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING, false)
+										.addComponent(lblHero, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(btnExit, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 									.addComponent(lblWall))
 								.addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(lblMapStatus, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE))
-							.addGroup(gl_panel.createSequentialGroup()
-								.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING, false)
-									.addComponent(lblHero, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-									.addComponent(btnExit, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(lblHerowarning, GroupLayout.PREFERRED_SIZE, 225, GroupLayout.PREFERRED_SIZE)))
+								.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+									.addComponent(lblFloor, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE)
+									.addComponent(lblHerowarning, GroupLayout.PREFERRED_SIZE, 225, GroupLayout.PREFERRED_SIZE))))
 						.addContainerGap())
 			);
 			gl_panel.setVerticalGroup(
 				gl_panel.createParallelGroup(Alignment.LEADING)
 					.addGroup(gl_panel.createSequentialGroup()
-						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-							.addGroup(gl_panel.createSequentialGroup()
-								.addGap(16)
-								.addComponent(lblWall)
-								.addPreferredGap(ComponentPlacement.UNRELATED)
-								.addComponent(lblKey)
-								.addPreferredGap(ComponentPlacement.UNRELATED)
-								.addComponent(lblOgre)
-								.addGap(18)
-								.addComponent(lblDoor))
-							.addGroup(gl_panel.createSequentialGroup()
-								.addContainerGap()
-								.addComponent(lblMapStatus, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)))
+						.addGap(16)
+						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+							.addComponent(lblWall)
+							.addComponent(lblFloor, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+						.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addComponent(lblKey)
+						.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addComponent(lblOgre)
+						.addGap(18)
+						.addComponent(lblDoor)
 						.addGap(15)
 						.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
 							.addComponent(lblHerowarning, GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
@@ -236,19 +233,9 @@ public class LevelEditor extends JFrame
 			);
 			panel.setLayout(gl_panel);
 		
-		lblHeight = new JLabel("Heigth");
-		lblHeight.setForeground(Color.WHITE);
-		lblHeight.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		
-		lblWidth = new JLabel("Width");
-		lblWidth.setForeground(Color.WHITE);
-		lblWidth.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		
-		txtHeight = new JTextField();
-		txtHeight.setColumns(10);
-		
-		txtWidth = new JTextField();
-		txtWidth.setColumns(10);
+		lblSize = new JLabel("Size");
+		lblSize.setForeground(Color.WHITE);
+		lblSize.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		
 		lblResStatus = new JLabel("");
 		lblResStatus.setForeground(Color.WHITE);
@@ -256,23 +243,36 @@ public class LevelEditor extends JFrame
 		
 		btnGenerate = new JButton("Generate");
 		
+		cbSize = new JComboBox();
+		cbSize.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		
+		cbSize.addItem("5x5");
+		cbSize.addItem("6x6");
+		cbSize.addItem("7x7");
+		cbSize.addItem("8x8");
+		cbSize.addItem("9x9");
+		cbSize.addItem("10x10");
+		
+		lblMapStatus = new JLabel("");
+		lblMapStatus.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMapStatus.setForeground(Color.WHITE);
+		lblMapStatus.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		
 		GroupLayout gl_topPanel = new GroupLayout(topPanel);
 		gl_topPanel.setHorizontalGroup(
 			gl_topPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_topPanel.createSequentialGroup()
 					.addGap(30)
-					.addGroup(gl_topPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblHeight)
-						.addComponent(lblWidth))
+					.addComponent(lblSize)
 					.addGap(18)
-					.addGroup(gl_topPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(txtHeight, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(txtWidth, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(51)
-					.addGroup(gl_topPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblResStatus, GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
-						.addComponent(btnGenerate, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap())
+					.addGroup(gl_topPanel.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(btnGenerate, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(cbSize, 0, 117, Short.MAX_VALUE))
+					.addGap(30)
+					.addGroup(gl_topPanel.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(lblResStatus, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(lblMapStatus, GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE))
+					.addGap(322))
 		);
 		gl_topPanel.setVerticalGroup(
 			gl_topPanel.createParallelGroup(Alignment.LEADING)
@@ -280,18 +280,17 @@ public class LevelEditor extends JFrame
 					.addContainerGap()
 					.addGroup(gl_topPanel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_topPanel.createSequentialGroup()
-							.addComponent(lblResStatus, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnGenerate, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE))
+							.addGroup(gl_topPanel.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblSize)
+								.addComponent(cbSize, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE))
+							.addGap(14))
 						.addGroup(gl_topPanel.createSequentialGroup()
-							.addGroup(gl_topPanel.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblHeight)
-								.addComponent(txtHeight, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addGap(19)
-							.addGroup(gl_topPanel.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblWidth)
-								.addComponent(txtWidth, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+							.addComponent(lblResStatus, GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)))
+					.addGroup(gl_topPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblMapStatus, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(btnGenerate, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap())
 		);
 		topPanel.setLayout(gl_topPanel);
 		
@@ -316,24 +315,8 @@ public class LevelEditor extends JFrame
 		HeroPlaced = false;
 		KeyPlaced = false;
 		DoorPlaced = false;
-	}
-	
-	public Boolean checkRes()
-	{
-		if(txtHeight.getText().equals("") || txtWidth.getText().equals("") ||
-				Integer.parseInt(txtHeight.getText()) * 32 > 320 || Integer.parseInt(txtWidth.getText()) * 32 > 320 
-				|| Integer.parseInt(txtHeight.getText()) * 32 < 160 || Integer.parseInt(txtWidth.getText()) * 32 < 160
-				|| Integer.parseInt(txtHeight.getText()) != Integer.parseInt(txtWidth.getText()))
-		{
-			lblResStatus.setText("Map size must be between 5x5 and 10x10 (and even)");
-			return false;
-		}
-		else
-		{
-			lblResStatus.setText("");
-			return true;
-		}
-			
+		
+		setResizable(false);
 	}
 	
 	public boolean checkMap()
@@ -356,71 +339,38 @@ public class LevelEditor extends JFrame
 	
 	public void createEvents()
 	{
-		txtHeight.getDocument().addDocumentListener(new DocumentListener() 
-		{
-			  public void changedUpdate(DocumentEvent e) 
-			  {  
-				  checkRes();
-			  }
-			  
-			  public void removeUpdate(DocumentEvent e) 
-			  {
-				  checkRes();
-			  }
-				  
-			  public void insertUpdate(DocumentEvent e) 
-			  {
-				  checkRes();
-			  } 
-		});
-		
-		txtWidth.getDocument().addDocumentListener(new DocumentListener() 
-		{
-			  public void changedUpdate(DocumentEvent e) 
-			  {
-				    checkRes();
-			  }
-			  
-			  public void removeUpdate(DocumentEvent e) 
-			  {
-				  checkRes();
-			  }
-				  
-			  public void insertUpdate(DocumentEvent e) 
-			  {
-				    checkRes();
-			  } 
-		});
 		
 		btnGenerate.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				if(checkRes())
-				{
-					int i;
+				
+				int i, size = Integer.parseInt(((String) cbSize.getSelectedItem()).substring(0, 1));
+				
+				if(size == 1)
+					size = 10;
 					
-					new_map = new String[Integer.parseInt(txtHeight.getText())]
-							[Integer.parseInt(txtWidth.getText())];
+				new_map = new String[size]
+						[size];
 					
-					for(i = 0; i < new_map.length; i++)
-						for(int j = 0; j < new_map[i].length; j++)
-						{
-							if(i == 0 || i == new_map.length - 1 || j == 0 || j == new_map[i].length - 1)
-								new_map[i][j] = "X";
-							else
-								new_map[i][j] = "_";
-						}
+				for(i = 0; i < new_map.length; i++)
+					for(int j = 0; j < new_map[i].length; j++)
+					{
+						if(i == 0 || i == new_map.length - 1 || j == 0 || j == new_map[i].length - 1)
+							new_map[i][j] = "X";
+						else
+							new_map[i][j] = "_";
+					}
 					
-					Map.setLevel(2, new_map);
-					gs2 = new GameState(2);
-					gameScreen.setGameState(gs2);
-					gameScreen.paint();
-					gameScreen.adjustSize();
-					HeroPlaced = false;
-					KeyPlaced = false;
-					DoorPlaced = false;
-				}
+				Map.setLevel(2, new_map);
+				gs2 = new GameState(2);
+				gameScreen.setGameState(gs2);
+				gameScreen.paint();
+				gameScreen.adjustSize();
+				HeroPlaced = false;
+				KeyPlaced = false;
+				DoorPlaced = false;
+				
 			}
 		});
 		
@@ -466,6 +416,15 @@ public class LevelEditor extends JFrame
 			public void mousePressed(MouseEvent arg0) 
 			{
 				item = "A";
+			}
+		});
+		
+		lblFloor.addMouseListener(new MouseAdapter() 
+		{
+			@Override
+			public void mousePressed(MouseEvent arg0) 
+			{
+				item = "_";
 			}
 		});
 		
