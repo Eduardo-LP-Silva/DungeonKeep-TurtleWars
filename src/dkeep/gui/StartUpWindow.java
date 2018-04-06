@@ -339,17 +339,27 @@ public class StartUpWindow extends JFrame
 	
 	 public boolean status()
 	  {
-		  	if(textField.getText().equals("") || Integer.parseInt(textField.getText()) <= 0)
-			{
-				lblStatus.setText("Must have at least one Ogre");
-				return false;
-			}
-			
-			if(Integer.parseInt(textField.getText()) >= 9)
-			{
-				lblStatus.setText("Number of Ogres too high");
-				return false;
-			}
+		  	try 
+		  	{
+		  		if(Integer.parseInt(textField.getText()) <= 0)
+				{
+					lblStatus.setText("Must have at least one Ogre");
+					return false;
+				}
+				
+				if(Integer.parseInt(textField.getText()) >= 9)
+				{
+					lblStatus.setText("Number of Ogres too high");
+					return false;
+				}
+		  	}
+		  	catch(NumberFormatException ex)
+		  	{
+		  		lblStatus.setText("Invalid Argument");
+		  		return false;
+		  	}
+		 
+		 	
 		
 			lblStatus.setText("You can play now.");
 			
@@ -489,7 +499,36 @@ public class StartUpWindow extends JFrame
 			@Override
 			public void keyPressed(KeyEvent arg0) 
 			{
-				moveInput(KeyEvent.getKeyText(arg0.getKeyCode()).toLowerCase());
+				String move = KeyEvent.getKeyText(arg0.getKeyCode()).toLowerCase();
+				
+				if(move.equals("w") || move.equals("s") || move.equals("d") || move.equals("a"))
+					{
+						moveInput(move);
+						return;
+					}
+				
+				switch(arg0.getKeyCode())
+				{
+					case KeyEvent.VK_UP:
+						moveInput("w");
+						break;
+						
+					case KeyEvent.VK_DOWN:
+						moveInput("s");
+						break;
+						
+					case KeyEvent.VK_LEFT:
+						moveInput("a");
+						break;
+						
+					case KeyEvent.VK_RIGHT:
+						moveInput("d");
+						break;
+						
+					default:
+						break;
+				}
+		
 			}
 		});
 		
