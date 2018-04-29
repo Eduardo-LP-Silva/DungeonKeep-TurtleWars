@@ -7,7 +7,6 @@ public class TurtleModel extends EntityModel
 
     private final static int MAX_HEALTH = 100;
     private TurtleClass turtleClass;
-    private double size;
     private int health;
 
     public TurtleModel(float x,float y, TurtleClass tc)
