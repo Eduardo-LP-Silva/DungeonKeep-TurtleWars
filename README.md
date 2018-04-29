@@ -18,11 +18,23 @@ The implementation will be made through 3 packages, each representing one of 3 m
 ### GUI
 
 * Main Menu
+
+![mainmenu](https://user-images.githubusercontent.com/32617691/39411065-99a2ebf2-4bfa-11e8-938d-54b74e8ba056.png)
+
 * Options Menu
+
+![optionsmenu](https://user-images.githubusercontent.com/32617691/39411068-a673a65a-4bfa-11e8-9fdd-0ad94ec6b6c2.png)
+
 * Character Selection Screen
+
+
+![characterselectionmenu](https://user-images.githubusercontent.com/32617691/39411078-bdb03a2c-4bfa-11e8-9b54-ce2cb5d9be95.jpg)
+
 * 2D View of arena and players
 * Possible buttons on the corner of the screen for Android Input
 * Health and Name bars on the top corners of the screen for each player
+
+![gamedemo](https://user-images.githubusercontent.com/32617691/39411083-d3172362-4bfa-11e8-93b5-8e172c38a9dc.png)
 
 ### Test Design
 
