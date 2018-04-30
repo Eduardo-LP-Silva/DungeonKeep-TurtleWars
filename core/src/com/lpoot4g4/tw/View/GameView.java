@@ -34,6 +34,8 @@ public class GameView extends ScreenAdapter
 	 */
 	//private final OrthographicCamera camera;
 
+	private MenuView mainMenu;
+
 	/**
 	 * Creates this screen.
 	 *
@@ -42,9 +44,12 @@ public class GameView extends ScreenAdapter
 	public GameView(TurtleWars game)
 	{
 		this.game = game;
+
 		GameModel.setInstance(new GameModel());
 
-		loadAssets();
+		mainMenu = new MenuView(game);
+
+		mainMenu.loadAssets();
 
 		//camera = createCamera();
 	}
@@ -70,26 +75,22 @@ public class GameView extends ScreenAdapter
 	{
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		game.getBatch().begin();
+		if(GameModel.getInstance().getState().toString().equals("Menu"))
+		{
+			mainMenu.render(delta);
+		}
+
+		//handleInputs()
 
 		String mode = GameModel.getInstance().getState().toString();
 
-		if(mode.equals("Menu"))
-			renderMenu();
-
-		game.getBatch().end();
+		//if(mode.equals("Menu"))
+			//renderMenu();
 
 	}
 
-	public void renderMenu()
+	public void loadPlayAssets()
 	{
-		Texture menu = game.getAssetManager().get("main_menu.png", Texture.class);
-		game.getBatch().draw(menu, 0, 0, TurtleWars.WIDTH, TurtleWars.HEIGHT);
-	}
-
-	public void loadAssets()
-	{
-		this.game.getAssetManager().load("main_menu.png", Texture.class);
 		this.game.getAssetManager().load("simpleTurtle.png", Texture.class);
 		this.game.getAssetManager().load("platform.png", Texture.class);
 		this.game.getAssetManager().load("bazookaTurtle.png", Texture.class);

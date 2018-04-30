@@ -11,7 +11,7 @@ public class GameModel
     private TurtleModel player1;
     private TurtleModel player2;
 
-    public enum State {Menu, Play, Options};
+    public enum State {Menu, Play, Options, CharacterSelection};
 
     public GameModel()
     {
