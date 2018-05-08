@@ -11,7 +11,7 @@ public class CactusView extends EntityView
         super(game);
     }
 
-    public Sprite createSprite(TurtleWars game) //TODO Check if this is okay
+    public Sprite createSprite(TurtleWars game)
     {
         Texture tex = game.getAssetManager().get("cactus.png", Texture.class);
 

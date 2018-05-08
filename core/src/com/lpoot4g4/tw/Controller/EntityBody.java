@@ -1,12 +1,13 @@
 package com.lpoot4g4.tw.Controller;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.lpoot4g4.tw.Model.EntityModel;
 
 public abstract class EntityBody
 {
-    private Body body;
+    protected Body body;
 
     EntityBody(World world, EntityModel model)
     {
@@ -16,7 +17,11 @@ public abstract class EntityBody
 
         body = world.createBody(bodyDef);
         body.setUserData(model);
+
+        createFixture();
     }
+
+    public abstract void  createFixture();
 
     /**
      * Wraps the getX method from the Box2D body class.

@@ -4,8 +4,13 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.lpoot4g4.tw.Controller.GameWorld;
 import com.lpoot4g4.tw.Model.GameModel;
+import com.lpoot4g4.tw.View.CharacterSelectionView;
 import com.lpoot4g4.tw.View.GameView;
+import com.lpoot4g4.tw.View.MenuView;
+import com.lpoot4g4.tw.View.OptionsView;
+import com.lpoot4g4.tw.View.PlayView;
 
 public class TurtleWars extends Game
 {
@@ -25,8 +30,7 @@ public class TurtleWars extends Game
     {
         batch = new SpriteBatch();
         assetManager = new AssetManager();
-        Gdx.gl.glClearColor(1,0,0,1);
-
+        Gdx.gl.glClearColor(0.1f,0.9f,0.9f,1);
         startGame();
     }
 
@@ -35,7 +39,34 @@ public class TurtleWars extends Game
      */
     private void startGame()
     {
-        setScreen(new GameView(this));
+        GameModel gm = new GameModel();
+
+        setScreen(new MenuView(this, gm));
+    }
+
+    public void setMenu(GameModel gm)
+    {
+        setScreen(new MenuView(this, gm));
+    }
+
+    public void setOptions(GameModel gm)
+    {
+        setScreen(new OptionsView(this, gm));
+    }
+
+    public void setCharacterSelection(GameModel gm)
+    {
+        setScreen(new CharacterSelectionView(this, gm));
+    }
+
+    public void setPlay(GameModel gm)
+    {
+        setScreen(new PlayView(this, gm));
+    }
+
+    public void exit()
+    {
+        return;
     }
 
     /**

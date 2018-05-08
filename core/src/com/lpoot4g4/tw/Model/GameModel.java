@@ -4,27 +4,26 @@ import java.util.ArrayList;
 
 public class GameModel
 {
-    private static GameModel instance;
     private State state;
     private ArrayList<CactusModel> cacti;
-    private ArrayList<PlatformModel> platforms;
+    private PlatformModel floor;
     private TurtleModel player1;
     private TurtleModel player2;
 
-    public enum State {Menu, Play, Options, CharacterSelection};
+    public enum State {Menu, Play, Options, CharacterSelection, Exit};
 
     public GameModel()
     {
         cacti = new ArrayList<CactusModel>();
-        platforms = new ArrayList<PlatformModel>();
-        player1 = new TurtleModel(10, 10, TurtleModel.TurtleClass.Light);
-        player2 = new TurtleModel(90, 10, TurtleModel.TurtleClass.Light);
+        floor = new PlatformModel(0, 0);
+        player1 = new TurtleModel(5, 100, TurtleModel.TurtleClass.Light);
+        player2 = new TurtleModel(90, 30, TurtleModel.TurtleClass.Light);
         state = State.Menu;
     }
 
-    public static GameModel getInstance()
+    public void update()
     {
-        return instance;
+
     }
 
     public ArrayList<CactusModel> getCacti()
@@ -42,19 +41,14 @@ public class GameModel
         return player2;
     }
 
-    public ArrayList<PlatformModel> getPlatforms()
+    public PlatformModel getFloor()
     {
-        return platforms;
+        return floor;
     }
 
     public State getState()
     {
         return state;
-    }
-
-    public static void setInstance(GameModel instance)
-    {
-        GameModel.instance = instance;
     }
 
     public void setCacti(ArrayList<CactusModel> cacti)
@@ -72,9 +66,9 @@ public class GameModel
         this.player2 = player2;
     }
 
-    public void setPlatforms(ArrayList<PlatformModel> platforms)
+    public void setFloor(PlatformModel floor)
     {
-        this.platforms = platforms;
+        this.floor = floor;
     }
 
     public void setState(State st)

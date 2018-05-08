@@ -15,4 +15,9 @@ public class TurtleModel extends EntityModel
         health = MAX_HEALTH;
         turtleClass = tc;
     }
+
+    public void setTurtleClass(TurtleClass turtleClass)
+    {
+        this.turtleClass = turtleClass;
+    }
 }

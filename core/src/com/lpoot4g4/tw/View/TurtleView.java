@@ -11,7 +11,7 @@ public class TurtleView extends EntityView
         super(game);
     }
 
-    public Sprite createSprite(TurtleWars game) //TODO Differentiante between types of turtles
+    public Sprite createSprite(TurtleWars game) //TODO Differentiate between types of turtles
     {
         Texture txt = new Texture("bazookaTurtle.png");
 

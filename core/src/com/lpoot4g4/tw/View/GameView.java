@@ -35,6 +35,7 @@ public class GameView extends ScreenAdapter
 	//private final OrthographicCamera camera;
 
 	private MenuView mainMenu;
+	private PlayView playScreen;
 
 	/**
 	 * Creates this screen.
@@ -45,13 +46,11 @@ public class GameView extends ScreenAdapter
 	{
 		this.game = game;
 
-		GameModel.setInstance(new GameModel());
-
+		/*
 		mainMenu = new MenuView(game);
-
+		playScreen = new PlayView(game);
 		mainMenu.loadAssets();
-
-		//camera = createCamera();
+		*/
 	}
 
 	/**
@@ -73,30 +72,40 @@ public class GameView extends ScreenAdapter
 	@Override
 	public void render(float delta)
 	{
+		/*
+		String state = GameModel.getInstance().getState().toString();
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		if(GameModel.getInstance().getState().toString().equals("Menu"))
-		{
+		handleInput(delta);
+
+		if(state.equals("Menu"))
 			mainMenu.render(delta);
-		}
+		else
+			if(state.equals("Play"))
+			{
+				if(mainMenu.isLoadPlayAssets())
+				{
+					playScreen.loadAssets();
+					mainMenu.setLoadPlayAssets(false);
+				}
 
-		//handleInputs()
+				playScreen.render(delta);
 
-		String mode = GameModel.getInstance().getState().toString();
+			}
 
-		//if(mode.equals("Menu"))
-			//renderMenu();
-
+			if(state.equals("Exit")) //TODO Actually Exit and unload resources
+				return;
+ */
 	}
 
-	public void loadPlayAssets()
+	public void handleInput(float delta)
 	{
-		this.game.getAssetManager().load("simpleTurtle.png", Texture.class);
-		this.game.getAssetManager().load("platform.png", Texture.class);
-		this.game.getAssetManager().load("bazookaTurtle.png", Texture.class);
-		this.game.getAssetManager().load("projectile.png", Texture.class);
-		this.game.getAssetManager().load("cactus.png", Texture.class);
-		this.game.getAssetManager().finishLoading();
+		/*if(GameModel.getInstance().getState().toString().equals("Menu"))
+			mainMenu.handleInputs(delta); */
 	}
 
+	public PlayView getPlayScreen()
+	{
+		return playScreen;
+	}
 }
