@@ -5,6 +5,8 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.lpoot4g4.tw.Model.EntityModel;
 
+import static com.lpoot4g4.tw.View.GameView.PIXEL_TO_METER;
+
 public abstract class EntityBody
 {
     protected Body body;
@@ -13,7 +15,7 @@ public abstract class EntityBody
     {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(model.getX(), model.getY());
+        bodyDef.position.set(model.getX() * PIXEL_TO_METER, model.getY() * PIXEL_TO_METER);
 
         body = world.createBody(bodyDef);
         body.setUserData(model);

@@ -8,8 +8,8 @@ public class DesktopLauncher {
 	public static void main (String[] arg)
 	{
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.width = TurtleWars.WIDTH;
-		config.height = TurtleWars.HEIGHT;
+		config.width = (int) TurtleWars.WIDTH;
+		config.height = (int) TurtleWars.HEIGHT;
 		config.title = TurtleWars.TITLE;
 		new LwjglApplication(new TurtleWars(), config);
 	}

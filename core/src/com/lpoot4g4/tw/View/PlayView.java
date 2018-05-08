@@ -22,6 +22,7 @@ public class PlayView extends ScreenAdapter
     private Sprite floor;
     private OrthographicCamera camera;
     private Box2DDebugRenderer debugRenderer;
+    private static boolean debugPhysics = true;
 
     public final static float PIXEL_TO_METER = 0.01f;
 
@@ -32,7 +33,10 @@ public class PlayView extends ScreenAdapter
         gameWorld = new GameWorld(gameModel);
 
         camera = new OrthographicCamera();
-        
+        camera.setToOrtho(false, TurtleWars.WIDTH * PIXEL_TO_METER, TurtleWars.HEIGHT * PIXEL_TO_METER);
+        camera.position.set(TurtleWars.WIDTH / 2, TurtleWars.HEIGHT / 2, 0);
+
+        debugRenderer = new Box2DDebugRenderer();
         loadAssets();
     }
 
@@ -74,6 +78,11 @@ public class PlayView extends ScreenAdapter
         bazookaTurtle.setPosition(gameModel.getPlayer1().getX(), gameModel.getPlayer1().getY());
         bazookaTurtle.draw(game.getBatch());
         game.getBatch().end();
+
+        if(debugPhysics)
+            debugRenderer.render(gameWorld.getWorld(), camera.combined);
+
+
     }
 
     public void handleInputs(float delta)

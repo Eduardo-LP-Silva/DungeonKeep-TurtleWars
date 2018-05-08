@@ -9,6 +9,8 @@ import com.lpoot4g4.tw.Model.GameModel;
 
 import java.util.ArrayList;
 
+import static com.lpoot4g4.tw.View.PlayView.PIXEL_TO_METER;
+
 public class GameWorld
 {
     private ArrayList<CactusBody> cacti;
@@ -23,7 +25,7 @@ public class GameWorld
         world = new World(new Vector2(0, -9.8f), true);
         gameModel = gm;
         player1 = new TurtleBody(world, gameModel.getPlayer1());
-        player2 = new TurtleBody(world, gameModel.getPlayer2());
+        //player2 = new TurtleBody(world, gameModel.getPlayer2());
         cacti = new ArrayList<CactusBody>();
         floor = new PlatformBody(world, gameModel.getFloor());
     }
@@ -43,6 +45,7 @@ public class GameWorld
         world.getBodies(bodies);
 
         for (Body body : bodies)
-            ((EntityModel) body.getUserData()).setPosition(body.getPosition().x, body.getPosition().y);
+            ((EntityModel) body.getUserData()).setPosition(body.getPosition().x / PIXEL_TO_METER, body.getPosition().y / PIXEL_TO_METER);
+
     }
 }

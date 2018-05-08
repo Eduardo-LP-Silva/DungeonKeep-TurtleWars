@@ -17,8 +17,8 @@ public class TurtleWars extends Game
     private SpriteBatch batch;
     private AssetManager assetManager;
 
-    public static final int WIDTH = 800;
-    public static final int HEIGHT = 400;
+    public static final float WIDTH = 800.0f;
+    public static final float HEIGHT = 400.0f;
     public static final String TITLE = "Turtle Wars";
 
     /**
