@@ -4,15 +4,16 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.lpoot4g4.tw.TurtleWars;
 
-public class PlatformView extends EntityView
+public class heavyTurtleView extends TurtleView
 {
-    public PlatformView(TurtleWars game)
+    public heavyTurtleView(TurtleWars game)
     {
         super(game);
     }
 
+    @Override
     public Sprite createSprite(TurtleWars game)
     {
-        return new Sprite(game.getAssetManager().get("platform.png", Texture.class));
+        return new Sprite(game.getAssetManager().get("heavyTurtle.png", Texture.class));
     }
 }

@@ -1,5 +1,5 @@
 package com.lpoot4g4.tw.Controller;
-import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -9,7 +9,7 @@ public class CactusBody extends EntityBody
 {
     public CactusBody(World world, CactusModel ct)
     {
-        super(world, ct);
+        super(world, ct, BodyDef.BodyType.StaticBody);
     }
 
 

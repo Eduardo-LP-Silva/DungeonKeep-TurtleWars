@@ -1,13 +1,11 @@
 package com.lpoot4g4.tw.View;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.lpoot4g4.tw.Controller.GameWorld;
 import com.lpoot4g4.tw.Model.GameModel;
@@ -18,8 +16,9 @@ public class PlayView extends ScreenAdapter
     private TurtleWars game;
     private GameModel gameModel;
     private GameWorld gameWorld;
-    private Sprite bazookaTurtle;
-    private Sprite floor;
+    private TurtleView player1;
+    private TurtleView player2;
+    private PlatformView floor;
     private OrthographicCamera camera;
     private Box2DDebugRenderer debugRenderer;
     private static boolean debugPhysics = true;
@@ -49,10 +48,17 @@ public class PlayView extends ScreenAdapter
         this.game.getAssetManager().load("cactus.png", Texture.class);
         this.game.getAssetManager().finishLoading();
 
-        bazookaTurtle = new Sprite(this.game.getAssetManager().get("bazookaTurtle.png", Texture.class));
+        if(gameModel.getPlayer1().getTurtleClass().toString().equals("Light"))
+            player1 = new lightTurtleView(game);
+        else
+            player1 = new heavyTurtleView(game);
 
-        floor = new Sprite(this.game.getAssetManager().get("platform.png", Texture.class));
-        floor.setPosition(0,0);
+        if(gameModel.getPlayer2().getTurtleClass().toString().equals("Light"))
+            player2 = new lightTurtleView(game);
+        else
+            player2 = new heavyTurtleView(game);
+
+        floor = new PlatformView(game);
     }
 
     public void unloadAssets()
@@ -75,8 +81,12 @@ public class PlayView extends ScreenAdapter
         game.getBatch().draw(game.getAssetManager().get("background.png", Texture.class), 0, 0, game.WIDTH, game.HEIGHT);
         floor.draw(game.getBatch());
 
-        bazookaTurtle.setPosition(gameModel.getPlayer1().getX(), gameModel.getPlayer1().getY());
-        bazookaTurtle.draw(game.getBatch());
+        player1.getSprite().setPosition(gameModel.getPlayer1().getX(), gameModel.getPlayer1().getY());
+        player1.draw(game.getBatch());
+
+        player2.getSprite().setPosition(gameModel.getPlayer2().getX(), gameModel.getPlayer2().getY());
+        player2.draw(game.getBatch());
+
         game.getBatch().end();
 
         if(debugPhysics)
@@ -87,8 +97,14 @@ public class PlayView extends ScreenAdapter
 
     public void handleInputs(float delta)
     {
-       //if(Gdx.input.isKeyPressed(Input.Keys.A))
-          // gameModel.getPlayer1().setX();
+       if(Gdx.input.isKeyPressed(Input.Keys.A))
+          gameWorld.getPlayer1().moveLeft();
+
+        if(Gdx.input.isKeyPressed(Input.Keys.D))
+            gameWorld.getPlayer1().moveRight();
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.W))
+            gameWorld.getPlayer1().jump();
 
     }
 }

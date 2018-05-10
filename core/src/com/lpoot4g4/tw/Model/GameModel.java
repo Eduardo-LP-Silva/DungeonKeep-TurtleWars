@@ -16,8 +16,8 @@ public class GameModel
     {
         cacti = new ArrayList<CactusModel>();
         floor = new PlatformModel(0, 0);
-        player1 = new TurtleModel(5, 60, TurtleModel.TurtleClass.Light);
-        player2 = new TurtleModel(90, 30, TurtleModel.TurtleClass.Light);
+        player1 = new TurtleModel(5, 200, TurtleModel.TurtleClass.Light);
+        player2 = new TurtleModel(700, 200, TurtleModel.TurtleClass.Light);
         state = State.Menu;
     }
 

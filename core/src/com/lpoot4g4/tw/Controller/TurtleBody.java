@@ -1,6 +1,7 @@
 package com.lpoot4g4.tw.Controller;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -12,7 +13,7 @@ public class TurtleBody extends EntityBody
 
     public TurtleBody(World world, TurtleModel tm)
     {
-        super(world, tm);
+        super(world, tm, BodyDef.BodyType.DynamicBody);
 
         if(tm.getClass().toString().equals("Ligth"))
             speed = 12.42f;
@@ -20,9 +21,22 @@ public class TurtleBody extends EntityBody
             speed = 8;
     }
 
-    public void moveLeft(float delta)
+    public void moveLeft()
     {
+        body.applyLinearImpulse(new Vector2(-1,0), body.getWorldCenter(), true);
+    }
 
+    public void moveRight()
+    {
+        body.applyLinearImpulse(new Vector2(1,0), body.getWorldCenter(), true);
+    }
+
+    public void jump()
+    {
+        System.out.println(body.getLinearVelocity().y);
+
+        if(!((TurtleModel) body.getUserData()).isJumping())
+            body.applyLinearImpulse(new Vector2(0,30), body.getWorldCenter(), true);
     }
 
     @Override
@@ -34,6 +48,7 @@ public class TurtleBody extends EntityBody
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 10;
+        fixtureDef.friction = 0.5f;
 
         body.createFixture(fixtureDef);
 

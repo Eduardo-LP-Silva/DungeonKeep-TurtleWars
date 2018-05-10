@@ -4,14 +4,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.lpoot4g4.tw.Model.EntityModel;
 import com.lpoot4g4.tw.TurtleWars;
 
-import static com.lpoot4g4.tw.View.GameView.PIXEL_TO_METER;
+import static com.lpoot4g4.tw.View.PlayView.PIXEL_TO_METER;
 
 public abstract class EntityView
 {
     /**
      * The sprite representing this entity view.
      */
-    private Sprite sprite;
+    protected Sprite sprite;
 
     /**
      * Creates a view belonging to a game.
@@ -22,6 +22,11 @@ public abstract class EntityView
     public EntityView(TurtleWars game)
     {
         sprite = createSprite(game);
+    }
+
+    public Sprite getSprite()
+    {
+        return sprite;
     }
 
     /**
@@ -54,4 +59,6 @@ public abstract class EntityView
     {
         sprite.setCenter(model.getX() / PIXEL_TO_METER, model.getY() / PIXEL_TO_METER);
     }
+
+
 }

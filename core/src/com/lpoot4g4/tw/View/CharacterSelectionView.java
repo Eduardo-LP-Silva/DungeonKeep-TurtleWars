@@ -13,7 +13,7 @@ public class CharacterSelectionView extends ScreenAdapter
 {
     private TurtleWars game;
     private GameModel gameModel;
-    private Sprite lighTurtle;
+    private Sprite lightTurtle;
     private Sprite heavyTurtle;
     private Sprite startGame;
 
@@ -32,8 +32,8 @@ public class CharacterSelectionView extends ScreenAdapter
         game.getAssetManager().load("newGameBtn.png", Texture.class);
         game.getAssetManager().finishLoading();
 
-        lighTurtle = new Sprite(game.getAssetManager().get("bazookaTurtle.png", Texture.class));
-        lighTurtle.setPosition(200, 230);
+        lightTurtle = new Sprite(game.getAssetManager().get("bazookaTurtle.png", Texture.class));
+        lightTurtle.setPosition(200, 230);
 
         heavyTurtle = new Sprite(game.getAssetManager().get("heavyTurtle.png", Texture.class));
         heavyTurtle.setPosition(400, 230);
@@ -50,7 +50,7 @@ public class CharacterSelectionView extends ScreenAdapter
 
         game.getBatch().begin();
         game.getBatch().draw(game.getAssetManager().get("characterSelection.png", Texture.class), 0, 0, TurtleWars.WIDTH, TurtleWars.HEIGHT);
-        lighTurtle.draw(game.getBatch());
+        lightTurtle.draw(game.getBatch());
         heavyTurtle.draw(game.getBatch());
         startGame.draw(game.getBatch());
         game.getBatch().end();
@@ -60,14 +60,16 @@ public class CharacterSelectionView extends ScreenAdapter
     {
         if(Gdx.input.isTouched())
         {
-            if(lighTurtle.getBoundingRectangle().contains(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY()))
+            if(lightTurtle.getBoundingRectangle().contains(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY()))
                 gameModel.getPlayer1().setTurtleClass(TurtleModel.TurtleClass.Light);
+
 
             if(heavyTurtle.getBoundingRectangle().contains(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY()))
                 gameModel.getPlayer1().setTurtleClass(TurtleModel.TurtleClass.Heavy);
 
             if(startGame.getBoundingRectangle().contains(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY()))
                 game.setPlay(gameModel);
+
         }
     }
 }
