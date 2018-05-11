@@ -5,7 +5,9 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -13,10 +15,8 @@ import com.lpoot4g4.tw.Model.EntityModel;
 import com.lpoot4g4.tw.Model.GameModel;
 import com.lpoot4g4.tw.Model.PlatformModel;
 import com.lpoot4g4.tw.Model.TurtleModel;
-import com.lpoot4g4.tw.TurtleWars;
 
 import java.util.ArrayList;
-
 import static com.lpoot4g4.tw.View.PlayView.PIXEL_TO_METER;
 
 public class GameWorld implements ContactListener
@@ -68,12 +68,20 @@ public class GameWorld implements ContactListener
         world.getBodies(bodies);
 
         for (Body body : bodies)
-            ((EntityModel) body.getUserData()).setPosition(body.getPosition().x / PIXEL_TO_METER, body.getPosition().y / PIXEL_TO_METER);
+        {
+            ((EntityModel) body.getUserData()).setPosition(body.getPosition().x / PIXEL_TO_METER,
+                    body.getPosition().y / PIXEL_TO_METER);
+        }
     }
 
-    public void handleInputs(float delta)
+    public void turtleContact(Contact contact)
     {
+        Fixture turtleFxt = contact.getFixtureA(), fxtB = contact.getFixtureB();
 
+        if(fxtB.getBody().getUserData() instanceof TurtleModel)
+        {
+
+        }
     }
 
     @Override
@@ -81,9 +89,13 @@ public class GameWorld implements ContactListener
     {
         Fixture fixtureA = contact.getFixtureA(), fixtureB = contact.getFixtureB();
 
-        //if(fixtureA.getBody().getUserData() instanceof TurtleModel)
+        if(fixtureA.getBody().getUserData() instanceof TurtleModel)
+            if(fixtureA.getUserData().equals("Turtle Bottom"))
+                ((TurtleModel) fixtureA.getBody().getUserData()).setJumping(false);
 
-
+        if(fixtureB.getBody().getUserData() instanceof TurtleModel)
+            if(fixtureB.getUserData().equals("Turtle Bottom"))
+                ((TurtleModel) fixtureB.getBody().getUserData()).setJumping(false);
 
     }
 

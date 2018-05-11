@@ -25,7 +25,7 @@ public class wallBody extends EntityBody
         fixtureDef.shape = shape;
         fixtureDef.density = 100;
 
-        body.createFixture(fixtureDef);
+        body.createFixture(fixtureDef).setUserData("Wall");
 
         shape.dispose();
     }

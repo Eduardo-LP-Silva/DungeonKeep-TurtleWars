@@ -10,12 +10,15 @@ import static com.lpoot4g4.tw.View.PlayView.PIXEL_TO_METER;
 public abstract class EntityBody
 {
     protected Body body;
+    protected float Width; //Pixels
+    protected float Height; //Pixels
 
     EntityBody(World world, EntityModel model, BodyDef.BodyType bt)
     {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = bt;
         bodyDef.position.set(model.getX() * PIXEL_TO_METER, model.getY() * PIXEL_TO_METER);
+        bodyDef.fixedRotation = true;
 
         body = world.createBody(bodyDef);
         body.setUserData(model);
@@ -50,5 +53,11 @@ public abstract class EntityBody
         return body.getPosition().y;
     }
 
+    public float getWidth() {
+        return Width;
+    }
 
+    public float getHeight() {
+        return Height;
+    }
 }

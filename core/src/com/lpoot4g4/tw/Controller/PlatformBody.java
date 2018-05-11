@@ -12,6 +12,9 @@ public class PlatformBody extends EntityBody
     public PlatformBody(World world, PlatformModel pm)
     {
         super(world, pm, BodyDef.BodyType.StaticBody);
+
+        Width = 800;
+        Height = 48;
     }
 
     @Override
@@ -25,7 +28,7 @@ public class PlatformBody extends EntityBody
         fixtureDef.density = 100;
         fixtureDef.friction = 0.5f;
 
-        body.createFixture(fixtureDef);
+        body.createFixture(fixtureDef).setUserData("Platform");
 
         shape.dispose();
     }

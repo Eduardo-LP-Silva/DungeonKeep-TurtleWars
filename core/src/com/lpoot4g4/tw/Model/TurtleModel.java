@@ -9,13 +9,16 @@ public class TurtleModel extends EntityModel
     private TurtleClass turtleClass;
     private int health;
     private boolean jumping;
+    private boolean bitting;
 
     public TurtleModel(float x,float y, TurtleClass tc)
     {
         super(x,y);
+
         health = MAX_HEALTH;
         turtleClass = tc;
         jumping = false;
+        bitting = false;
     }
 
     public TurtleClass getTurtleClass()
@@ -31,5 +34,9 @@ public class TurtleModel extends EntityModel
     public void setTurtleClass(TurtleClass turtleClass)
     {
         this.turtleClass = turtleClass;
+    }
+
+    public void setJumping(boolean jumping) {
+        this.jumping = jumping;
     }
 }

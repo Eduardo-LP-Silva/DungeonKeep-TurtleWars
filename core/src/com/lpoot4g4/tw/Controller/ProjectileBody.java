@@ -11,6 +11,8 @@ public class ProjectileBody extends EntityBody
     public ProjectileBody(World w, ProjectileModel pm)
     {
         super(w, pm, BodyDef.BodyType.DynamicBody);
+
+        //TODO Initialize Width and Heigth
     }
 
     @Override

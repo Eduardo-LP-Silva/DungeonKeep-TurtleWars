@@ -10,6 +10,9 @@ public class CactusBody extends EntityBody
     public CactusBody(World world, CactusModel ct)
     {
         super(world, ct, BodyDef.BodyType.StaticBody);
+
+        Width = 133;
+        Height = 229;
     }
 
 
@@ -23,7 +26,7 @@ public class CactusBody extends EntityBody
         fixtureDef.shape = shape;
         fixtureDef.density = 10;
 
-        body.createFixture(fixtureDef);
+        body.createFixture(fixtureDef).setUserData("Cactus");
 
         shape.dispose();
     }

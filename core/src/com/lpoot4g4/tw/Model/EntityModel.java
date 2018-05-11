@@ -2,8 +2,8 @@ package com.lpoot4g4.tw.Model;
 
 public abstract class EntityModel
 {
-    private float x;
-    private float y;
+    protected float x;
+    protected float y;
 
     public EntityModel(float x,float y)
     {
@@ -17,12 +17,10 @@ public abstract class EntityModel
         this.y = y;
     }
 
-
     public float getX()
     {
         return this.x;
     }
-
 
     public float getY()
     {
