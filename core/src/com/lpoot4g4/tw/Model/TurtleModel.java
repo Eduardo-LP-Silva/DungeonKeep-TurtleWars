@@ -1,11 +1,11 @@
 package com.lpoot4g4.tw.Model;
-import com.lpoot4g4.tw.Model.EntityModel;
 
 public class TurtleModel extends EntityModel
 {
     public enum TurtleClass {Light, Heavy}
 
     private final static int MAX_HEALTH = 100;
+
     private TurtleClass turtleClass;
     private int health;
     private boolean jumping;
@@ -43,6 +43,10 @@ public class TurtleModel extends EntityModel
 
     public int getMelee_damage() {
         return melee_damage;
+    }
+
+    public int getHealth() {
+        return health;
     }
 
     public void setTurtleClass(TurtleClass turtleClass)

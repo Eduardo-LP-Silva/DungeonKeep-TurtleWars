@@ -1,5 +1,7 @@
 package com.lpoot4g4.tw.Model;
 
+import com.badlogic.gdx.Gdx;
+
 import java.util.ArrayList;
 
 public class GameModel

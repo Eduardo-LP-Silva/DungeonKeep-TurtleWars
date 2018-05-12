@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Timer;
 import com.lpoot4g4.tw.Model.TurtleModel;
 import static com.lpoot4g4.tw.View.PlayView.PIXEL_TO_METER;
 
@@ -64,6 +65,15 @@ public class TurtleBody extends EntityBody
     public void bite()
     {
         ((TurtleModel) body.getUserData()).setBiting(true);
+
+        Timer.schedule(new Timer.Task()
+        {
+            @Override
+            public void run()
+            {
+                ((TurtleModel) body.getUserData()).setBiting(false);
+            }
+        }, 1.5f);
     }
 
     @Override

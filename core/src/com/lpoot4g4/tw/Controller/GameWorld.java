@@ -103,7 +103,6 @@ public class GameWorld implements ContactListener
         {
             if(turtleFxtA.getUserData().equals("Turtle Left Side") || turtleFxtA.getUserData().equals("Turtle Right Side"))
             {
-                
                 turtleModelA.setJumping(false);
             }
 

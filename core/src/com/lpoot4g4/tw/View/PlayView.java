@@ -92,7 +92,6 @@ public class PlayView extends ScreenAdapter
         if(debugPhysics)
             debugRenderer.render(gameWorld.getWorld(), camera.combined);
 
-
     }
 
     public void handleInputs(float delta)
