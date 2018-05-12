@@ -28,7 +28,7 @@ public class TurtleBody extends EntityBody
 
     public void moveLeft()
     {
-        if(body.getLinearVelocity().x >= -7)
+        if(body.getLinearVelocity().x >= -7 && getX() > 0.5f)
         {
             /*
             if(body.getLinearVelocity().x > 0)
@@ -42,7 +42,7 @@ public class TurtleBody extends EntityBody
     public void moveRight()
     {
 
-        if(body.getLinearVelocity().x <= 7)
+        if(body.getLinearVelocity().x <= 7 && getX() + getWidth() * PIXEL_TO_METER < 795f * PIXEL_TO_METER)
         {
            /* if(body.getLinearVelocity().x < 0)
                 body.setLinearVelocity(0, body.getLinearVelocity().y); */
@@ -59,6 +59,11 @@ public class TurtleBody extends EntityBody
             body.applyLinearImpulse(new Vector2(0,30), body.getWorldCenter(), true);
             ((TurtleModel) body.getUserData()).setJumping(true);
         }
+    }
+
+    public void bite()
+    {
+        ((TurtleModel) body.getUserData()).setBiting(true);
     }
 
     @Override
@@ -106,6 +111,15 @@ public class TurtleBody extends EntityBody
 
         //Right Side Fixture
 
-        
+        EdgeShape rightSide = new EdgeShape();
+
+        rightSide.set(new Vector2((this.getWidth() / 2) * PIXEL_TO_METER + 1, (this.getHeight() / 2) * PIXEL_TO_METER),
+                new Vector2((this.getWidth() / 2) * PIXEL_TO_METER, - (this.getHeight() / 2) * PIXEL_TO_METER));
+
+        fixtureDef.shape = rightSide;
+        fixtureDef.isSensor = true;
+        body.createFixture(fixtureDef).setUserData("Turtle Right Side");
+
+        rightSide.dispose();
     }
 }

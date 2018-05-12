@@ -76,11 +76,58 @@ public class GameWorld implements ContactListener
 
     public void turtleContact(Contact contact)
     {
-        Fixture turtleFxt = contact.getFixtureA(), fxtB = contact.getFixtureB();
+        Fixture turtleFxtA = contact.getFixtureA(), fxtB = contact.getFixtureB();
+        TurtleModel turtleModelA = (TurtleModel) turtleFxtA.getBody().getUserData();
+
+        if(turtleFxtA.getUserData().equals("Turtle Bottom"))
+            turtleModelA.setJumping(false);
 
         if(fxtB.getBody().getUserData() instanceof TurtleModel)
         {
+            TurtleModel turtleModelB = (TurtleModel) fxtB.getBody().getUserData();
 
+            if(turtleModelA.isBiting())
+                if((turtleFxtA.getUserData().equals("Turtle Left Side") && turtleModelA.getX() > turtleModelB.getX())
+                        || (turtleFxtA.getUserData().equals("Turtle Right Side") && turtleModelA.getX() < turtleModelB.getX()))
+                turtleModelB.inflictDamage(turtleModelA.getMelee_damage());
+
+            if(turtleModelB.isBiting())
+                if((fxtB.getUserData().equals("Turtle Left Side") && turtleModelB.getX() > turtleModelA.getX())
+                        || (fxtB.getUserData().equals("Turtle Right Side") && turtleModelB.getX() < turtleModelA.getX()))
+                    turtleModelA.inflictDamage(turtleModelB.getMelee_damage());
+
+            return;
+        }
+
+        if(fxtB.getUserData().equals("Wall"))
+        {
+            if(turtleFxtA.getUserData().equals("Turtle Left Side") || turtleFxtA.getUserData().equals("Turtle Right Side"))
+            {
+                
+                turtleModelA.setJumping(false);
+            }
+
+            return;
+        }
+
+    }
+
+    public void wallContact(Contact contact)
+    {
+        Fixture wallFxtA = contact.getFixtureA(), fxtB = contact.getFixtureB();
+
+        if(fxtB.getBody().getUserData() instanceof TurtleModel)
+        {
+            TurtleModel turtleModel = (TurtleModel) fxtB.getBody().getUserData();
+
+            if(fxtB.getUserData().equals("Turtle Bottom"))
+                turtleModel.setJumping(false);
+
+            if(fxtB.getUserData().equals("Turtle Left Side") || fxtB.getUserData().equals("Turtle Right Side"))
+            {
+                System.out.print("asd\n");
+                turtleModel.setJumping(false);
+            }
         }
     }
 
@@ -90,12 +137,10 @@ public class GameWorld implements ContactListener
         Fixture fixtureA = contact.getFixtureA(), fixtureB = contact.getFixtureB();
 
         if(fixtureA.getBody().getUserData() instanceof TurtleModel)
-            if(fixtureA.getUserData().equals("Turtle Bottom"))
-                ((TurtleModel) fixtureA.getBody().getUserData()).setJumping(false);
-
-        if(fixtureB.getBody().getUserData() instanceof TurtleModel)
-            if(fixtureB.getUserData().equals("Turtle Bottom"))
-                ((TurtleModel) fixtureB.getBody().getUserData()).setJumping(false);
+            turtleContact(contact);
+        else
+            if(fixtureA.getUserData().equals("Wall"))
+                wallContact(contact);
 
     }
 

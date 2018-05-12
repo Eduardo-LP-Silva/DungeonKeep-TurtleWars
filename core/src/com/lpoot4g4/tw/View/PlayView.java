@@ -106,5 +106,8 @@ public class PlayView extends ScreenAdapter
         if(Gdx.input.isKeyJustPressed(Input.Keys.W))
             gameWorld.getPlayer1().jump();
 
+        if(Gdx.input.isKeyJustPressed(Input.Keys.E))
+            gameWorld.getPlayer1().bite();
+
     }
 }
