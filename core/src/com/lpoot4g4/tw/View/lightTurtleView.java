@@ -9,6 +9,8 @@ public class lightTurtleView extends TurtleView
     public lightTurtleView(TurtleWars game)
     {
         super(game);
+
+        backwardsTurtle = new Sprite(game.getAssetManager().get("lightTurtleBackwards.png", Texture.class));
     }
 
     @Override

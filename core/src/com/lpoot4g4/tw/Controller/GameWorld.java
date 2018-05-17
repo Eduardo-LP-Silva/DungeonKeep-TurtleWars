@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.Array;
 import com.lpoot4g4.tw.Model.EntityModel;
 import com.lpoot4g4.tw.Model.GameModel;
 import com.lpoot4g4.tw.Model.PlatformModel;
+import com.lpoot4g4.tw.Model.ProjectileModel;
 import com.lpoot4g4.tw.Model.TurtleModel;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class GameWorld implements ContactListener
     private PlatformBody floor;
     private wallBody leftWall;
     private wallBody rightWall;
+    private ArrayList<ProjectileBody> missiles;
     private GameModel gameModel;
 
     public GameWorld(GameModel gm)
@@ -40,6 +42,7 @@ public class GameWorld implements ContactListener
         floor = new PlatformBody(world, gameModel.getFloor());
         leftWall = new wallBody(world, new PlatformModel(0,0));
         rightWall =  new wallBody(world, new PlatformModel(800,0));
+        missiles = new ArrayList<ProjectileBody>();
         world.setContactListener(this);
     }
 
@@ -72,6 +75,20 @@ public class GameWorld implements ContactListener
             ((EntityModel) body.getUserData()).setPosition(body.getPosition().x / PIXEL_TO_METER,
                     body.getPosition().y / PIXEL_TO_METER);
         }
+    }
+
+    public void FireTurtle1()
+    {
+        ProjectileModel missile =
+                new ProjectileModel(gameModel.getPlayer1().getX() + player1.getWidth() + 1, gameModel.getPlayer1().getY() + player1.getHeight());
+
+        gameModel.addMissile(missile);
+
+        ProjectileBody missileBody = new ProjectileBody(world, missile);
+
+        missiles.add(missileBody);
+
+        missileBody.move();
     }
 
     public void turtleContact(Contact contact)

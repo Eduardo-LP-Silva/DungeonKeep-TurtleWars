@@ -42,6 +42,12 @@ public class CharacterSelectionView extends ScreenAdapter
         startGame.setPosition(260, 50);
     }
 
+    public void unloadAssets()
+    {
+        game.getAssetManager().unload("characterSelection.png");
+        game.getAssetManager().unload("newGameBtn.png");
+    }
+
     @Override
     public void render(float delta)
     {
@@ -63,12 +69,14 @@ public class CharacterSelectionView extends ScreenAdapter
             if(lightTurtle.getBoundingRectangle().contains(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY()))
                 gameModel.getPlayer1().setTurtleClass(TurtleModel.TurtleClass.Light);
 
-
             if(heavyTurtle.getBoundingRectangle().contains(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY()))
                 gameModel.getPlayer1().setTurtleClass(TurtleModel.TurtleClass.Heavy);
 
             if(startGame.getBoundingRectangle().contains(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY()))
+            {
                 game.setPlay(gameModel);
+                //unloadAssets();
+            }
 
         }
     }

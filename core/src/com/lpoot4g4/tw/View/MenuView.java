@@ -9,6 +9,8 @@ import com.lpoot4g4.tw.Controller.GameWorld;
 import com.lpoot4g4.tw.Model.GameModel;
 import com.lpoot4g4.tw.TurtleWars;
 
+import java.util.concurrent.TimeUnit;
+
 public class MenuView extends ScreenAdapter
 {
     private TurtleWars game;
@@ -59,8 +61,6 @@ public class MenuView extends ScreenAdapter
 
     public void unloadAssets()
     {
-        this.game.getAssetManager().unload("menuBackground.png");
-        this.game.getAssetManager().unload("newGameBtn.png");
         this.game.getAssetManager().unload("optionsBtn.png");
         this.game.getAssetManager().unload("exitBtn.png");
     }
@@ -70,13 +70,19 @@ public class MenuView extends ScreenAdapter
         if(Gdx.input.isTouched())
         {
             if(newGameBtn.getBoundingRectangle().contains(Gdx.input.getX(),  Gdx.graphics.getHeight() - Gdx.input.getY()))
+            {
                 game.setCharacterSelection(gameModel);
+                unloadAssets();
+            }
 
             if(optionsBtn.getBoundingRectangle().contains(Gdx.input.getX(),  Gdx.graphics.getHeight() - Gdx.input.getY()))
                 game.setOptions(gameModel);
 
             if(exitBtn.getBoundingRectangle().contains(Gdx.input.getX(),  Gdx.graphics.getHeight() - Gdx.input.getY()))
+            {
+                unloadAssets();
                 game.exit();
+            }
         }
     }
 }

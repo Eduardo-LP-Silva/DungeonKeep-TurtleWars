@@ -8,6 +8,7 @@ public class GameModel
 {
     private State state;
     private ArrayList<CactusModel> cacti;
+    private ArrayList<ProjectileModel> missiles;
     private PlatformModel floor;
     private TurtleModel player1;
     private TurtleModel player2;
@@ -19,7 +20,8 @@ public class GameModel
         cacti = new ArrayList<CactusModel>();
         floor = new PlatformModel(0, 0);
         player1 = new TurtleModel(5, 200, TurtleModel.TurtleClass.Light);
-        player2 = new TurtleModel(700, 200, TurtleModel.TurtleClass.Light);
+        player2 = new TurtleModel(500, 200, TurtleModel.TurtleClass.Light);
+        missiles = new ArrayList<ProjectileModel>();
         state = State.Menu;
     }
 
@@ -53,6 +55,10 @@ public class GameModel
         return state;
     }
 
+    public ArrayList<ProjectileModel> getMissiles() {
+        return missiles;
+    }
+
     public void setCacti(ArrayList<CactusModel> cacti)
     {
         this.cacti = cacti;
@@ -76,5 +82,10 @@ public class GameModel
     public void setState(State st)
     {
         state = st;
+    }
+
+    public void addMissile(ProjectileModel pm)
+    {
+        missiles.add(pm);
     }
 }

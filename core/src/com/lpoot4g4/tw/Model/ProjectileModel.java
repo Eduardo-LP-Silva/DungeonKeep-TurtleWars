@@ -3,6 +3,8 @@ package com.lpoot4g4.tw.Model;
 public class ProjectileModel extends EntityModel
 {
     public final static int BASE_DAMAGE = 20;
+    public final static float TRAVEL_SPEED = 15f;
+
     private int damage;
 
     public ProjectileModel(float x, float y)
