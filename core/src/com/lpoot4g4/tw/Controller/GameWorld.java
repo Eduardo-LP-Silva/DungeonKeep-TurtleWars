@@ -5,12 +5,12 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Timer;
+import com.lpoot4g4.tw.Model.CactusModel;
 import com.lpoot4g4.tw.Model.EntityModel;
 import com.lpoot4g4.tw.Model.GameModel;
 import com.lpoot4g4.tw.Model.PlatformModel;
@@ -56,6 +56,10 @@ public class GameWorld implements ContactListener
         return player2;
     }
 
+    public ArrayList<ProjectileBody> getMissiles() {
+        return missiles;
+    }
+
     public World getWorld()
     {
         return world;
@@ -79,8 +83,22 @@ public class GameWorld implements ContactListener
 
     public void FireTurtle1()
     {
-        ProjectileModel missile =
-                new ProjectileModel(gameModel.getPlayer1().getX() + player1.getWidth() + 1, gameModel.getPlayer1().getY() + player1.getHeight());
+        float speed;
+        int pos;
+        ProjectileModel missile;
+
+        if(player1.getX() < player2.getX())
+        {
+            speed = ProjectileModel.TRAVEL_SPEED;
+            missile = new ProjectileModel(gameModel.getPlayer1().getX() + player1.getWidth() + 10,
+                    gameModel.getPlayer1().getY() + player1.getHeight());
+        }
+        else
+        {
+            speed = - ProjectileModel.TRAVEL_SPEED;
+            missile = new ProjectileModel(gameModel.getPlayer1().getX() - 50,
+                    gameModel.getPlayer1().getY() + player1.getHeight());
+        }
 
         gameModel.addMissile(missile);
 
@@ -88,7 +106,18 @@ public class GameWorld implements ContactListener
 
         missiles.add(missileBody);
 
-        missileBody.move();
+        missileBody.move(speed);
+
+        gameModel.getPlayer1().setFiring(true);
+
+        Timer.schedule(new Timer.Task()
+        {
+            @Override
+            public void run()
+            {
+                gameModel.getPlayer1().setFiring(false);
+            }
+        }, 2f);
     }
 
     public void turtleContact(Contact contact)
@@ -126,6 +155,23 @@ public class GameWorld implements ContactListener
             return;
         }
 
+        if(fxtB.getBody().getUserData() instanceof ProjectileModel)
+        {
+            ProjectileModel pm = (ProjectileModel) fxtB.getBody().getUserData();
+
+            pm.setForRemoval();
+        }
+
+    }
+
+    public void bulletContact(Contact contact)
+    {
+        Fixture bulletFxt1 = contact.getFixtureA(), fxtB = contact.getFixtureB();
+        ProjectileModel bullet1 = (ProjectileModel) bulletFxt1.getBody().getUserData();
+
+        //TODO Hit conditions
+
+        bullet1.setForRemoval();
     }
 
     public void wallContact(Contact contact)
@@ -145,6 +191,13 @@ public class GameWorld implements ContactListener
                 turtleModel.setJumping(false);
             }
         }
+
+        if(fxtB.getBody().getUserData() instanceof ProjectileModel)
+        {
+            ProjectileModel pm = (ProjectileModel) fxtB.getBody().getUserData();
+
+            pm.setForRemoval();
+        }
     }
 
     @Override
@@ -157,6 +210,9 @@ public class GameWorld implements ContactListener
         else
             if(fixtureA.getUserData().equals("Wall"))
                 wallContact(contact);
+            else
+                if(fixtureA.getBody().getUserData() instanceof ProjectileModel)
+                    bulletContact(contact);
 
     }
 
@@ -173,5 +229,34 @@ public class GameWorld implements ContactListener
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
 
+    }
+
+    /**
+     * Removes objects that have been flagged for removal on the
+     * previous step.
+     */
+    public void removeBody(Body body)
+    {
+        world.destroyBody(body);
+    }
+
+    /**
+     * Removes objects that have been flagged for removal on the
+     * previous step.
+     */
+    public void removeFlagged()
+    {
+        Array<Body> bodies = new Array<Body>();
+
+        world.getBodies(bodies);
+
+        for (Body body : bodies)
+        {
+            if (((EntityModel)body.getUserData()).isFlaggedForRemoval())
+            {
+                //gameModel.getMissiles().remove((EntityModel) body.getUserData());
+                world.destroyBody(body);
+            }
+        }
     }
 }

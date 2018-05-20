@@ -10,6 +10,7 @@ public class TurtleModel extends EntityModel
     private int health;
     private boolean jumping;
     private boolean biting;
+    private boolean firing = false;
     private int melee_damage;
 
     public TurtleModel(float x,float y, TurtleClass tc)
@@ -41,6 +42,10 @@ public class TurtleModel extends EntityModel
         return biting;
     }
 
+    public boolean isFiring() {
+        return firing;
+    }
+
     public int getMelee_damage() {
         return melee_damage;
     }
@@ -60,6 +65,10 @@ public class TurtleModel extends EntityModel
 
     public void setBiting(boolean biting) {
         this.biting = biting;
+    }
+
+    public void setFiring(boolean firing) {
+        this.firing = firing;
     }
 
     public void inflictDamage(int damage)

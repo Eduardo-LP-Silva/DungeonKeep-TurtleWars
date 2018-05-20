@@ -30,8 +30,8 @@ public class ProjectileBody extends EntityBody
         shape.dispose();
     }
 
-    public void move()
+    public void move(float speed)
     {
-        body.applyLinearImpulse(new Vector2(ProjectileModel.TRAVEL_SPEED, 2), body.getWorldCenter(), true);
+            body.applyLinearImpulse(new Vector2(speed, 2), body.getWorldCenter(), true);
     }
 }

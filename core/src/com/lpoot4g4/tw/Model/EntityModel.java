@@ -4,11 +4,13 @@ public abstract class EntityModel
 {
     protected float x;
     protected float y;
+    protected  boolean flaggedForRemoval;
 
     public EntityModel(float x,float y)
     {
         this.x = x;
         this.y = y;
+        flaggedForRemoval = false;
     }
 
     public void setPosition(float x, float y)
@@ -27,6 +29,10 @@ public abstract class EntityModel
         return this.y;
     }
 
+    public boolean isFlaggedForRemoval() {
+        return flaggedForRemoval;
+    }
+
     public void setX(float x)
     {
         this.x = x;
@@ -35,5 +41,9 @@ public abstract class EntityModel
     public void setY(float y)
     {
         this.y = y;
+    }
+
+    public void setFlaggedForRemoval(boolean flaggedForRemoval) {
+        this.flaggedForRemoval = flaggedForRemoval;
     }
 }

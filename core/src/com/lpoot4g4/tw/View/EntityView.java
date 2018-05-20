@@ -29,6 +29,11 @@ public abstract class EntityView
         return sprite;
     }
 
+    public void setSprite(Sprite sprite)
+    {
+        this.sprite = sprite;
+    }
+
     /**
      * Abstract method that creates the view sprite. Concrete
      * implementation should extend this method to create their

@@ -7,8 +7,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.utils.Timer;
 import com.lpoot4g4.tw.Controller.GameWorld;
+import com.lpoot4g4.tw.Controller.ProjectileBody;
 import com.lpoot4g4.tw.Model.GameModel;
+import com.lpoot4g4.tw.Model.ProjectileModel;
 import com.lpoot4g4.tw.TurtleWars;
 
 import java.util.ArrayList;
@@ -49,6 +52,8 @@ public class PlayView extends ScreenAdapter
         this.game.getAssetManager().load("cactus.png", Texture.class);
         this.game.getAssetManager().load("lightTurtleBackwards.png", Texture.class);
         this.game.getAssetManager().load("heavyTurtleBackwards.png", Texture.class);
+        this.game.getAssetManager().load("projectileBackwards.png", Texture.class);
+        this.game.getAssetManager().load("explosion.png", Texture.class);
 
         this.game.getAssetManager().finishLoading();
 
@@ -71,11 +76,14 @@ public class PlayView extends ScreenAdapter
         this.game.getAssetManager().unload("bazookaTurtle.png");
         this.game.getAssetManager().unload("projectile.png");
         this.game.getAssetManager().unload("cactus.png");
+        this.game.getAssetManager().unload("explosion.png");
+        this.game.getAssetManager().unload("projectileBackwards.png");
     }
 
     @Override
     public void render(float delta)
     {
+        gameWorld.removeFlagged();
         handleInputs(delta);
         gameWorld.update(delta);
 
@@ -106,9 +114,24 @@ public class PlayView extends ScreenAdapter
         {
             ProjectileView pv = new ProjectileView(game);
 
+            if(gameModel.getPlayer1().getX() > gameModel.getPlayer2().getX())
+                pv.setSprite(pv.getBackwardsProjectile());
+
             pv.getSprite().setPosition(gameModel.getMissiles().get(i).getX(), gameModel.getMissiles().get(i).getY());
 
-            pv.draw(game.getBatch());
+            if(gameModel.getMissiles().get(i).isFlaggedForRemoval())
+               if((System.nanoTime() - gameModel.getMissiles().get(i).getDissipationTimeStart()) / Math.pow(10,7) > 15)
+                {
+                    gameModel.removeMissile(gameModel.getMissiles().get(i));
+                }
+                else
+                {
+                    game.getBatch().draw(game.getAssetManager().get("explosion.png", Texture.class),
+                            gameModel.getMissiles().get(i).getX() - game.getAssetManager().get("explosion.png",
+                                    Texture.class).getWidth() / 2, gameModel.getMissiles().get(i).getY());
+                }
+            else
+                pv.draw(game.getBatch());
         }
         game.getBatch().end();
 
@@ -131,7 +154,7 @@ public class PlayView extends ScreenAdapter
         if(Gdx.input.isKeyJustPressed(Input.Keys.E))
             gameWorld.getPlayer1().bite();
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.Q))
+        if(Gdx.input.isKeyJustPressed(Input.Keys.Q) && !gameModel.getPlayer1().isFiring())
             gameWorld.FireTurtle1();
     }
 }
