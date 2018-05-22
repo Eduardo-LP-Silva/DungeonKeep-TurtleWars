@@ -12,19 +12,11 @@ public class ProjectileView extends EntityView
     {
         super(game);
     }
-    public Sprite backwardsProjectile;
 
     public Sprite createSprite(TurtleWars game)
     {
         Texture tex = new Texture("projectile.png");
-        Texture back_tex = game.getAssetManager().get("projectileBackwards.png", Texture.class);
-
-        backwardsProjectile = new Sprite(back_tex, back_tex.getWidth(), back_tex.getHeight());
 
         return new Sprite(tex, tex.getWidth(), tex.getHeight());
-    }
-
-    public Sprite getBackwardsProjectile() {
-        return backwardsProjectile;
     }
 }

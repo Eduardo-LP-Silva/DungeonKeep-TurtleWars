@@ -10,7 +10,7 @@ import com.lpoot4g4.tw.Model.ProjectileModel;
 public class ProjectileBody extends EntityBody
 {
     public ProjectileBody(World w, ProjectileModel pm) {
-        super(w, pm, BodyDef.BodyType.DynamicBody, 42, 27);
+        super(w, pm, BodyDef.BodyType.KinematicBody, 42, 27);
 
         //TODO Initialize Width and Heigth
     }
@@ -32,6 +32,6 @@ public class ProjectileBody extends EntityBody
 
     public void move(float speed)
     {
-            body.applyLinearImpulse(new Vector2(speed, 2), body.getWorldCenter(), true);
+        body.setLinearVelocity(new Vector2(speed, 0));
     }
 }

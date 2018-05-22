@@ -50,9 +50,6 @@ public class PlayView extends ScreenAdapter
         this.game.getAssetManager().load("platform.png", Texture.class);
         this.game.getAssetManager().load("projectile.png", Texture.class);
         this.game.getAssetManager().load("cactus.png", Texture.class);
-        this.game.getAssetManager().load("lightTurtleBackwards.png", Texture.class);
-        this.game.getAssetManager().load("heavyTurtleBackwards.png", Texture.class);
-        this.game.getAssetManager().load("projectileBackwards.png", Texture.class);
         this.game.getAssetManager().load("explosion.png", Texture.class);
         this.game.getAssetManager().load("D0.png", Texture.class);
         this.game.getAssetManager().load("D1.png", Texture.class);
@@ -87,9 +84,6 @@ public class PlayView extends ScreenAdapter
         this.game.getAssetManager().unload("projectile.png");
         this.game.getAssetManager().unload("cactus.png");
         this.game.getAssetManager().unload("explosion.png");
-        this.game.getAssetManager().unload("projectileBackwards.png");
-        this.game.getAssetManager().unload("lightTurtleBackwards.png");
-        this.game.getAssetManager().unload("heavyTurtleBackwards.png");
         this.game.getAssetManager().unload("D0.png");
         this.game.getAssetManager().unload("D1.png");
         this.game.getAssetManager().unload("D2.png");

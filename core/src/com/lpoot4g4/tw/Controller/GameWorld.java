@@ -85,7 +85,7 @@ public class GameWorld implements ContactListener
     public void FireTurtle1()
     {
         float speed;
-        int pos;
+
         ProjectileModel missile;
 
         if(player1.getX() < player2.getX())
@@ -148,17 +148,18 @@ public class GameWorld implements ContactListener
                     turtleModelA.inflictDamage(turtleModelB.getMelee_damage());
 
 
-
             if(turtleFxtA.getUserData().equals("Turtle Bottom") && fxtB.getUserData().equals("Turtle Body"))
             {
                 turtleModelB.inflictDamage(turtleModelA.getStomp_damage());
                 turtleFxtA.getBody().applyLinearImpulse(new Vector2(0, 60), turtleFxtA.getBody().getWorldCenter(), true);
+                turtleModelA.setJumping(true);
             }
             else
                 if(fxtB.getUserData().equals("Turtle Bottom") && turtleFxtA.getUserData().equals("Turtle Body"))
                 {
                     turtleModelA.inflictDamage((turtleModelB.getStomp_damage()));
                     fxtB.getBody().applyLinearImpulse(new Vector2(0, 60), fxtB.getBody().getWorldCenter(), true);
+                    turtleModelB.setJumping(true);
                 }
 
             return;
@@ -180,7 +181,6 @@ public class GameWorld implements ContactListener
             turtleModelA.inflictDamage(ProjectileModel.BASE_DAMAGE);
             pm.setForRemoval();
         }
-
     }
 
     public void bulletContact(Contact contact)
