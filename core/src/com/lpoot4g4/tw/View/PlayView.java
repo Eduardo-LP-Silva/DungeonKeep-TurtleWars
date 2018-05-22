@@ -115,29 +115,26 @@ public class PlayView extends ScreenAdapter
         game.getBatch().draw(game.getAssetManager().get("background.png", Texture.class), 0, 0, game.WIDTH, game.HEIGHT);
         floor.draw(game.getBatch());
 
-        if(gameModel.getPlayer1().getX() < gameModel.getPlayer2().getX())
-        {
-            player1.getSprite().setPosition(gameModel.getPlayer1().getX(), gameModel.getPlayer1().getY());
-            player1.draw(game.getBatch());
+        player1.getSprite().setPosition(gameModel.getPlayer1().getX(), gameModel.getPlayer1().getY());
+        player2.getSprite().setPosition(gameModel.getPlayer2().getX(), gameModel.getPlayer2().getY());
 
-            player2.getBackwardsTurtle().setPosition(gameModel.getPlayer2().getX(), gameModel.getPlayer2().getY());
-            player2.drawBackwards(game.getBatch());
-        }
-        else
-        {
-            player1.getBackwardsTurtle().setPosition(gameModel.getPlayer1().getX(), gameModel.getPlayer1().getY());
-            player1.drawBackwards(game.getBatch());
+        if((gameModel.getPlayer1().isBackwards() && !player1.getSprite().isFlipX()) ||
+                (!gameModel.getPlayer1().isBackwards() && player1.getSprite().isFlipX()))
+            player1.getSprite().flip(true, false);
 
-            player2.getSprite().setPosition(gameModel.getPlayer2().getX(), gameModel.getPlayer2().getY());
-            player2.draw(game.getBatch());
-        }
+        if((gameModel.getPlayer2().isBackwards() && !player2.getSprite().isFlipX()) ||
+                (!gameModel.getPlayer2().isBackwards() && player2.getSprite().isFlipX()))
+            player2.getSprite().flip(true, false);
+
+        player1.draw(game.getBatch());
+        player2.draw(game.getBatch());
 
         for(int i = 0; i < gameModel.getMissiles().size(); i++)
         {
             ProjectileView pv = new ProjectileView(game);
 
-            if(gameModel.getPlayer1().getX() > gameModel.getPlayer2().getX())
-                pv.setSprite(pv.getBackwardsProjectile());
+            if(gameModel.getMissiles().get(i).isBackwards())
+                pv.getSprite().flip(true, false);
 
             pv.getSprite().setPosition(gameModel.getMissiles().get(i).getX(), gameModel.getMissiles().get(i).getY());
 

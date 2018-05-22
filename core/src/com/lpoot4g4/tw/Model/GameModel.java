@@ -27,6 +27,16 @@ public class GameModel
 
     public void update()
     {
+        if(player1.getX() < player2.getX())
+        {
+            player1.setBackwards(false);
+            player2.setBackwards(true);
+        }
+        else
+        {
+            player1.setBackwards(true);
+            player2.setBackwards(false);
+        }
 
     }
 

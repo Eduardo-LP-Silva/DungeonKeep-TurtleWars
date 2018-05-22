@@ -71,6 +71,7 @@ public class MenuView extends ScreenAdapter
         {
             if(newGameBtn.getBoundingRectangle().contains(Gdx.input.getX(),  Gdx.graphics.getHeight() - Gdx.input.getY()))
             {
+                game.connectSocket();
                 game.setCharacterSelection(gameModel);
                 unloadAssets();
             }

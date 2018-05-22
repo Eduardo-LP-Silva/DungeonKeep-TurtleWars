@@ -93,12 +93,16 @@ public class GameWorld implements ContactListener
             speed = ProjectileModel.TRAVEL_SPEED;
             missile = new ProjectileModel(gameModel.getPlayer1().getX() + player1.getWidth() + 10,
                     gameModel.getPlayer1().getY() + player1.getHeight());
+
+            missile.setBackwards(false);
         }
         else
         {
             speed = - ProjectileModel.TRAVEL_SPEED;
             missile = new ProjectileModel(gameModel.getPlayer1().getX() - 50,
                     gameModel.getPlayer1().getY() + player1.getHeight());
+
+            missile.setBackwards(true);
         }
 
         gameModel.addMissile(missile);
@@ -120,7 +124,7 @@ public class GameWorld implements ContactListener
             }
         }, 2f);
     }
-    
+
     public void turtleContact(Contact contact)
     {
         Fixture turtleFxtA = contact.getFixtureA(), fxtB = contact.getFixtureB();

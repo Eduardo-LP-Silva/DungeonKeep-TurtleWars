@@ -10,14 +10,24 @@ import com.lpoot4g4.tw.View.MenuView;
 import com.lpoot4g4.tw.View.OptionsView;
 import com.lpoot4g4.tw.View.PlayView;
 
+import io.socket.client.IO;
+import io.socket.client.Socket;
+
+import static com.badlogic.gdx.Application.LOG_DEBUG;
+
 public class TurtleWars extends Game
 {
     private SpriteBatch batch;
     private AssetManager assetManager;
+    private Socket socket;
 
     public static final float WIDTH = 800.0f;
     public static final float HEIGHT = 400.0f;
     public static final String TITLE = "Turtle Wars";
+
+    public Socket getSocket() {
+        return socket;
+    }
 
     /**
      * Creates the game. Initializes the sprite batch and asset manager.
@@ -29,6 +39,8 @@ public class TurtleWars extends Game
         batch = new SpriteBatch();
         assetManager = new AssetManager();
         Gdx.gl.glClearColor(0.1f,0.9f,0.9f,1);
+
+        Gdx.app.setLogLevel(LOG_DEBUG);
         startGame();
     }
 
@@ -95,5 +107,17 @@ public class TurtleWars extends Game
     public SpriteBatch getBatch()
     {
         return batch;
+    }
+
+    public void connectSocket()
+    {
+        try
+        {
+            socket = IO.socket("http://localhost:8081");
+            socket.connect();
+        }catch(Exception e)
+        {
+            System.out.println(e);
+        }
     }
 }

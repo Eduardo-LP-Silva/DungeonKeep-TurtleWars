@@ -5,6 +5,7 @@ public abstract class EntityModel
     protected float x;
     protected float y;
     protected  boolean flaggedForRemoval;
+    protected boolean backwards = false;
 
     public EntityModel(float x,float y)
     {
@@ -33,6 +34,10 @@ public abstract class EntityModel
         return flaggedForRemoval;
     }
 
+    public boolean isBackwards() {
+        return backwards;
+    }
+
     public void setX(float x)
     {
         this.x = x;
@@ -45,5 +50,9 @@ public abstract class EntityModel
 
     public void setFlaggedForRemoval(boolean flaggedForRemoval) {
         this.flaggedForRemoval = flaggedForRemoval;
+    }
+
+    public void setBackwards(boolean backwards) {
+        this.backwards = backwards;
     }
 }

@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.lpoot4g4.tw" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="27" />
 
     <application

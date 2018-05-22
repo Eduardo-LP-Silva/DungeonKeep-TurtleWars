@@ -9,6 +9,12 @@ import com.lpoot4g4.tw.Model.GameModel;
 import com.lpoot4g4.tw.Model.TurtleModel;
 import com.lpoot4g4.tw.TurtleWars;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
+
 public class CharacterSelectionView extends ScreenAdapter
 {
     private TurtleWars game;
@@ -79,5 +85,35 @@ public class CharacterSelectionView extends ScreenAdapter
             }
 
         }
+    }
+
+    public void handleSocketEvents()
+    {
+        Socket socket = game.getSocket();
+
+        socket.on(Socket.EVENT_CONNECT, new Emitter.Listener()
+        {
+            @Override
+            public void call(Object... args)
+            {
+                Gdx.app.log("SocketIO", "Connected");
+            }
+        }).on("socketID", new Emitter.Listener()
+        {
+            @Override
+            public void call(Object... args)
+            {
+                JSONObject data = (JSONObject) args[0];
+                try
+                {
+                    String id = data.getString("id");
+                    Gdx.app.log("SocketIO", "My ID" + id);
+                }catch(JSONException jse)
+                {
+                    Gdx.app.log("SocketID", "Error getting ID");
+                }
+
+            }
+        });
     }
 }
