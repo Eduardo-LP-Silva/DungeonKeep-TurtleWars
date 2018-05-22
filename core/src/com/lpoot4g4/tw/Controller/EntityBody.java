@@ -13,8 +13,10 @@ public abstract class EntityBody
     protected float Width; //Pixels
     protected float Height; //Pixels
 
-    EntityBody(World world, EntityModel model, BodyDef.BodyType bt)
+    EntityBody(World world, EntityModel model, BodyDef.BodyType bt, float W, float H)
     {
+        Width = W;
+        Height = H;
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = bt;
         bodyDef.position.set(model.getX() * PIXEL_TO_METER, model.getY() * PIXEL_TO_METER);

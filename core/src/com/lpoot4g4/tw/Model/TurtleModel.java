@@ -12,6 +12,7 @@ public class TurtleModel extends EntityModel
     private boolean biting;
     private boolean firing = false;
     private int melee_damage;
+    private int stomp_damage;
 
     public TurtleModel(float x,float y, TurtleClass tc)
     {
@@ -23,9 +24,15 @@ public class TurtleModel extends EntityModel
         biting = false;
 
         if(tc.toString().equals("Light"))
+        {
             melee_damage = 5;
+            stomp_damage = 10;
+        }
         else
+        {
             melee_damage = 15;
+            stomp_damage = 20;
+        }
     }
 
     public TurtleClass getTurtleClass()
@@ -52,6 +59,10 @@ public class TurtleModel extends EntityModel
 
     public int getHealth() {
         return health;
+    }
+
+    public int getStomp_damage() {
+        return stomp_damage;
     }
 
     public void setTurtleClass(TurtleClass turtleClass)

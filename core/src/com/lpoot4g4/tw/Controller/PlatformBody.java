@@ -11,10 +11,7 @@ public class PlatformBody extends EntityBody
 {
     public PlatformBody(World world, PlatformModel pm)
     {
-        super(world, pm, BodyDef.BodyType.StaticBody);
-
-        Width = 800;
-        Height = 48;
+        super(world, pm, BodyDef.BodyType.StaticBody, 800, 48);
     }
 
     @Override

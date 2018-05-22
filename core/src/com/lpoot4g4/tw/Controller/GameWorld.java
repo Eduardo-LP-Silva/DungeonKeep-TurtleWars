@@ -16,6 +16,7 @@ import com.lpoot4g4.tw.Model.GameModel;
 import com.lpoot4g4.tw.Model.PlatformModel;
 import com.lpoot4g4.tw.Model.ProjectileModel;
 import com.lpoot4g4.tw.Model.TurtleModel;
+import com.lpoot4g4.tw.TurtleWars;
 
 import java.util.ArrayList;
 import static com.lpoot4g4.tw.View.PlayView.PIXEL_TO_METER;
@@ -119,7 +120,7 @@ public class GameWorld implements ContactListener
             }
         }, 2f);
     }
-
+    
     public void turtleContact(Contact contact)
     {
         Fixture turtleFxtA = contact.getFixtureA(), fxtB = contact.getFixtureB();
@@ -142,6 +143,20 @@ public class GameWorld implements ContactListener
                         || (fxtB.getUserData().equals("Turtle Right Side") && turtleModelB.getX() < turtleModelA.getX()))
                     turtleModelA.inflictDamage(turtleModelB.getMelee_damage());
 
+
+
+            if(turtleFxtA.getUserData().equals("Turtle Bottom") && fxtB.getUserData().equals("Turtle Body"))
+            {
+                turtleModelB.inflictDamage(turtleModelA.getStomp_damage());
+                turtleFxtA.getBody().applyLinearImpulse(new Vector2(0, 60), turtleFxtA.getBody().getWorldCenter(), true);
+            }
+            else
+                if(fxtB.getUserData().equals("Turtle Bottom") && turtleFxtA.getUserData().equals("Turtle Body"))
+                {
+                    turtleModelA.inflictDamage((turtleModelB.getStomp_damage()));
+                    fxtB.getBody().applyLinearImpulse(new Vector2(0, 60), fxtB.getBody().getWorldCenter(), true);
+                }
+
             return;
         }
 
@@ -158,7 +173,7 @@ public class GameWorld implements ContactListener
         if(fxtB.getBody().getUserData() instanceof ProjectileModel)
         {
             ProjectileModel pm = (ProjectileModel) fxtB.getBody().getUserData();
-
+            turtleModelA.inflictDamage(ProjectileModel.BASE_DAMAGE);
             pm.setForRemoval();
         }
 
@@ -169,7 +184,12 @@ public class GameWorld implements ContactListener
         Fixture bulletFxt1 = contact.getFixtureA(), fxtB = contact.getFixtureB();
         ProjectileModel bullet1 = (ProjectileModel) bulletFxt1.getBody().getUserData();
 
-        //TODO Hit conditions
+        if(fxtB.getBody().getUserData() instanceof TurtleModel)
+        {
+            TurtleModel turtleModel = (TurtleModel) fxtB.getBody().getUserData();
+
+            turtleModel.inflictDamage(ProjectileModel.BASE_DAMAGE);
+        }
 
         bullet1.setForRemoval();
     }
@@ -187,7 +207,6 @@ public class GameWorld implements ContactListener
 
             if(fxtB.getUserData().equals("Turtle Left Side") || fxtB.getUserData().equals("Turtle Right Side"))
             {
-                System.out.print("asd\n");
                 turtleModel.setJumping(false);
             }
         }

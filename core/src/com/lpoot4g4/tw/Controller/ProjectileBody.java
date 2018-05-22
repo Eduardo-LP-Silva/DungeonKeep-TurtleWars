@@ -10,7 +10,7 @@ import com.lpoot4g4.tw.Model.ProjectileModel;
 public class ProjectileBody extends EntityBody
 {
     public ProjectileBody(World w, ProjectileModel pm) {
-        super(w, pm, BodyDef.BodyType.DynamicBody);
+        super(w, pm, BodyDef.BodyType.DynamicBody, 42, 27);
 
         //TODO Initialize Width and Heigth
     }

@@ -16,15 +16,12 @@ public class TurtleBody extends EntityBody
 
     public TurtleBody(World world, TurtleModel tm)
     {
-        super(world, tm, BodyDef.BodyType.DynamicBody);
-
-        Width = 88;
-        Height = 59;
+        super(world, tm, BodyDef.BodyType.DynamicBody, 88, 59);
 
         if(tm.getTurtleClass().toString().equals("Light"))
             speed = 5f;
         else
-            speed = 0.7f;
+            speed = 1f;
     }
 
     public void moveLeft()
@@ -73,7 +70,7 @@ public class TurtleBody extends EntityBody
             {
                 ((TurtleModel) body.getUserData()).setBiting(false);
             }
-        }, 1.5f);
+        }, 0.5f);
     }
 
     @Override
@@ -97,8 +94,8 @@ public class TurtleBody extends EntityBody
 
         EdgeShape paws = new EdgeShape();
 
-        paws.set(new Vector2(- (this.getWidth() / 2) * PIXEL_TO_METER, - (this.getHeight() / 2) * PIXEL_TO_METER),
-                new Vector2((this.getWidth() / 2 - 1) * PIXEL_TO_METER, - (this.getHeight() / 2) * PIXEL_TO_METER));
+        paws.set(new Vector2( (0 + 10) * PIXEL_TO_METER,  0),
+                new Vector2((this.getWidth() - 10) * PIXEL_TO_METER,  0));
 
         fixtureDef.shape = paws;
         fixtureDef.isSensor = true;
@@ -110,8 +107,8 @@ public class TurtleBody extends EntityBody
 
         EdgeShape leftSide = new EdgeShape();
 
-        leftSide.set(new Vector2(- (this.getWidth() / 2) * PIXEL_TO_METER, (this.getHeight() / 2) * PIXEL_TO_METER),
-                new Vector2(- (this.getWidth() / 2) * PIXEL_TO_METER, - (this.getHeight() / 2) * PIXEL_TO_METER));
+        leftSide.set(new Vector2(0, this.getHeight() * PIXEL_TO_METER),
+                new Vector2(0, 0));
 
         fixtureDef.shape = leftSide;
         fixtureDef.isSensor = true;
@@ -123,8 +120,8 @@ public class TurtleBody extends EntityBody
 
         EdgeShape rightSide = new EdgeShape();
 
-        rightSide.set(new Vector2((this.getWidth() / 2) * PIXEL_TO_METER + 1, (this.getHeight() / 2) * PIXEL_TO_METER),
-                new Vector2((this.getWidth() / 2) * PIXEL_TO_METER, - (this.getHeight() / 2) * PIXEL_TO_METER));
+        rightSide.set(new Vector2(this.getWidth() * PIXEL_TO_METER , this.getHeight() * PIXEL_TO_METER),
+                new Vector2(this.getWidth() * PIXEL_TO_METER, 0));
 
         fixtureDef.shape = rightSide;
         fixtureDef.isSensor = true;

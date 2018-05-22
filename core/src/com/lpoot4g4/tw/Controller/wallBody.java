@@ -12,7 +12,7 @@ public class wallBody extends EntityBody
 {
     public wallBody(World world, PlatformModel pm)
     {
-        super(world, pm, BodyDef.BodyType.StaticBody);
+        super(world, pm, BodyDef.BodyType.StaticBody, 1, TurtleWars.HEIGHT);
     }
 
     @Override

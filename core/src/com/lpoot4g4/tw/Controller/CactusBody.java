@@ -9,10 +9,7 @@ public class CactusBody extends EntityBody
 {
     public CactusBody(World world, CactusModel ct)
     {
-        super(world, ct, BodyDef.BodyType.StaticBody);
-
-        Width = 133;
-        Height = 229;
+        super(world, ct, BodyDef.BodyType.StaticBody, 133, 229);
     }
 
 

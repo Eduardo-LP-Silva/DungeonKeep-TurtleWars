@@ -9,6 +9,8 @@ public class heavyTurtleView extends TurtleView
     public heavyTurtleView(TurtleWars game)
     {
         super(game);
+
+        backwardsTurtle = new Sprite(game.getAssetManager().get("heavyTurtleBackwards.png", Texture.class));
     }
 
     @Override

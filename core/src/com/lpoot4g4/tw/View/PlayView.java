@@ -54,6 +54,16 @@ public class PlayView extends ScreenAdapter
         this.game.getAssetManager().load("heavyTurtleBackwards.png", Texture.class);
         this.game.getAssetManager().load("projectileBackwards.png", Texture.class);
         this.game.getAssetManager().load("explosion.png", Texture.class);
+        this.game.getAssetManager().load("D0.png", Texture.class);
+        this.game.getAssetManager().load("D1.png", Texture.class);
+        this.game.getAssetManager().load("D2.png", Texture.class);
+        this.game.getAssetManager().load("D3.png", Texture.class);
+        this.game.getAssetManager().load("D4.png", Texture.class);
+        this.game.getAssetManager().load("D5.png", Texture.class);
+        this.game.getAssetManager().load("D6.png", Texture.class);
+        this.game.getAssetManager().load("D7.png", Texture.class);
+        this.game.getAssetManager().load("D8.png", Texture.class);
+        this.game.getAssetManager().load("D9.png", Texture.class);
 
         this.game.getAssetManager().finishLoading();
 
@@ -78,6 +88,18 @@ public class PlayView extends ScreenAdapter
         this.game.getAssetManager().unload("cactus.png");
         this.game.getAssetManager().unload("explosion.png");
         this.game.getAssetManager().unload("projectileBackwards.png");
+        this.game.getAssetManager().unload("lightTurtleBackwards.png");
+        this.game.getAssetManager().unload("heavyTurtleBackwards.png");
+        this.game.getAssetManager().unload("D0.png");
+        this.game.getAssetManager().unload("D1.png");
+        this.game.getAssetManager().unload("D2.png");
+        this.game.getAssetManager().unload("D3.png");
+        this.game.getAssetManager().unload("D4.png");
+        this.game.getAssetManager().unload("D5.png");
+        this.game.getAssetManager().unload("D6.png");
+        this.game.getAssetManager().unload("D7.png");
+        this.game.getAssetManager().unload("D8.png");
+        this.game.getAssetManager().unload("D9.png");
     }
 
     @Override
@@ -133,6 +155,43 @@ public class PlayView extends ScreenAdapter
             else
                 pv.draw(game.getBatch());
         }
+
+
+        int health = gameModel.getPlayer1().getHealth(), digit, x = 50;
+        Texture tex;
+
+        //Turtle 1
+        do
+        {
+            digit = health % 10;
+            health /= 10;
+
+            tex = getDigit(digit);
+
+            game.getBatch().draw(tex, x, 300);
+
+            x -= 40;
+        }
+        while(health > 0);
+
+        //Turtle 2
+
+        health = gameModel.getPlayer2().getHealth();
+        x = 700;
+
+        do
+        {
+            digit = health % 10;
+            health /= 10;
+
+            tex = getDigit(digit);
+
+            game.getBatch().draw(tex, x, 300);
+
+            x -= 40;
+        }
+        while(health > 0);
+
         game.getBatch().end();
 
         if(debugPhysics)
@@ -156,5 +215,44 @@ public class PlayView extends ScreenAdapter
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.Q) && !gameModel.getPlayer1().isFiring())
             gameWorld.FireTurtle1();
+    }
+
+    public Texture getDigit(int digit)
+    {
+        switch(digit)
+        {
+            case 0:
+                return game.getAssetManager().get("D0.png", Texture.class);
+
+            case 1:
+                return game.getAssetManager().get("D1.png", Texture.class);
+
+            case 2:
+                return game.getAssetManager().get("D2.png", Texture.class);
+
+            case 3:
+                return game.getAssetManager().get("D3.png", Texture.class);
+
+            case 4:
+                return game.getAssetManager().get("D4.png", Texture.class);
+
+            case 5:
+                return game.getAssetManager().get("D5.png", Texture.class);
+
+            case 6:
+                return game.getAssetManager().get("D6.png", Texture.class);
+
+            case 7:
+                return game.getAssetManager().get("D7.png", Texture.class);
+
+            case 8:
+                return game.getAssetManager().get("D8.png", Texture.class);
+
+            case 9:
+                return game.getAssetManager().get("D9.png", Texture.class);
+
+            default:
+                return null;
+        }
     }
 }
