@@ -9,10 +9,12 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Timer;
 import com.lpoot4g4.tw.Model.TurtleModel;
 import static com.lpoot4g4.tw.View.PlayView.PIXEL_TO_METER;
+import static java.lang.Math.abs;
 
 public class TurtleBody extends EntityBody
 {
     private float speed;
+    private boolean retreating = false;
 
     public TurtleBody(World world, TurtleModel tm)
     {
@@ -22,6 +24,14 @@ public class TurtleBody extends EntityBody
             speed = 5f;
         else
             speed = 1f;
+    }
+
+    public boolean isRetreating() {
+        return retreating;
+    }
+
+    public void setRetreating(boolean retreating) {
+        this.retreating = retreating;
     }
 
     public void moveLeft()
@@ -120,7 +130,7 @@ public class TurtleBody extends EntityBody
 
         EdgeShape rightSide = new EdgeShape();
 
-        rightSide.set(new Vector2(this.getWidth() * PIXEL_TO_METER , this.getHeight() * PIXEL_TO_METER),
+        rightSide.set(new Vector2(this.getWidth() * PIXEL_TO_METER, this.getHeight() * PIXEL_TO_METER),
                 new Vector2(this.getWidth() * PIXEL_TO_METER, 0));
 
         fixtureDef.shape = rightSide;
@@ -128,5 +138,15 @@ public class TurtleBody extends EntityBody
         body.createFixture(fixtureDef).setUserData("Turtle Right Side");
 
         rightSide.dispose();
+    }
+
+    public boolean isInBittingRange(float player2X)
+    {
+        float distance = abs(this.getX() - player2X);
+
+        if(distance / this.speed < 0.5f)
+            return true;
+        else
+            return false;
     }
 }

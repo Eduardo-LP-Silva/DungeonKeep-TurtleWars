@@ -10,13 +10,14 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
-import com.lpoot4g4.tw.Model.CactusModel;
 import com.lpoot4g4.tw.Model.EntityModel;
 import com.lpoot4g4.tw.Model.GameModel;
 import com.lpoot4g4.tw.Model.PlatformModel;
 import com.lpoot4g4.tw.Model.ProjectileModel;
 import com.lpoot4g4.tw.Model.TurtleModel;
-import com.lpoot4g4.tw.TurtleWars;
+
+import static java.lang.Math.abs;
+
 
 import java.util.ArrayList;
 import static com.lpoot4g4.tw.View.PlayView.PIXEL_TO_METER;
@@ -69,6 +70,7 @@ public class GameWorld implements ContactListener
     public void update(float delta)
     {
         gameModel.update();
+        player2Defend();
 
         world.step(1/60f, 6,2);
 
@@ -82,6 +84,133 @@ public class GameWorld implements ContactListener
         }
 
         updateTurtles();
+    }
+
+    public void player2Attack()
+    {
+        if(player1.getX() < player2.getX())
+        {
+            if(player2.isRetreating())
+            {
+                if(abs(player2.getX() - player1.getX()) * PIXEL_TO_METER > 1)
+                    player2.setRetreating(false);
+            }
+            else
+                player2.moveLeft();
+
+            if(player2.isInBittingRange(player1.getX()))
+            {
+                player2.bite();
+                player2.moveLeft();
+
+                Timer.schedule(new Timer.Task()
+                {
+                    @Override
+                    public void run()
+                    {
+                        player2.moveRight();
+                        player2.setRetreating(true);
+                    }
+                }, 0.5f);
+            }
+        }
+        else
+        {
+            if(player2.isRetreating())
+            {
+                if(abs(player2.getX() - player1.getX()) * PIXEL_TO_METER > 1)
+                    player2.setRetreating(false);
+            }
+            else
+                player2.moveLeft();
+
+            if(player2.isInBittingRange(player1.getX()))
+            {
+                player2.bite();
+                player2.moveRight();
+
+                Timer.schedule(new Timer.Task()
+                {
+                    @Override
+                    public void run()
+                    {
+                        player2.moveLeft();
+                        player2.setRetreating(true);
+                    }
+                }, 0.5f);
+            }
+        }
+
+    }
+
+    void player2Defend()
+    {
+        if(player1.isInBittingRange(player2.getX()) && gameModel.getPlayer1().isBiting())
+            if(player1.getX() < player2.getX())
+            {
+                if(rightWall.getX() - player2.getX() < 0.02f) // < ? >
+                    player2.moveRight();
+                else
+                {
+                    if(!gameModel.getPlayer1().isJumping())
+                    {
+                        player2.jump();
+                        player2.moveLeft();
+                    }
+                    else
+                        player2.moveLeft();
+                }
+            }
+            else
+            {
+                if(player2.getX() > 0.02f)
+                    player2.moveLeft();
+                else
+                {
+                    if(!gameModel.getPlayer1().isJumping())
+                    {
+                        player2.jump();
+                        player2.moveRight();
+                    }
+                    else
+                        player2.moveRight();
+                }
+            }
+
+            if(gameModel.getPlayer1().isFiring() &&
+                    (player2.getY() == player1.getY()
+                            || (player2.getY() > player2.getY() &&
+                            player2.getY() < player1.getY() + player1.getHeight() * PIXEL_TO_METER)))
+                player2.jump();
+
+
+        if(player1.getY() > player2.getY())
+            if(abs(player1.getX() - player2.getX()) * PIXEL_TO_METER < 0.03f)
+            {
+                if(player1.getX() + player1.getWidth() * PIXEL_TO_METER < player2.getX())
+                {
+                    if((rightWall.getX() - (player2.getX() + player2.getWidth() * PIXEL_TO_METER)) * PIXEL_TO_METER > 0.01f)
+                        player2.moveRight();
+                    else
+                        player2.moveLeft();
+                }
+                else
+                    if(player1.getX() > player2.getX() + player2.getWidth() * PIXEL_TO_METER)
+                    {
+                        if(player2.getX() > 0.01f)
+                            player2.moveLeft();
+                        else
+                            player2.moveRight();
+                    }
+                    else
+                    {
+
+                        if(player2.getX() < rightWall.getX() / 2)
+                            player2.moveRight();
+                        else
+                            player2.moveLeft();
+                    }
+            }
     }
 
     public void updateTurtles()
@@ -163,13 +292,13 @@ public class GameWorld implements ContactListener
             TurtleModel turtleModelB = (TurtleModel) fxtB.getBody().getUserData();
 
             if(turtleModelA.isBiting())
-                if((turtleFxtA.getUserData().equals("Turtle Left Side") && turtleModelA.getX() >= turtleModelB.getX())
-                        || (turtleFxtA.getUserData().equals("Turtle Right Side") && turtleModelA.getX() <= turtleModelB.getX()))
+                if((turtleFxtA.getUserData().equals("Turtle Left Side"))
+                        || (turtleFxtA.getUserData().equals("Turtle Right Side")))
                 turtleModelB.inflictDamage(turtleModelA.getMelee_damage());
 
             if(turtleModelB.isBiting())
-                if((fxtB.getUserData().equals("Turtle Left Side") && turtleModelB.getX() >= turtleModelA.getX())
-                        || (fxtB.getUserData().equals("Turtle Right Side") && turtleModelB.getX() <= turtleModelA.getX()))
+                if((fxtB.getUserData().equals("Turtle Left Side"))
+                        || (fxtB.getUserData().equals("Turtle Right Side")))
                     turtleModelA.inflictDamage(turtleModelB.getMelee_damage());
 
             if(turtleFxtA.getUserData().equals("Turtle Bottom") && fxtB.getUserData().equals("Turtle Body"))
