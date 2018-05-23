@@ -80,6 +80,31 @@ public class GameWorld implements ContactListener
             ((EntityModel) body.getUserData()).setPosition(body.getPosition().x / PIXEL_TO_METER,
                     body.getPosition().y / PIXEL_TO_METER);
         }
+
+        updateTurtles();
+    }
+
+    public void updateTurtles()
+    {
+        // Turtle 1
+
+        if(player1.getBody().getLinearVelocity().x > 0)
+            ((TurtleModel) player1.getBody().getUserData()).setCurrentState(TurtleModel.State.RunningRight);
+        else
+            if(player1.getBody().getLinearVelocity().x < 0)
+                ((TurtleModel) player1.getBody().getUserData()).setCurrentState(TurtleModel.State.RunningLeft);
+            else
+                ((TurtleModel) player1.getBody().getUserData()).setCurrentState(TurtleModel.State.Standing);
+
+        // Turtle 2
+
+        if(player2.getBody().getLinearVelocity().x > 0)
+            ((TurtleModel) player2.getBody().getUserData()).setCurrentState(TurtleModel.State.RunningRight);
+        else
+            if(player2.getBody().getLinearVelocity().x < 0)
+                ((TurtleModel) player2.getBody().getUserData()).setCurrentState(TurtleModel.State.RunningLeft);
+            else
+                ((TurtleModel) player2.getBody().getUserData()).setCurrentState(TurtleModel.State.Standing);
     }
 
     public void FireTurtle1()
@@ -138,15 +163,14 @@ public class GameWorld implements ContactListener
             TurtleModel turtleModelB = (TurtleModel) fxtB.getBody().getUserData();
 
             if(turtleModelA.isBiting())
-                if((turtleFxtA.getUserData().equals("Turtle Left Side") && turtleModelA.getX() > turtleModelB.getX())
-                        || (turtleFxtA.getUserData().equals("Turtle Right Side") && turtleModelA.getX() < turtleModelB.getX()))
+                if((turtleFxtA.getUserData().equals("Turtle Left Side") && turtleModelA.getX() >= turtleModelB.getX())
+                        || (turtleFxtA.getUserData().equals("Turtle Right Side") && turtleModelA.getX() <= turtleModelB.getX()))
                 turtleModelB.inflictDamage(turtleModelA.getMelee_damage());
 
             if(turtleModelB.isBiting())
-                if((fxtB.getUserData().equals("Turtle Left Side") && turtleModelB.getX() > turtleModelA.getX())
-                        || (fxtB.getUserData().equals("Turtle Right Side") && turtleModelB.getX() < turtleModelA.getX()))
+                if((fxtB.getUserData().equals("Turtle Left Side") && turtleModelB.getX() >= turtleModelA.getX())
+                        || (fxtB.getUserData().equals("Turtle Right Side") && turtleModelB.getX() <= turtleModelA.getX()))
                     turtleModelA.inflictDamage(turtleModelB.getMelee_damage());
-
 
             if(turtleFxtA.getUserData().equals("Turtle Bottom") && fxtB.getUserData().equals("Turtle Body"))
             {

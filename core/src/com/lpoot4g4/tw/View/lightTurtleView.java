@@ -13,26 +13,26 @@ public class lightTurtleView extends TurtleView
     {
         super(game);
 
+
         Array<TextureRegion> frames = new Array<TextureRegion>();
 
-        Texture walking_texture = game.getAssetManager().get("lightTurtleWalking.png", Texture.class);
+        Texture walking_texture = game.getAssetManager().get("lightTurtle.png", Texture.class);
 
-        frames.add(new TextureRegion(walking_texture, 0, 0, sprite.getTexture().getWidth(),
-                sprite.getTexture().getHeight()));
+        frames.add(new TextureRegion(walking_texture, 88, 0, 88, 59));
 
-        frames.add(new TextureRegion(walking_texture, 89, 0, sprite.getTexture().getWidth(),
-                sprite.getTexture().getHeight()));
+        frames.add(new TextureRegion(walking_texture, 176, 0, 88, 59));
 
         walking = new Animation(0.1f, frames);
 
+
         frames.clear();
-
-
     }
 
     @Override
     public Sprite createSprite(TurtleWars game)
     {
-        return new Sprite(game.getAssetManager().get("bazookaTurtle.png", Texture.class));
+        Texture walking_texture = game.getAssetManager().get("lightTurtle.png", Texture.class);
+
+        return new Sprite(new TextureRegion(walking_texture, 0, 0, 88, 59));
     }
 }

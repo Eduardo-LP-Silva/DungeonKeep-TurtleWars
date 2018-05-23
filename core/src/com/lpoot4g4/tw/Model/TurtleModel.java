@@ -3,6 +3,7 @@ package com.lpoot4g4.tw.Model;
 public class TurtleModel extends EntityModel
 {
     public enum TurtleClass {Light, Heavy}
+    public enum State {RunningRight, RunningLeft, Standing}
 
     private final static int MAX_HEALTH = 100;
 
@@ -13,6 +14,8 @@ public class TurtleModel extends EntityModel
     private boolean firing = false;
     private int melee_damage;
     private int stomp_damage;
+    private State previousState = State.Standing;
+    private State currentState = State.Standing;
 
     public TurtleModel(float x,float y, TurtleClass tc)
     {
@@ -65,6 +68,14 @@ public class TurtleModel extends EntityModel
         return stomp_damage;
     }
 
+    public State getCurrentState() {
+        return currentState;
+    }
+
+    public State getPreviousState() {
+        return previousState;
+    }
+
     public void setTurtleClass(TurtleClass turtleClass)
     {
         this.turtleClass = turtleClass;
@@ -80,6 +91,14 @@ public class TurtleModel extends EntityModel
 
     public void setFiring(boolean firing) {
         this.firing = firing;
+    }
+
+    public void setCurrentState(State currentState) {
+        this.currentState = currentState;
+    }
+
+    public void setPreviousState(State previousState) {
+        this.previousState = previousState;
     }
 
     public void inflictDamage(int damage)

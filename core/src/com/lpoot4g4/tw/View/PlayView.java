@@ -6,6 +6,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.Timer;
 import com.lpoot4g4.tw.Controller.GameWorld;
@@ -51,6 +52,7 @@ public class PlayView extends ScreenAdapter
         this.game.getAssetManager().load("projectile.png", Texture.class);
         this.game.getAssetManager().load("cactus.png", Texture.class);
         this.game.getAssetManager().load("explosion.png", Texture.class);
+        this.game.getAssetManager().load("lightTurtle.png", Texture.class);
         this.game.getAssetManager().load("D0.png", Texture.class);
         this.game.getAssetManager().load("D1.png", Texture.class);
         this.game.getAssetManager().load("D2.png", Texture.class);
@@ -84,6 +86,7 @@ public class PlayView extends ScreenAdapter
         this.game.getAssetManager().unload("projectile.png");
         this.game.getAssetManager().unload("cactus.png");
         this.game.getAssetManager().unload("explosion.png");
+        this.game.getAssetManager().unload("lightTurtle.png");
         this.game.getAssetManager().unload("D0.png");
         this.game.getAssetManager().unload("D1.png");
         this.game.getAssetManager().unload("D2.png");
@@ -109,19 +112,7 @@ public class PlayView extends ScreenAdapter
         game.getBatch().draw(game.getAssetManager().get("background.png", Texture.class), 0, 0, game.WIDTH, game.HEIGHT);
         floor.draw(game.getBatch());
 
-        player1.getSprite().setPosition(gameModel.getPlayer1().getX(), gameModel.getPlayer1().getY());
-        player2.getSprite().setPosition(gameModel.getPlayer2().getX(), gameModel.getPlayer2().getY());
-
-        if((gameModel.getPlayer1().isBackwards() && !player1.getSprite().isFlipX()) ||
-                (!gameModel.getPlayer1().isBackwards() && player1.getSprite().isFlipX()))
-            player1.getSprite().flip(true, false);
-
-        if((gameModel.getPlayer2().isBackwards() && !player2.getSprite().isFlipX()) ||
-                (!gameModel.getPlayer2().isBackwards() && player2.getSprite().isFlipX()))
-            player2.getSprite().flip(true, false);
-
-        player1.draw(game.getBatch());
-        player2.draw(game.getBatch());
+        updateTurtles(delta);
 
         for(int i = 0; i < gameModel.getMissiles().size(); i++)
         {
@@ -188,6 +179,56 @@ public class PlayView extends ScreenAdapter
         if(debugPhysics)
             debugRenderer.render(gameWorld.getWorld(), camera.combined);
 
+    }
+
+    public void updateTurtles(float delta)
+    {
+        TextureRegion region;
+
+        player1.getSprite().setPosition(gameModel.getPlayer1().getX(), gameModel.getPlayer1().getY());
+        player2.getSprite().setPosition(gameModel.getPlayer2().getX(), gameModel.getPlayer2().getY());
+
+        if(gameModel.getPlayer1().isBiting())
+            player1.getSprite().setRegion(88 * 3, 0, 88, 59);
+        else
+            if(gameWorld.getPlayer1().getBody().getLinearVelocity().x != 0)
+            {
+                region = player1.walking.getKeyFrame(player1.animationTimer, true);
+                player1.getSprite().setRegion(region);
+
+                player1.animationTimer = gameModel.getPlayer1().getCurrentState() == gameModel.getPlayer1().getPreviousState()
+                        ? player1.animationTimer + delta : 0;
+
+                gameModel.getPlayer1().setPreviousState(gameModel.getPlayer1().getCurrentState());
+            }
+            else
+                player1.getSprite().setRegion(0,0,88,59);
+
+
+
+        if(gameWorld.getPlayer2().getBody().getLinearVelocity().x != 0)
+        {
+            region = player2.walking.getKeyFrame(player2.animationTimer, true);
+            player2.getSprite().setRegion(region);
+
+            player2.animationTimer = gameModel.getPlayer2().getCurrentState() == gameModel.getPlayer2().getPreviousState()
+                    ? player2.animationTimer + delta : 0;
+
+            gameModel.getPlayer2().setPreviousState(gameModel.getPlayer2().getCurrentState());
+        }
+        else
+            player2.getSprite().setRegion(0,0,88,59);
+
+        if((gameModel.getPlayer1().isBackwards() && !player1.getSprite().isFlipX()) ||
+                (!gameModel.getPlayer1().isBackwards() && player1.getSprite().isFlipX()))
+            player1.getSprite().flip(true, false);
+
+        if((gameModel.getPlayer2().isBackwards() && !player2.getSprite().isFlipX()) ||
+                (!gameModel.getPlayer2().isBackwards() && player2.getSprite().isFlipX()))
+            player2.getSprite().flip(true, false);
+
+        player1.draw(game.getBatch());
+        player2.draw(game.getBatch());
     }
 
     public void handleInputs(float delta)
