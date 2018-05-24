@@ -117,7 +117,7 @@ public class TurtleBody extends EntityBody
 
         EdgeShape leftSide = new EdgeShape();
 
-        leftSide.set(new Vector2(0, this.getHeight() * PIXEL_TO_METER),
+        leftSide.set(new Vector2(0, this.getHeight() * PIXEL_TO_METER - 10 * PIXEL_TO_METER),
                 new Vector2(0, 0));
 
         fixtureDef.shape = leftSide;
@@ -130,7 +130,7 @@ public class TurtleBody extends EntityBody
 
         EdgeShape rightSide = new EdgeShape();
 
-        rightSide.set(new Vector2(this.getWidth() * PIXEL_TO_METER, this.getHeight() * PIXEL_TO_METER),
+        rightSide.set(new Vector2(this.getWidth() * PIXEL_TO_METER, this.getHeight() * PIXEL_TO_METER - 10 * PIXEL_TO_METER),
                 new Vector2(this.getWidth() * PIXEL_TO_METER, 0));
 
         fixtureDef.shape = rightSide;
@@ -140,7 +140,7 @@ public class TurtleBody extends EntityBody
         rightSide.dispose();
     }
 
-    public boolean isInBittingRange(float player2X)
+    public boolean isInBitingRange(float player2X)
     {
         float distance = abs(this.getX() - player2X);
 

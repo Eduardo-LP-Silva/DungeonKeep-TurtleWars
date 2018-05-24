@@ -24,11 +24,11 @@ import static com.lpoot4g4.tw.View.PlayView.PIXEL_TO_METER;
 
 public class GameWorld implements ContactListener
 {
-    private ArrayList<CactusBody> cacti;
     private World world;
     private TurtleBody player1;
     private TurtleBody player2;
     private PlatformBody floor;
+    private PlatformBody ceiling;
     private wallBody leftWall;
     private wallBody rightWall;
     private ArrayList<ProjectileBody> missiles;
@@ -40,8 +40,8 @@ public class GameWorld implements ContactListener
         gameModel = gm;
         player1 = new TurtleBody(world, gameModel.getPlayer1());
         player2 = new TurtleBody(world, gameModel.getPlayer2());
-        cacti = new ArrayList<CactusBody>();
         floor = new PlatformBody(world, gameModel.getFloor());
+        ceiling = new PlatformBody(world, gameModel.getCeiling());
         leftWall = new wallBody(world, new PlatformModel(0,0));
         rightWall =  new wallBody(world, new PlatformModel(800,0));
         missiles = new ArrayList<ProjectileBody>();
@@ -71,6 +71,7 @@ public class GameWorld implements ContactListener
     {
         gameModel.update();
         player2Defend();
+        player2Attack();
 
         world.step(1/60f, 6,2);
 
@@ -98,7 +99,7 @@ public class GameWorld implements ContactListener
             else
                 player2.moveLeft();
 
-            if(player2.isInBittingRange(player1.getX()))
+            if(player2.isInBitingRange(player1.getX()))
             {
                 player2.bite();
                 player2.moveLeft();
@@ -113,6 +114,17 @@ public class GameWorld implements ContactListener
                     }
                 }, 0.5f);
             }
+            else
+            {
+                if(!gameModel.getPlayer2().isFiring())
+                {
+                    if(player1.getY() > player2.getY() + player2.getHeight() * PIXEL_TO_METER)
+                        player2.jump();
+
+                    if(player1.getY() >= player2.getY() && player1.getY() <= player2.getY() + player2.getHeight() * PIXEL_TO_METER)
+                        fireTurtle2();
+                }
+            }
         }
         else
         {
@@ -124,7 +136,7 @@ public class GameWorld implements ContactListener
             else
                 player2.moveLeft();
 
-            if(player2.isInBittingRange(player1.getX()))
+            if(player2.isInBitingRange(player1.getX()))
             {
                 player2.bite();
                 player2.moveRight();
@@ -139,13 +151,30 @@ public class GameWorld implements ContactListener
                     }
                 }, 0.5f);
             }
-        }
+            else
+            {
+                if(!gameModel.getPlayer2().isFiring())
+                {
+                    if(player1.getY() > player2.getY() + player2.getHeight() * PIXEL_TO_METER)
+                        player2.jump();
 
+                    if(player1.getY() >= player2.getY() && player1.getY() <= player2.getY() + player2.getHeight() * PIXEL_TO_METER)
+                        fireTurtle2();
+                }
+
+
+            }
+        }
     }
 
     void player2Defend()
     {
-        if(player1.isInBittingRange(player2.getX()) && gameModel.getPlayer1().isBiting())
+        if(gameModel.getPlayer1().isFiring() &&
+                (player2.getY() >= player1.getY() &&
+                        player2.getY() <= player1.getY() + player1.getHeight() * PIXEL_TO_METER))
+            player2.jump();
+
+        if(player1.isInBitingRange(player2.getX()) && gameModel.getPlayer1().isBiting())
             if(player1.getX() < player2.getX())
             {
                 if(rightWall.getX() - player2.getX() < 0.02f) // < ? >
@@ -176,13 +205,6 @@ public class GameWorld implements ContactListener
                         player2.moveRight();
                 }
             }
-
-            if(gameModel.getPlayer1().isFiring() &&
-                    (player2.getY() == player1.getY()
-                            || (player2.getY() > player2.getY() &&
-                            player2.getY() < player1.getY() + player1.getHeight() * PIXEL_TO_METER)))
-                player2.jump();
-
 
         if(player1.getY() > player2.getY())
             if(abs(player1.getX() - player2.getX()) * PIXEL_TO_METER < 0.03f)
@@ -275,6 +297,49 @@ public class GameWorld implements ContactListener
             public void run()
             {
                 gameModel.getPlayer1().setFiring(false);
+            }
+        }, 2f);
+    }
+
+    public void fireTurtle2()
+    {
+        float speed;
+
+        ProjectileModel missile;
+
+        if(player2.getX() < player1.getX())
+        {
+            speed = ProjectileModel.TRAVEL_SPEED;
+            missile = new ProjectileModel(gameModel.getPlayer2().getX() + player2.getWidth() + 10,
+                    gameModel.getPlayer2().getY() + player2.getHeight());
+
+            missile.setBackwards(false);
+        }
+        else
+        {
+            speed = - ProjectileModel.TRAVEL_SPEED;
+            missile = new ProjectileModel(gameModel.getPlayer2().getX() - 50,
+                    gameModel.getPlayer2().getY() + player2.getHeight());
+
+            missile.setBackwards(true);
+        }
+
+        gameModel.addMissile(missile);
+
+        ProjectileBody missileBody = new ProjectileBody(world, missile);
+
+        missiles.add(missileBody);
+
+        missileBody.move(speed);
+
+        gameModel.getPlayer2().setFiring(true);
+
+        Timer.schedule(new Timer.Task()
+        {
+            @Override
+            public void run()
+            {
+                gameModel.getPlayer2().setFiring(false);
             }
         }, 2f);
     }

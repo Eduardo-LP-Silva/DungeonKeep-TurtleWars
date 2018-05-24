@@ -42,10 +42,10 @@ public class CharacterSelectionView extends ScreenAdapter
         lightTurtle.setPosition(200, 230);
 
         heavyTurtle = new Sprite(game.getAssetManager().get("heavyTurtle.png", Texture.class));
-        heavyTurtle.setPosition(400, 230);
+        heavyTurtle.setPosition(450, 230);
 
         startGame = new Sprite(game.getAssetManager().get("newGameBtn.png", Texture.class));
-        startGame.setPosition(260, 50);
+        startGame.setPosition(260, 160);
     }
 
     public void unloadAssets()
@@ -80,6 +80,7 @@ public class CharacterSelectionView extends ScreenAdapter
 
             if(startGame.getBoundingRectangle().contains(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY()))
             {
+                gameModel.getThemeSong().stop();
                 game.setPlay(gameModel);
                 //unloadAssets();
             }

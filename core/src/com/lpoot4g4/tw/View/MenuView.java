@@ -2,14 +2,11 @@ package com.lpoot4g4.tw.View;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.lpoot4g4.tw.Controller.GameWorld;
 import com.lpoot4g4.tw.Model.GameModel;
 import com.lpoot4g4.tw.TurtleWars;
-
-import java.util.concurrent.TimeUnit;
 
 public class MenuView extends ScreenAdapter
 {
@@ -34,6 +31,7 @@ public class MenuView extends ScreenAdapter
         this.game.getAssetManager().load("newGameBtn.png", Texture.class);
         this.game.getAssetManager().load("optionsBtn.png", Texture.class);
         this.game.getAssetManager().load("exitBtn.png", Texture.class);
+        this.game.getAssetManager().load("MenuTheme.mp3", Music.class);
         this.game.getAssetManager().finishLoading();
 
         newGameBtn = new Sprite(this.game.getAssetManager().get("newGameBtn.png", Texture.class));
@@ -43,6 +41,10 @@ public class MenuView extends ScreenAdapter
         newGameBtn.setPosition(newGameBtn.getHeight() / 2,  TurtleWars.HEIGHT - newGameBtn.getHeight() - SPACING);
         optionsBtn.setPosition(optionsBtn.getHeight() / 2, newGameBtn.getY() - SPACING - optionsBtn.getHeight());
         exitBtn.setPosition(exitBtn.getHeight() / 2, optionsBtn.getY() - SPACING - exitBtn.getHeight());
+
+        gameModel.setThemeSong(game.getAssetManager().get("MenuTheme.mp3", Music.class));
+        gameModel.getThemeSong().setLooping(true);
+        gameModel.getThemeSong().play();
     }
 
     @Override
@@ -71,7 +73,7 @@ public class MenuView extends ScreenAdapter
         {
             if(newGameBtn.getBoundingRectangle().contains(Gdx.input.getX(),  Gdx.graphics.getHeight() - Gdx.input.getY()))
             {
-                game.connectSocket();
+                //game.connectSocket();
                 game.setCharacterSelection(gameModel);
                 unloadAssets();
             }

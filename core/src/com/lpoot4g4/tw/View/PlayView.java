@@ -12,10 +12,12 @@ import com.badlogic.gdx.utils.Timer;
 import com.lpoot4g4.tw.Controller.GameWorld;
 import com.lpoot4g4.tw.Controller.ProjectileBody;
 import com.lpoot4g4.tw.Model.GameModel;
+import com.lpoot4g4.tw.Model.PowerUpModel;
 import com.lpoot4g4.tw.Model.ProjectileModel;
 import com.lpoot4g4.tw.TurtleWars;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class PlayView extends ScreenAdapter
 {
@@ -53,6 +55,9 @@ public class PlayView extends ScreenAdapter
         this.game.getAssetManager().load("cactus.png", Texture.class);
         this.game.getAssetManager().load("explosion.png", Texture.class);
         this.game.getAssetManager().load("lightTurtle.png", Texture.class);
+        this.game.getAssetManager().load("powerUpBite.png", Texture.class);
+        this.game.getAssetManager().load("powerUpHealth.png", Texture.class);
+        this.game.getAssetManager().load("powerUpShield.png", Texture.class);
         this.game.getAssetManager().load("D0.png", Texture.class);
         this.game.getAssetManager().load("D1.png", Texture.class);
         this.game.getAssetManager().load("D2.png", Texture.class);
@@ -87,6 +92,9 @@ public class PlayView extends ScreenAdapter
         this.game.getAssetManager().unload("cactus.png");
         this.game.getAssetManager().unload("explosion.png");
         this.game.getAssetManager().unload("lightTurtle.png");
+        this.game.getAssetManager().unload("powerUpBite.png");
+        this.game.getAssetManager().unload("powerUpHealth.png");
+        this.game.getAssetManager().unload("powerUpShield.png");
         this.game.getAssetManager().unload("D0.png");
         this.game.getAssetManager().unload("D1.png");
         this.game.getAssetManager().unload("D2.png");
@@ -204,20 +212,21 @@ public class PlayView extends ScreenAdapter
             else
                 player1.getSprite().setRegion(0,0,88,59);
 
-
-
-        if(gameWorld.getPlayer2().getBody().getLinearVelocity().x != 0)
-        {
-            region = player2.walking.getKeyFrame(player2.animationTimer, true);
-            player2.getSprite().setRegion(region);
-
-            player2.animationTimer = gameModel.getPlayer2().getCurrentState() == gameModel.getPlayer2().getPreviousState()
-                    ? player2.animationTimer + delta : 0;
-
-            gameModel.getPlayer2().setPreviousState(gameModel.getPlayer2().getCurrentState());
-        }
+        if(gameModel.getPlayer2().isBiting())
+            player2.getSprite().setRegion(88 * 3, 0, 88, 59);
         else
-            player2.getSprite().setRegion(0,0,88,59);
+            if(gameWorld.getPlayer2().getBody().getLinearVelocity().x != 0)
+            {
+                region = player2.walking.getKeyFrame(player2.animationTimer, true);
+                player2.getSprite().setRegion(region);
+
+                player2.animationTimer = gameModel.getPlayer2().getCurrentState() == gameModel.getPlayer2().getPreviousState()
+                        ? player2.animationTimer + delta : 0;
+
+                gameModel.getPlayer2().setPreviousState(gameModel.getPlayer2().getCurrentState());
+            }
+            else
+                player2.getSprite().setRegion(0,0,88,59);
 
         if((gameModel.getPlayer1().isBackwards() && !player1.getSprite().isFlipX()) ||
                 (!gameModel.getPlayer1().isBackwards() && player1.getSprite().isFlipX()))
@@ -229,6 +238,38 @@ public class PlayView extends ScreenAdapter
 
         player1.draw(game.getBatch());
         player2.draw(game.getBatch());
+    }
+
+    public void spawnPowerUp()
+    {
+        Random rand = new Random();
+        float x_pos;
+        int option;
+
+        option = rand.nextInt(4);
+
+        switch(option)
+        {
+            case 0:
+                gameModel.getPowerUp().setEffect(PowerUpModel.Effect.Health);
+                break;
+
+            case 1:
+                gameModel.getPowerUp().setEffect(PowerUpModel.Effect.Shield);
+                break;
+
+            case 2:
+                gameModel.getPowerUp().setEffect(PowerUpModel.Effect.Damage);
+                break;
+
+            default:
+                break;
+        }
+
+        x_pos = rand.nextFloat() * TurtleWars.WIDTH;
+
+
+
     }
 
     public void handleInputs(float delta)
