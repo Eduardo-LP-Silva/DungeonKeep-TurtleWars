@@ -6,11 +6,16 @@ public class TurtleModel extends EntityModel
     public enum State {RunningRight, RunningLeft, Standing}
 
     private final static int MAX_HEALTH = 100;
+    private final static int lightTurtleMeleeDamage = 5;
+    private final  static  int lightTurtleStompDamage = 10;
+    private final static int heavyTurtleMeleeDamage = 15;
+    private final static int heavyTurtleStompDamage = 20;
 
     private TurtleClass turtleClass;
     private int health;
     private boolean jumping;
     private boolean biting;
+    private  boolean buffed = false;
     private boolean firing = false;
     private int melee_damage;
     private int stomp_damage;
@@ -28,19 +33,35 @@ public class TurtleModel extends EntityModel
 
         if(tc.toString().equals("Light"))
         {
-            melee_damage = 5;
-            stomp_damage = 10;
+            melee_damage = lightTurtleMeleeDamage;
+            stomp_damage = lightTurtleStompDamage;
         }
         else
         {
-            melee_damage = 15;
-            stomp_damage = 20;
+            melee_damage = heavyTurtleMeleeDamage;
+            stomp_damage = heavyTurtleStompDamage;
         }
     }
 
     public TurtleClass getTurtleClass()
     {
         return turtleClass;
+    }
+
+    public static int getLightTurtleMeleeDamage() {
+        return lightTurtleMeleeDamage;
+    }
+
+    public static int getLightTurtleStompDamage() {
+        return lightTurtleStompDamage;
+    }
+
+    public static int getHeavyTurtleMeleeDamage() {
+        return heavyTurtleMeleeDamage;
+    }
+
+    public static int getHeavyTurtleStompDamage() {
+        return heavyTurtleStompDamage;
     }
 
     public boolean isJumping()
@@ -62,6 +83,10 @@ public class TurtleModel extends EntityModel
 
     public int getHealth() {
         return health;
+    }
+
+    public boolean isBuffed() {
+        return buffed;
     }
 
     public int getStomp_damage() {
@@ -101,11 +126,31 @@ public class TurtleModel extends EntityModel
         this.previousState = previousState;
     }
 
+    public void setBuffed(boolean buffed) {
+        this.buffed = buffed;
+    }
+
+    public void setMelee_damage(int melee_damage) {
+        this.melee_damage = melee_damage;
+    }
+
+    public void setStomp_damage(int stomp_damage) {
+        this.stomp_damage = stomp_damage;
+    }
+
     public void inflictDamage(int damage)
     {
         if(damage > health)
             health = 0;
         else
             health -= damage;
+    }
+
+    public void addHealth(int hp)
+    {
+        if(health < 75)
+            health += hp;
+        else
+            health = 100;
     }
 }

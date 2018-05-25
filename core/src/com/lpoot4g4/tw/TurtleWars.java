@@ -76,7 +76,7 @@ public class TurtleWars extends Game
 
     public void exit()
     {
-        return;
+        Gdx.app.exit();
     }
 
     /**

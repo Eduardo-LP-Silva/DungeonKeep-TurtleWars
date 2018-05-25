@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.lpoot4g4.tw.Model.EntityModel;
 import com.lpoot4g4.tw.Model.GameModel;
 import com.lpoot4g4.tw.Model.PlatformModel;
+import com.lpoot4g4.tw.Model.PowerUpModel;
 import com.lpoot4g4.tw.Model.ProjectileModel;
 import com.lpoot4g4.tw.Model.TurtleModel;
 
@@ -20,6 +21,8 @@ import static java.lang.Math.abs;
 
 
 import java.util.ArrayList;
+import java.util.Random;
+
 import static com.lpoot4g4.tw.View.PlayView.PIXEL_TO_METER;
 
 public class GameWorld implements ContactListener
@@ -29,6 +32,7 @@ public class GameWorld implements ContactListener
     private TurtleBody player2;
     private PlatformBody floor;
     private PlatformBody ceiling;
+    private PowerUpBody powerUp;
     private wallBody leftWall;
     private wallBody rightWall;
     private ArrayList<ProjectileBody> missiles;
@@ -72,6 +76,21 @@ public class GameWorld implements ContactListener
         gameModel.update();
         player2Defend();
         player2Attack();
+
+        if(gameModel.getPowerUp().getEffect().toString().equals("Null"))
+        {
+            Random rand = new Random();
+            gameModel.spawnPowerUp();
+
+            Timer.schedule(new Timer.Task()
+            {
+                @Override
+                public void run()
+                {
+                    powerUp = new PowerUpBody(world, gameModel.getPowerUp());
+                }
+            }, rand.nextInt(15) + 1);
+        }
 
         world.step(1/60f, 6,2);
 
@@ -235,6 +254,12 @@ public class GameWorld implements ContactListener
             }
     }
 
+    public void removePowerUp()
+    {
+        gameModel.getPowerUp().setEffect(PowerUpModel.Effect.Null);
+        gameModel.getPowerUp().setFlaggedForRemoval(true);
+    }
+
     public void updateTurtles()
     {
         // Turtle 1
@@ -366,14 +391,16 @@ public class GameWorld implements ContactListener
                         || (fxtB.getUserData().equals("Turtle Right Side")))
                     turtleModelA.inflictDamage(turtleModelB.getMelee_damage());
 
-            if(turtleFxtA.getUserData().equals("Turtle Bottom") && fxtB.getUserData().equals("Turtle Body"))
+            if(turtleFxtA.getUserData().equals("Turtle Bottom") && fxtB.getUserData().equals("Turtle Body")
+                    && turtleModelA.getY() > turtleModelB.getY())
             {
                 turtleModelB.inflictDamage(turtleModelA.getStomp_damage());
                 turtleFxtA.getBody().applyLinearImpulse(new Vector2(0, 60), turtleFxtA.getBody().getWorldCenter(), true);
                 turtleModelA.setJumping(true);
             }
             else
-                if(fxtB.getUserData().equals("Turtle Bottom") && turtleFxtA.getUserData().equals("Turtle Body"))
+                if(fxtB.getUserData().equals("Turtle Bottom") && turtleFxtA.getUserData().equals("Turtle Body")
+                        && turtleModelB.getY() > turtleModelA.getY())
                 {
                     turtleModelA.inflictDamage((turtleModelB.getStomp_damage()));
                     fxtB.getBody().applyLinearImpulse(new Vector2(0, 60), fxtB.getBody().getWorldCenter(), true);
@@ -398,6 +425,25 @@ public class GameWorld implements ContactListener
             ProjectileModel pm = (ProjectileModel) fxtB.getBody().getUserData();
             turtleModelA.inflictDamage(ProjectileModel.BASE_DAMAGE);
             pm.setForRemoval();
+
+            return;
+        }
+
+        if(fxtB.getBody().getUserData() instanceof PowerUpModel)
+        {
+            String effect = ((PowerUpModel) fxtB.getBody().getUserData()).getEffect().toString();
+
+            if(effect.equals("Health"))
+                turtleModelA.addHealth(25);
+            else
+                if(effect.equals("Damage") && !turtleModelA.isBuffed())
+                {
+                    turtleModelA.setMelee_damage(turtleModelA.getMelee_damage() + 15);
+                    turtleModelA.setStomp_damage(turtleModelA.getStomp_damage() + 15);
+                    turtleModelA.setBuffed(true);
+                }
+
+                removePowerUp();
         }
     }
 
@@ -412,6 +458,9 @@ public class GameWorld implements ContactListener
 
             turtleModel.inflictDamage(ProjectileModel.BASE_DAMAGE);
         }
+        else
+            if(fxtB.getBody().getUserData() instanceof  PowerUpModel)
+                removePowerUp();
 
         bullet1.setForRemoval();
     }
@@ -441,6 +490,33 @@ public class GameWorld implements ContactListener
         }
     }
 
+    public void powerUpContact(Contact contact)
+    {
+        PowerUpModel powerUpM = (PowerUpModel) contact.getFixtureA().getBody().getUserData();
+        Fixture fxtB = contact.getFixtureB();
+
+        if(fxtB.getBody().getUserData() instanceof TurtleModel)
+        {
+            String effect = powerUpM.getEffect().toString();
+            TurtleModel turtleModelB = (TurtleModel) fxtB.getBody().getUserData();
+
+            if(effect.equals("Health"))
+                turtleModelB.addHealth(25);
+            else
+                if(effect.equals("Damage") && !turtleModelB.isBuffed())
+                {
+                    turtleModelB.setMelee_damage(turtleModelB.getMelee_damage() + 15);
+                    turtleModelB.setStomp_damage(turtleModelB.getStomp_damage() + 15);
+                    turtleModelB.setBuffed(true);
+                }
+
+            removePowerUp();
+        }
+        else
+            if(fxtB.getBody().getUserData() instanceof ProjectileModel)
+                removePowerUp();
+    }
+
     @Override
     public void beginContact(Contact contact)
     {
@@ -454,7 +530,9 @@ public class GameWorld implements ContactListener
             else
                 if(fixtureA.getBody().getUserData() instanceof ProjectileModel)
                     bulletContact(contact);
-
+                else
+                    if(fixtureA.getBody().getUserData() instanceof PowerUpModel)
+                        powerUpContact(contact);
     }
 
     @Override

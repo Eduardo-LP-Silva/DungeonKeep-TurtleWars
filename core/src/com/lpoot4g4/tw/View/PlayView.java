@@ -6,6 +6,8 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.Timer;
@@ -27,6 +29,7 @@ public class PlayView extends ScreenAdapter
     private TurtleView player1;
     private TurtleView player2;
     private PlatformView floor;
+    private BitmapFont font = new BitmapFont(Gdx.files.internal("font.fnt"));
     private OrthographicCamera camera;
     private Box2DDebugRenderer debugRenderer;
     private static boolean debugPhysics = true;
@@ -55,19 +58,10 @@ public class PlayView extends ScreenAdapter
         this.game.getAssetManager().load("cactus.png", Texture.class);
         this.game.getAssetManager().load("explosion.png", Texture.class);
         this.game.getAssetManager().load("lightTurtle.png", Texture.class);
+        this.game.getAssetManager().load("lightTurtleShield.png", Texture.class);
         this.game.getAssetManager().load("powerUpBite.png", Texture.class);
         this.game.getAssetManager().load("powerUpHealth.png", Texture.class);
         this.game.getAssetManager().load("powerUpShield.png", Texture.class);
-        this.game.getAssetManager().load("D0.png", Texture.class);
-        this.game.getAssetManager().load("D1.png", Texture.class);
-        this.game.getAssetManager().load("D2.png", Texture.class);
-        this.game.getAssetManager().load("D3.png", Texture.class);
-        this.game.getAssetManager().load("D4.png", Texture.class);
-        this.game.getAssetManager().load("D5.png", Texture.class);
-        this.game.getAssetManager().load("D6.png", Texture.class);
-        this.game.getAssetManager().load("D7.png", Texture.class);
-        this.game.getAssetManager().load("D8.png", Texture.class);
-        this.game.getAssetManager().load("D9.png", Texture.class);
 
         this.game.getAssetManager().finishLoading();
 
@@ -92,31 +86,42 @@ public class PlayView extends ScreenAdapter
         this.game.getAssetManager().unload("cactus.png");
         this.game.getAssetManager().unload("explosion.png");
         this.game.getAssetManager().unload("lightTurtle.png");
+        this.game.getAssetManager().unload("lightTurtleShield.png");
         this.game.getAssetManager().unload("powerUpBite.png");
         this.game.getAssetManager().unload("powerUpHealth.png");
         this.game.getAssetManager().unload("powerUpShield.png");
-        this.game.getAssetManager().unload("D0.png");
-        this.game.getAssetManager().unload("D1.png");
-        this.game.getAssetManager().unload("D2.png");
-        this.game.getAssetManager().unload("D3.png");
-        this.game.getAssetManager().unload("D4.png");
-        this.game.getAssetManager().unload("D5.png");
-        this.game.getAssetManager().unload("D6.png");
-        this.game.getAssetManager().unload("D7.png");
-        this.game.getAssetManager().unload("D8.png");
-        this.game.getAssetManager().unload("D9.png");
     }
 
     @Override
     public void render(float delta)
     {
-        gameWorld.removeFlagged();
-        handleInputs(delta);
-        gameWorld.update(delta);
+
+        if(!gameModel.isVictory() && !gameModel.isGameOver())
+        {
+            gameWorld.removeFlagged();
+            handleInputs(delta);
+            gameWorld.update(delta);
+        }
+        else
+        {
+            Timer.schedule(new Timer.Task()
+            {
+                @Override
+                public void run()
+                {
+                    dispose();
+                    game.setMenu(new GameModel());
+                }
+            }, 5);
+        }
+
 
         Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
 
         game.getBatch().begin();
+
+
+
         game.getBatch().draw(game.getAssetManager().get("background.png", Texture.class), 0, 0, game.WIDTH, game.HEIGHT);
         floor.draw(game.getBatch());
 
@@ -146,41 +151,31 @@ public class PlayView extends ScreenAdapter
                 pv.draw(game.getBatch());
         }
 
+        font.draw(game.getBatch(), Integer.toString(gameModel.getPlayer1().getHealth()), 5, 380);
+        font.draw(game.getBatch(), Integer.toString(gameModel.getPlayer2().getHealth()), 700, 380);
 
-        int health = gameModel.getPlayer1().getHealth(), digit, x = 50;
-        Texture tex;
+        String effect = gameModel.getPowerUp().getEffect().toString();
 
-        //Turtle 1
-        do
+        if(!effect.equals("Null"))
         {
-            digit = health % 10;
-            health /= 10;
-
-            tex = getDigit(digit);
-
-            game.getBatch().draw(tex, x, 300);
-
-            x -= 40;
+            if (effect.equals("Health"))
+                game.getBatch().draw(game.getAssetManager().get("powerUpHealth.png", Texture.class),
+                        gameModel.getPowerUp().getX(), gameModel.getPowerUp().getY());
+            else
+                if (effect.equals("Shield"))
+                    game.getBatch().draw(game.getAssetManager().get("powerUpShield.png", Texture.class),
+                        gameModel.getPowerUp().getX(), gameModel.getPowerUp().getY());
+                else
+                    if (effect.equals("Damage"))
+                        game.getBatch().draw(game.getAssetManager().get("powerUpBite.png", Texture.class),
+                            gameModel.getPowerUp().getX(), gameModel.getPowerUp().getY());
         }
-        while(health > 0);
 
-        //Turtle 2
-
-        health = gameModel.getPlayer2().getHealth();
-        x = 700;
-
-        do
-        {
-            digit = health % 10;
-            health /= 10;
-
-            tex = getDigit(digit);
-
-            game.getBatch().draw(tex, x, 300);
-
-            x -= 40;
-        }
-        while(health > 0);
+        if(gameModel.isGameOver())
+            font.draw(game.getBatch(), "Game Over", 300, 300);
+        else
+            if(gameModel.isVictory())
+                font.draw(game.getBatch(), "Victory", 300, 300);
 
         game.getBatch().end();
 
@@ -238,38 +233,6 @@ public class PlayView extends ScreenAdapter
 
         player1.draw(game.getBatch());
         player2.draw(game.getBatch());
-    }
-
-    public void spawnPowerUp()
-    {
-        Random rand = new Random();
-        float x_pos;
-        int option;
-
-        option = rand.nextInt(4);
-
-        switch(option)
-        {
-            case 0:
-                gameModel.getPowerUp().setEffect(PowerUpModel.Effect.Health);
-                break;
-
-            case 1:
-                gameModel.getPowerUp().setEffect(PowerUpModel.Effect.Shield);
-                break;
-
-            case 2:
-                gameModel.getPowerUp().setEffect(PowerUpModel.Effect.Damage);
-                break;
-
-            default:
-                break;
-        }
-
-        x_pos = rand.nextFloat() * TurtleWars.WIDTH;
-
-
-
     }
 
     public void handleInputs(float delta)
