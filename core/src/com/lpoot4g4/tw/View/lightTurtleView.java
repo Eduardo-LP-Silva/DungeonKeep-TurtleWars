@@ -13,7 +13,6 @@ public class lightTurtleView extends TurtleView
     {
         super(game);
 
-
         Array<TextureRegion> frames = new Array<TextureRegion>();
 
         Texture walking_texture = game.getAssetManager().get("lightTurtle.png", Texture.class);
@@ -23,7 +22,6 @@ public class lightTurtleView extends TurtleView
         frames.add(new TextureRegion(walking_texture, 176, 0, 88, 59));
 
         walking = new Animation(0.1f, frames);
-
 
         frames.clear();
     }

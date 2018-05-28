@@ -58,10 +58,9 @@ public class PlayView extends ScreenAdapter
         this.game.getAssetManager().load("cactus.png", Texture.class);
         this.game.getAssetManager().load("explosion.png", Texture.class);
         this.game.getAssetManager().load("lightTurtle.png", Texture.class);
-        this.game.getAssetManager().load("lightTurtleShield.png", Texture.class);
+        this.game.getAssetManager().load("heavyTurtleTR.png", Texture.class);
         this.game.getAssetManager().load("powerUpBite.png", Texture.class);
         this.game.getAssetManager().load("powerUpHealth.png", Texture.class);
-        this.game.getAssetManager().load("powerUpShield.png", Texture.class);
 
         this.game.getAssetManager().finishLoading();
 
@@ -86,10 +85,9 @@ public class PlayView extends ScreenAdapter
         this.game.getAssetManager().unload("cactus.png");
         this.game.getAssetManager().unload("explosion.png");
         this.game.getAssetManager().unload("lightTurtle.png");
-        this.game.getAssetManager().unload("lightTurtleShield.png");
+        this.game.getAssetManager().unload("heavyTurtleTR.png");
         this.game.getAssetManager().unload("powerUpBite.png");
         this.game.getAssetManager().unload("powerUpHealth.png");
-        this.game.getAssetManager().unload("powerUpShield.png");
     }
 
     @Override
