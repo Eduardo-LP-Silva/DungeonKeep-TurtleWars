@@ -5,6 +5,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector3;
 import com.lpoot4g4.tw.Model.GameModel;
 import com.lpoot4g4.tw.Model.TurtleModel;
 import com.lpoot4g4.tw.TurtleWars;
@@ -57,8 +58,10 @@ public class CharacterSelectionView extends ScreenAdapter
     @Override
     public void render(float delta)
     {
-        Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
         handleInputs();
+
+        game.getCamera().update();
+        game.getBatch().setProjectionMatrix(game.getCamera().combined);
 
         game.getBatch().begin();
         game.getBatch().draw(game.getAssetManager().get("characterSelection.png", Texture.class), 0, 0, TurtleWars.WIDTH, TurtleWars.HEIGHT);
@@ -72,13 +75,16 @@ public class CharacterSelectionView extends ScreenAdapter
     {
         if(Gdx.input.isTouched())
         {
-            if(lightTurtle.getBoundingRectangle().contains(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY()))
+            Vector3 input = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+            game.getCamera().unproject(input);
+
+            if(lightTurtle.getBoundingRectangle().contains(input.x, input.y))
                 gameModel.getPlayer1().setTurtleClass(TurtleModel.TurtleClass.Light);
 
-            if(heavyTurtle.getBoundingRectangle().contains(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY()))
+            if(heavyTurtle.getBoundingRectangle().contains(input.x, input.y))
                 gameModel.getPlayer1().setTurtleClass(TurtleModel.TurtleClass.Heavy);
 
-            if(startGame.getBoundingRectangle().contains(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY()))
+            if(startGame.getBoundingRectangle().contains(input.x, input.y))
             {
                 gameModel.getThemeSong().stop();
                 game.setPlay(gameModel);

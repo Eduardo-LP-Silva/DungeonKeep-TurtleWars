@@ -74,8 +74,8 @@ public class GameWorld implements ContactListener
     public void update(float delta)
     {
         gameModel.update();
-        player2Defend();
-        player2Attack();
+        //player2Defend();
+        //player2Attack();
 
         if(gameModel.getPowerUp().getEffect().toString().equals("Null"))
         {

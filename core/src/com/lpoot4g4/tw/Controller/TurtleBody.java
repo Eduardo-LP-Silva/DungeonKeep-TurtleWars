@@ -49,7 +49,6 @@ public class TurtleBody extends EntityBody
 
     public void moveRight()
     {
-
         if(body.getLinearVelocity().x <= 7 && getX() + getWidth() * PIXEL_TO_METER < 795f * PIXEL_TO_METER)
         {
            /* if(body.getLinearVelocity().x < 0)

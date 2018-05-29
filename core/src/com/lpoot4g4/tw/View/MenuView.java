@@ -3,8 +3,10 @@ package com.lpoot4g4.tw.View;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector3;
 import com.lpoot4g4.tw.Model.GameModel;
 import com.lpoot4g4.tw.TurtleWars;
 
@@ -17,11 +19,9 @@ public class MenuView extends ScreenAdapter
     private Sprite optionsBtn;
     private Sprite exitBtn;
 
-    public MenuView(TurtleWars g, GameModel gm)
-    {
+    public MenuView(TurtleWars g, GameModel gm) {
         game = g;
         gameModel = gm;
-
         loadAssets();
     }
 
@@ -52,11 +52,14 @@ public class MenuView extends ScreenAdapter
     {
         handleInputs(delta);
 
+        game.getCamera().update();
+        game.getBatch().setProjectionMatrix(game.getCamera().combined);
+
         Texture menuBackground = game.getAssetManager().get("menuBackground.png", Texture.class);
         game.getBatch().begin();
         game.getBatch().draw(menuBackground, 0, 0, TurtleWars.WIDTH, TurtleWars.HEIGHT);
         newGameBtn.draw(game.getBatch());
-        optionsBtn.draw(game.getBatch());
+       // optionsBtn.draw(game.getBatch());
         exitBtn.draw((game.getBatch()));
         game.getBatch().end();
     }
@@ -71,17 +74,23 @@ public class MenuView extends ScreenAdapter
     {
         if(Gdx.input.isTouched())
         {
-            if(newGameBtn.getBoundingRectangle().contains(Gdx.input.getX(),  Gdx.graphics.getHeight() - Gdx.input.getY()))
+            Vector3 input = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+            game.getCamera().unproject(input);
+
+            float input_x = input.x, input_y = input.y;
+
+            if(newGameBtn.getBoundingRectangle().contains(input_x, input_y))
             {
                 //game.connectSocket();
                 game.setCharacterSelection(gameModel);
                 unloadAssets();
             }
 
+            /*
             if(optionsBtn.getBoundingRectangle().contains(Gdx.input.getX(),  Gdx.graphics.getHeight() - Gdx.input.getY()))
-                game.setOptions(gameModel);
+                game.setOptions(gameModel); */
 
-            if(exitBtn.getBoundingRectangle().contains(Gdx.input.getX(),  Gdx.graphics.getHeight() - Gdx.input.getY()))
+            if(exitBtn.getBoundingRectangle().contains(input.x,  input.y))
             {
                 unloadAssets();
                 game.exit();

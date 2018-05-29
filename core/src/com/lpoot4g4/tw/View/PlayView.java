@@ -9,6 +9,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.Timer;
 import com.lpoot4g4.tw.Controller.GameWorld;
@@ -21,7 +24,7 @@ import com.lpoot4g4.tw.TurtleWars;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class PlayView extends ScreenAdapter
+public class PlayView extends ScreenAdapter implements GestureDetector.GestureListener
 {
     private TurtleWars game;
     private GameModel gameModel;
@@ -33,6 +36,7 @@ public class PlayView extends ScreenAdapter
     private OrthographicCamera camera;
     private Box2DDebugRenderer debugRenderer;
     private static boolean debugPhysics = true;
+    private GestureDetector gestureDetector;
 
     public final static float PIXEL_TO_METER = 0.01f;
 
@@ -47,6 +51,9 @@ public class PlayView extends ScreenAdapter
         camera.position.set(TurtleWars.WIDTH / 2, TurtleWars.HEIGHT / 2, 0);
 
         debugRenderer = new Box2DDebugRenderer();
+        gestureDetector = new GestureDetector(this);
+        gestureDetector.setTapCountInterval(0.4f);
+        Gdx.input.setInputProcessor(gestureDetector);
         loadAssets();
     }
 
@@ -93,7 +100,6 @@ public class PlayView extends ScreenAdapter
     @Override
     public void render(float delta)
     {
-
         if(!gameModel.isVictory() && !gameModel.isGameOver())
         {
             gameWorld.removeFlagged();
@@ -113,12 +119,9 @@ public class PlayView extends ScreenAdapter
             }, 5);
         }
 
-
         Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
 
         game.getBatch().begin();
-
-
 
         game.getBatch().draw(game.getAssetManager().get("background.png", Texture.class), 0, 0, game.WIDTH, game.HEIGHT);
         floor.draw(game.getBatch());
@@ -235,10 +238,10 @@ public class PlayView extends ScreenAdapter
 
     public void handleInputs(float delta)
     {
-       if(Gdx.input.isKeyPressed(Input.Keys.A))
+       if(Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.getAccelerometerY() < -1)
           gameWorld.getPlayer1().moveLeft();
 
-        if(Gdx.input.isKeyPressed(Input.Keys.D))
+        if(Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.getAccelerometerY() > 2)
             gameWorld.getPlayer1().moveRight();
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.W))
@@ -251,42 +254,55 @@ public class PlayView extends ScreenAdapter
             gameWorld.FireTurtle1();
     }
 
-    public Texture getDigit(int digit)
+    @Override
+    public boolean touchDown(float x, float y, int pointer, int button)
     {
-        switch(digit)
-        {
-            case 0:
-                return game.getAssetManager().get("D0.png", Texture.class);
+        return true;
+    }
 
-            case 1:
-                return game.getAssetManager().get("D1.png", Texture.class);
+    @Override
+    public boolean tap(float x, float y, int count, int button)
+    {
+        if(count > 1)
+            gameWorld.getPlayer1().jump();
 
-            case 2:
-                return game.getAssetManager().get("D2.png", Texture.class);
+        System.out.println(count);
 
-            case 3:
-                return game.getAssetManager().get("D3.png", Texture.class);
+        return true;
+    }
 
-            case 4:
-                return game.getAssetManager().get("D4.png", Texture.class);
+    @Override
+    public boolean longPress(float x, float y) {
+        return false;
+    }
 
-            case 5:
-                return game.getAssetManager().get("D5.png", Texture.class);
+    @Override
+    public boolean fling(float velocityX, float velocityY, int button) {
+        return false;
+    }
 
-            case 6:
-                return game.getAssetManager().get("D6.png", Texture.class);
+    @Override
+    public boolean pan(float x, float y, float deltaX, float deltaY) {
+        return false;
+    }
 
-            case 7:
-                return game.getAssetManager().get("D7.png", Texture.class);
+    @Override
+    public boolean panStop(float x, float y, int pointer, int button) {
+        return false;
+    }
 
-            case 8:
-                return game.getAssetManager().get("D8.png", Texture.class);
+    @Override
+    public boolean zoom(float initialDistance, float distance) {
+        return false;
+    }
 
-            case 9:
-                return game.getAssetManager().get("D9.png", Texture.class);
+    @Override
+    public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
+        return false;
+    }
 
-            default:
-                return null;
-        }
+    @Override
+    public void pinchStop() {
+
     }
 }

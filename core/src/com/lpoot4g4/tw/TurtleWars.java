@@ -3,6 +3,7 @@ package com.lpoot4g4.tw;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.lpoot4g4.tw.Model.GameModel;
 import com.lpoot4g4.tw.View.CharacterSelectionView;
@@ -20,6 +21,7 @@ public class TurtleWars extends Game
     private SpriteBatch batch;
     private AssetManager assetManager;
     private Socket socket;
+    private OrthographicCamera camera;
 
     public static final float WIDTH = 800.0f;
     public static final float HEIGHT = 400.0f;
@@ -38,6 +40,11 @@ public class TurtleWars extends Game
     {
         batch = new SpriteBatch();
         assetManager = new AssetManager();
+
+        camera = new OrthographicCamera(TurtleWars.WIDTH, TurtleWars.HEIGHT);
+        camera.setToOrtho(false, TurtleWars.WIDTH, TurtleWars.HEIGHT);
+        camera.update();
+
         Gdx.gl.glClearColor(0.1f,0.9f,0.9f,1);
 
         Gdx.app.setLogLevel(LOG_DEBUG);
@@ -52,6 +59,10 @@ public class TurtleWars extends Game
         GameModel gm = new GameModel();
 
         setScreen(new MenuView(this, gm));
+    }
+
+    public OrthographicCamera getCamera() {
+        return camera;
     }
 
     public void setMenu(GameModel gm)
