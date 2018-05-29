@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.Timer;
 import com.lpoot4g4.tw.Controller.GameWorld;
@@ -37,6 +38,9 @@ public class PlayView extends ScreenAdapter implements GestureDetector.GestureLi
     private Box2DDebugRenderer debugRenderer;
     private static boolean debugPhysics = true;
     private GestureDetector gestureDetector;
+    private Sprite biteBtn;
+    private Sprite fireBtn;
+    private Sprite jumpBtn;
 
     public final static float PIXEL_TO_METER = 0.01f;
 
@@ -68,6 +72,9 @@ public class PlayView extends ScreenAdapter implements GestureDetector.GestureLi
         this.game.getAssetManager().load("heavyTurtleTR.png", Texture.class);
         this.game.getAssetManager().load("powerUpBite.png", Texture.class);
         this.game.getAssetManager().load("powerUpHealth.png", Texture.class);
+        this.game.getAssetManager().load("biteBtn.png", Texture.class);
+        this.game.getAssetManager().load("fireBtn.png", Texture.class);
+        this.game.getAssetManager().load("jumpBtn.png", Texture.class);
 
         this.game.getAssetManager().finishLoading();
 
@@ -82,6 +89,15 @@ public class PlayView extends ScreenAdapter implements GestureDetector.GestureLi
             player2 = new heavyTurtleView(game);
 
         floor = new PlatformView(game);
+
+        jumpBtn = new Sprite(game.getAssetManager().get("jumpBtn.png", Texture.class));
+        jumpBtn.setPosition(10, 10);
+
+        biteBtn = new Sprite(game.getAssetManager().get("biteBtn.png", Texture.class));
+        biteBtn.setPosition(630, 10);
+
+        fireBtn = new Sprite(game.getAssetManager().get("fireBtn.png", Texture.class));
+        fireBtn.setPosition(700, 10);
     }
 
     public void unloadAssets()
@@ -95,6 +111,9 @@ public class PlayView extends ScreenAdapter implements GestureDetector.GestureLi
         this.game.getAssetManager().unload("heavyTurtleTR.png");
         this.game.getAssetManager().unload("powerUpBite.png");
         this.game.getAssetManager().unload("powerUpHealth.png");
+        this.game.getAssetManager().unload("biteBtn.png");
+        this.game.getAssetManager().unload("jumpBtn.png");
+        this.game.getAssetManager().unload("fireBtn.png");
     }
 
     @Override
@@ -125,6 +144,10 @@ public class PlayView extends ScreenAdapter implements GestureDetector.GestureLi
 
         game.getBatch().draw(game.getAssetManager().get("background.png", Texture.class), 0, 0, game.WIDTH, game.HEIGHT);
         floor.draw(game.getBatch());
+
+        jumpBtn.draw(game.getBatch());
+        biteBtn.draw(game.getBatch());
+        fireBtn.draw(game.getBatch());
 
         updateTurtles(delta);
 
@@ -238,19 +261,27 @@ public class PlayView extends ScreenAdapter implements GestureDetector.GestureLi
 
     public void handleInputs(float delta)
     {
+        Vector3 input = new Vector3(-1, -1, -1);
+
+        if(Gdx.input.isTouched())
+        {
+            input.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+            game.getCamera().unproject(input);
+        }
+
        if(Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.getAccelerometerY() < -1)
           gameWorld.getPlayer1().moveLeft();
 
         if(Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.getAccelerometerY() > 2)
             gameWorld.getPlayer1().moveRight();
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.W))
+        if(Gdx.input.isKeyJustPressed(Input.Keys.W) || jumpBtn.getBoundingRectangle().contains(input.x, input.y))
             gameWorld.getPlayer1().jump();
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.E))
+        if(Gdx.input.isKeyJustPressed(Input.Keys.E) || biteBtn.getBoundingRectangle().contains(input.x, input.y))
             gameWorld.getPlayer1().bite();
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.Q) && !gameModel.getPlayer1().isFiring())
+        if(Gdx.input.isKeyJustPressed(Input.Keys.Q) || fireBtn.getBoundingRectangle().contains(input.x, input.y))
             gameWorld.FireTurtle1();
     }
 
@@ -265,8 +296,6 @@ public class PlayView extends ScreenAdapter implements GestureDetector.GestureLi
     {
         if(count > 1)
             gameWorld.getPlayer1().jump();
-
-        System.out.println(count);
 
         return true;
     }
