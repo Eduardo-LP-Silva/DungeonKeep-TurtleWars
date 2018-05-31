@@ -22,6 +22,7 @@ public class TurtleWars extends Game
     private AssetManager assetManager;
     private Socket socket;
     private OrthographicCamera camera;
+    private GameModel gameModel;
 
     public static final float WIDTH = 800.0f;
     public static final float HEIGHT = 400.0f;
@@ -31,9 +32,12 @@ public class TurtleWars extends Game
         return socket;
     }
 
+    public GameModel getGameModel() {
+        return gameModel;
+    }
+
     /**
      * Creates the game. Initializes the sprite batch and asset manager.
-     * Also starts the game until we have a main menu.
      */
     @Override
     public void create ()
@@ -48,6 +52,7 @@ public class TurtleWars extends Game
         Gdx.gl.glClearColor(0.1f,0.9f,0.9f,1);
 
         Gdx.app.setLogLevel(LOG_DEBUG);
+
         startGame();
     }
 
@@ -56,9 +61,9 @@ public class TurtleWars extends Game
      */
     private void startGame()
     {
-        GameModel gm = new GameModel();
+        gameModel = new GameModel();
 
-        setScreen(new MenuView(this, gm));
+        setScreen(new MenuView(this, gameModel));
     }
 
     public OrthographicCamera getCamera() {

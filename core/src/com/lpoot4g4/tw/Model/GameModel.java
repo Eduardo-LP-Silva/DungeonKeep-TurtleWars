@@ -1,6 +1,7 @@
 package com.lpoot4g4.tw.Model;
 
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
 import com.lpoot4g4.tw.TurtleWars;
 
@@ -11,6 +12,9 @@ import static com.lpoot4g4.tw.Model.PowerUpModel.Effect.Null;
 
 public class GameModel
 {
+    private final Vector2 PLAYER1_STARTING_POSITION = new Vector2(5, 48);
+    private final Vector2 PLAYER2_STARTING_POSITION = new Vector2(500, 48);
+
     private State state;
     private ArrayList<ProjectileModel> missiles;
     private PlatformModel floor;
@@ -28,8 +32,8 @@ public class GameModel
     {
         floor = new PlatformModel(0, 0);
         ceiling = new PlatformModel(0, TurtleWars.HEIGHT + 30);
-        player1 = new TurtleModel(5, 200, TurtleModel.TurtleClass.Light);
-        player2 = new TurtleModel(500, 200, TurtleModel.TurtleClass.Light);
+        player1 = new TurtleModel(PLAYER1_STARTING_POSITION.x, PLAYER1_STARTING_POSITION.y, TurtleModel.TurtleClass.Light);
+        player2 = new TurtleModel(PLAYER2_STARTING_POSITION.x, PLAYER2_STARTING_POSITION.y, TurtleModel.TurtleClass.Light);
         missiles = new ArrayList<ProjectileModel>();
         powerUp = new PowerUpModel(0, 0, Null);
         state = State.Menu;
@@ -48,57 +52,18 @@ public class GameModel
             player2.setBackwards(false);
         }
 
-        if(player1.isBuffed())
-        {
-            player1.setBuffed(false);
-
-            Timer.schedule(new Timer.Task()
-            {
-                @Override
-                public void run()
-                {
-                    if(player1.getTurtleClass().toString().equals("Light"))
-                    {
-                        player1.setMelee_damage(TurtleModel.getLightTurtleMeleeDamage());
-                        player1.setStomp_damage(TurtleModel.getLightTurtleStompDamage());
-                    }
-                    else
-                    {
-                        player1.setMelee_damage(TurtleModel.getHeavyTurtleMeleeDamage());
-                        player1.setStomp_damage(TurtleModel.getHeavyTurtleStompDamage());
-                    }
-                }
-            }, 5);
-        }
-
-        if(player2.isBuffed())
-        {
-            player2.setBuffed(false);
-
-            Timer.schedule(new Timer.Task()
-            {
-                @Override
-                public void run()
-                {
-                    if(player2.getClass().toString().equals("Light"))
-                    {
-                        player2.setMelee_damage(TurtleModel.getLightTurtleMeleeDamage());
-                        player2.setStomp_damage(TurtleModel.getLightTurtleStompDamage());
-                    }
-                    else
-                    {
-                        player2.setMelee_damage(TurtleModel.getHeavyTurtleMeleeDamage());
-                        player2.setStomp_damage(TurtleModel.getHeavyTurtleStompDamage());
-                    }
-                }
-            }, 5);
-        }
+        player1.update();
+        player2.update();
 
         if(player1.getHealth() == 0)
             gameOver = true;
         else
             if(player2.getHealth() == 0)
                 victory = true;
+    }
+
+    public Vector2 getPLAYER1_STARTING_POSITION() {
+        return PLAYER1_STARTING_POSITION;
     }
 
     public TurtleModel getPlayer1()
@@ -213,7 +178,7 @@ public class GameModel
         }
 
         getPowerUp().setX(rand.nextFloat() * TurtleWars.WIDTH);
-        getPowerUp().setY(TurtleWars.HEIGHT );
+        getPowerUp().setY(TurtleWars.HEIGHT);
     }
 
 }

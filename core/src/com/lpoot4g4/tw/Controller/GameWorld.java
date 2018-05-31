@@ -37,6 +37,8 @@ public class GameWorld implements ContactListener
     private wallBody rightWall;
     private ArrayList<ProjectileBody> missiles;
     private GameModel gameModel;
+    private boolean test = false;
+    private float POWERUP_SPAWN_DELAY = 7;
 
     public GameWorld(GameModel gm)
     {
@@ -71,26 +73,33 @@ public class GameWorld implements ContactListener
         return world;
     }
 
+    public void setTest(boolean test) {
+        this.test = test;
+    }
+
     public void update(float delta)
     {
         gameModel.update();
-        player2Defend();
-        player2Attack();
+
+        if(!test)
+        {
+            player2Defend();
+            player2Attack();
+        }
 
         if(gameModel.getPowerUp().getEffect().toString().equals("Null"))
         {
             Random rand = new Random();
             gameModel.spawnPowerUp();
+            POWERUP_SPAWN_DELAY = (rand.nextInt(15) + 1) * 1000;
+            gameModel.getPowerUp().setSpawnTime(System.currentTimeMillis());
 
-            Timer.schedule(new Timer.Task()
-            {
-                @Override
-                public void run()
-                {
-                    powerUp = new PowerUpBody(world, gameModel.getPowerUp());
-                }
-            }, rand.nextInt(15) + 1);
         }
+        else
+            if(powerUp == null && System.currentTimeMillis() - gameModel.getPowerUp().getSpawnTime() > POWERUP_SPAWN_DELAY)
+            {
+                powerUp = new PowerUpBody(world, gameModel.getPowerUp());
+            }
 
         world.step(1/60f, 6,2);
 
@@ -258,6 +267,7 @@ public class GameWorld implements ContactListener
     {
         gameModel.getPowerUp().setEffect(PowerUpModel.Effect.Null);
         gameModel.getPowerUp().setFlaggedForRemoval(true);
+        powerUp = null;
     }
 
     public void updateTurtles()
@@ -318,15 +328,7 @@ public class GameWorld implements ContactListener
         missileBody.move(speed);
 
         gameModel.getPlayer1().setFiring(true);
-
-        Timer.schedule(new Timer.Task()
-        {
-            @Override
-            public void run()
-            {
-                gameModel.getPlayer1().setFiring(false);
-            }
-        }, 2f);
+        gameModel.getPlayer1().setReloadTime(System.currentTimeMillis());
     }
 
     public void fireTurtle2()
@@ -362,14 +364,7 @@ public class GameWorld implements ContactListener
 
         gameModel.getPlayer2().setFiring(true);
 
-        Timer.schedule(new Timer.Task()
-        {
-            @Override
-            public void run()
-            {
-                gameModel.getPlayer2().setFiring(false);
-            }
-        }, 2f);
+        gameModel.getPlayer2().setReloadTime(System.currentTimeMillis());
     }
 
     public void turtleContact(Contact contact)
@@ -444,6 +439,7 @@ public class GameWorld implements ContactListener
                     turtleModelA.setMelee_damage(turtleModelA.getMelee_damage() + 15);
                     turtleModelA.setStomp_damage(turtleModelA.getStomp_damage() + 15);
                     turtleModelA.setBuffed(true);
+                    turtleModelA.setBuffTime(System.currentTimeMillis());
                 }
 
                 removePowerUp();
@@ -511,6 +507,7 @@ public class GameWorld implements ContactListener
                     turtleModelB.setMelee_damage(turtleModelB.getMelee_damage() + 15);
                     turtleModelB.setStomp_damage(turtleModelB.getStomp_damage() + 15);
                     turtleModelB.setBuffed(true);
+                    turtleModelB.setBuffTime(System.currentTimeMillis());
                 }
 
             removePowerUp();

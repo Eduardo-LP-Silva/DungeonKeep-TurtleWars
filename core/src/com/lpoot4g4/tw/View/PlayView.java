@@ -36,7 +36,7 @@ public class PlayView extends ScreenAdapter implements GestureDetector.GestureLi
     private BitmapFont font = new BitmapFont(Gdx.files.internal("font.fnt"));
     private OrthographicCamera camera;
     private Box2DDebugRenderer debugRenderer;
-    private static boolean debugPhysics = true;
+    private static boolean debugPhysics = false;
     private GestureDetector gestureDetector;
     private Sprite biteBtn;
     private Sprite fireBtn;
@@ -59,6 +59,14 @@ public class PlayView extends ScreenAdapter implements GestureDetector.GestureLi
         gestureDetector.setTapCountInterval(0.4f);
         Gdx.input.setInputProcessor(gestureDetector);
         loadAssets();
+    }
+
+    public GameWorld getGameWorld() {
+        return gameWorld;
+    }
+
+    public GameModel getGameModel() {
+        return gameModel;
     }
 
     public void loadAssets()

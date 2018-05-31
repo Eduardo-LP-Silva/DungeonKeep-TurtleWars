@@ -38,10 +38,6 @@ public class TurtleBody extends EntityBody
     {
         if(body.getLinearVelocity().x >= -7 && getX() > 0.5f)
         {
-            /*
-            if(body.getLinearVelocity().x > 0)
-                body.setLinearVelocity(0, body.getLinearVelocity().y); */
-
             body.applyLinearImpulse(new Vector2(-speed,0), body.getWorldCenter(), true);
         }
 
@@ -51,9 +47,6 @@ public class TurtleBody extends EntityBody
     {
         if(body.getLinearVelocity().x <= 7 && getX() + getWidth() * PIXEL_TO_METER < 795f * PIXEL_TO_METER)
         {
-           /* if(body.getLinearVelocity().x < 0)
-                body.setLinearVelocity(0, body.getLinearVelocity().y); */
-
             body.applyLinearImpulse(new Vector2(speed,0), body.getWorldCenter(), true);
         }
 
@@ -71,15 +64,8 @@ public class TurtleBody extends EntityBody
     public void bite()
     {
         ((TurtleModel) body.getUserData()).setBiting(true);
+        ((TurtleModel) body.getUserData()).setBiteTime(System.currentTimeMillis());
 
-        Timer.schedule(new Timer.Task()
-        {
-            @Override
-            public void run()
-            {
-                ((TurtleModel) body.getUserData()).setBiting(false);
-            }
-        }, 0.5f);
     }
 
     @Override

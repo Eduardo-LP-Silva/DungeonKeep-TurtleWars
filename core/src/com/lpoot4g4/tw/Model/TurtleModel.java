@@ -1,5 +1,7 @@
 package com.lpoot4g4.tw.Model;
 
+import com.badlogic.gdx.Gdx;
+
 public class TurtleModel extends EntityModel
 {
     public enum TurtleClass {Light, Heavy}
@@ -10,6 +12,8 @@ public class TurtleModel extends EntityModel
     private final  static  int lightTurtleStompDamage = 10;
     private final static int heavyTurtleMeleeDamage = 15;
     private final static int heavyTurtleStompDamage = 20;
+    private final static int RELOADING_TIME = 2;
+    private final static float BITING_TIME = 0.5f;
 
     private TurtleClass turtleClass;
     private int health;
@@ -17,6 +21,9 @@ public class TurtleModel extends EntityModel
     private boolean biting;
     private  boolean buffed = false;
     private boolean firing = false;
+    private long reloadTime = -1;
+    private long buffTime = -1;
+    private long biteTime = -1;
     private int melee_damage;
     private int stomp_damage;
     private State previousState = State.Standing;
@@ -46,6 +53,10 @@ public class TurtleModel extends EntityModel
     public TurtleClass getTurtleClass()
     {
         return turtleClass;
+    }
+
+    public float getReloadTime() {
+        return reloadTime;
     }
 
     public static int getLightTurtleMeleeDamage() {
@@ -136,6 +147,60 @@ public class TurtleModel extends EntityModel
 
     public void setStomp_damage(int stomp_damage) {
         this.stomp_damage = stomp_damage;
+    }
+
+    public void setReloadTime(long reloadTime)
+    {
+        this.reloadTime = reloadTime;
+    }
+
+    public void setBuffTime(long buffTime) {
+        this.buffTime = buffTime;
+    }
+
+    public void setBiteTime(long biteTime) {
+        this.biteTime = biteTime;
+    }
+
+    public void update()
+    {
+        if(firing)
+        {
+            if((System.currentTimeMillis() - reloadTime) / 1000 > RELOADING_TIME && reloadTime >= 0)
+            {
+                reloadTime = -1;
+                firing = false;
+            }
+        }
+
+        if(buffed)
+        {
+            if((System.currentTimeMillis() - buffTime) / 1000 > PowerUpModel.getDamageBuffDuration() && buffTime >= 0)
+            {
+                buffTime = - 1;
+                buffed = false;
+
+                if(getTurtleClass().toString().equals("Light"))
+                {
+                    setMelee_damage(TurtleModel.getLightTurtleMeleeDamage());
+                    setStomp_damage(TurtleModel.getLightTurtleStompDamage());
+                }
+                else
+                {
+                    setMelee_damage(TurtleModel.getHeavyTurtleMeleeDamage());
+                    setStomp_damage(TurtleModel.getHeavyTurtleStompDamage());
+                }
+            }
+        }
+
+        if(biting)
+        {
+            if((System.currentTimeMillis() - biteTime) / 1000 > BITING_TIME)
+            {
+                biteTime = -1;
+                biting = false;
+            }
+        }
     }
 
     public void inflictDamage(int damage)
