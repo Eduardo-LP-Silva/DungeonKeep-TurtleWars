@@ -333,6 +333,10 @@ public class GameWorld implements ContactListener
 
     public void fireTurtle2()
     {
+
+        if(gameModel.getPlayer1().isFiring())
+            return;
+
         float speed;
 
         ProjectileModel missile;
