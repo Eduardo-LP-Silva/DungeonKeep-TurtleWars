@@ -18,9 +18,9 @@
 
 ### Application
 
-1. Make sure your phone allows installation of unsigned APKs.
-2. Download APK to you phone.
-3. Install APK.
+1. Make sure that your phone allows the installation of unsigned APKs.
+2. Download the APK to your phone.
+3. Install the APK like any other.
 
 ## UML Diagram
 
