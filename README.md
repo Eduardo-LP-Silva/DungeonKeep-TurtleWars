@@ -8,6 +8,14 @@
 2. Import project in Android Studio.
 3. When prompted to update project upon start, **don't!**
 
+----- To test the desktop version and unit tests---------
+
+4. Go to Edit Configurations, click on the green plus sign and select application.
+5. On the Main class field select the DesktopLauncher class.
+6. On the Working directory field, select ...\TurtleWars\android\assets.
+7. Finnaly, select the classpath of the desktop and click apply and ok.
+
+
 ### Application
 
 1. Make sure your phone allows installation of unsigned APKs.
@@ -44,6 +52,24 @@ Upon start, the application will be set to the Menu State.
 
 We chose this design pattern beacuse our game will not only involve physics but also an elaborate logic (as well as various visual representations). Thus, this pattern will allow us to better manage all these aspects.
 The implementation will be made through 3 packages, each representing one of 3 modules. Each package will have several classes, being one of them (usually the one started with Game) the main class in the package. This class will have the principal functions regarding the core functionalities of the package. There will be, however, a set of classes outside of this pattern which will serve other non-core functionalities, such as starting the application.
+
+## Major Difficulties
+
+Along the realization of the project, we faced some difficulties that we had to overcome. 
+Some of the biggest adversities that we faced were the creation of our sprites (since we wanted to use semi-original ones) and the implementation of the artificial intelligence regarding the enemy turtle.
+The implementation of the JUnit tests proved to be difficult as well, since we made use of several components that required an actual application to be running (such as Timer Tasks). However, since the tests don't have this capability, we had to go for more "manual" yet less efective solutions.
+We also tried to implement networking and social media integration, however we couldn't finish these on time.
+
+## Lessons Learned
+
+We succesfully learned how to work with the LibGdx physics engine (Box-2D) and how to develop basic Android Apps.
+
+## Work Distribution
+
+To deliver the project before the deadline, we had to distribute the work more or less evenly. We had to create the animation sprites, implement the MVC design and develop the game itself. If we had to divide the contribution of each element, it would be:
+
+* Eduardo Silva - 55%
+* Tomás Novo - 45%
 
 ## User Manual
 
