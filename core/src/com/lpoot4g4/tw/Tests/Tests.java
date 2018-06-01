@@ -1,4 +1,4 @@
-package com.lpoot4g4.tw.desktop.Tests;
+package com.lpoot4g4.tw.Tests;
 
 import com.lpoot4g4.tw.Controller.GameWorld;
 import com.lpoot4g4.tw.Model.GameModel;

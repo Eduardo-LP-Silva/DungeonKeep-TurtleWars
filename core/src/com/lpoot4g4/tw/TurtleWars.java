@@ -8,33 +8,41 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.lpoot4g4.tw.Model.GameModel;
 import com.lpoot4g4.tw.View.CharacterSelectionView;
 import com.lpoot4g4.tw.View.MenuView;
-import com.lpoot4g4.tw.View.OptionsView;
 import com.lpoot4g4.tw.View.PlayView;
-
-import io.socket.client.IO;
-import io.socket.client.Socket;
 
 import static com.badlogic.gdx.Application.LOG_DEBUG;
 
 public class TurtleWars extends Game
 {
+    /**
+     * The sprite batch rendered every frame.
+     */
     private SpriteBatch batch;
+
+    /**
+     * The asset manager for the game.
+     */
     private AssetManager assetManager;
-    private Socket socket;
+
+    /**
+     * The camera used for the entirety of the game.
+     */
     private OrthographicCamera camera;
-    private GameModel gameModel;
 
+    /**
+     * The game width in pixels.
+     */
     public static final float WIDTH = 800.0f;
+
+    /**
+     * The game height in pixels.
+     */
     public static final float HEIGHT = 400.0f;
+
+    /**
+     * The window title.
+     */
     public static final String TITLE = "Turtle Wars";
-
-    public Socket getSocket() {
-        return socket;
-    }
-
-    public GameModel getGameModel() {
-        return gameModel;
-    }
 
     /**
      * Creates the game. Initializes the sprite batch and asset manager.
@@ -61,35 +69,51 @@ public class TurtleWars extends Game
      */
     private void startGame()
     {
-        gameModel = new GameModel();
-
-        setScreen(new MenuView(this, gameModel));
+        setScreen(new MenuView(this, new GameModel()));
     }
 
+    /**
+     * Returns the camera.
+     *
+     * @return The camera.
+     */
     public OrthographicCamera getCamera() {
         return camera;
     }
 
+    /**
+     * Sets the screen to the main menu view.
+     *
+     * @param gm The game model.
+     */
     public void setMenu(GameModel gm)
     {
         setScreen(new MenuView(this, gm));
     }
 
-    public void setOptions(GameModel gm)
-    {
-        setScreen(new OptionsView(this, gm));
-    }
-
+    /**
+     * Sets the screen to the character selection view.
+     *
+     * @param gm The game model.
+     */
     public void setCharacterSelection(GameModel gm)
     {
         setScreen(new CharacterSelectionView(this, gm));
     }
 
+    /**
+     * Sets the screen to the play view.
+     *
+     * @param gm The game model.
+     */
     public void setPlay(GameModel gm)
     {
         setScreen(new PlayView(this, gm));
     }
 
+    /**
+     * Exits the game.
+     */
     public void exit()
     {
         Gdx.app.exit();
@@ -123,17 +147,5 @@ public class TurtleWars extends Game
     public SpriteBatch getBatch()
     {
         return batch;
-    }
-
-    public void connectSocket()
-    {
-        try
-        {
-            socket = IO.socket("http://localhost:8081");
-            socket.connect();
-        }catch(Exception e)
-        {
-            System.out.println(e);
-        }
     }
 }

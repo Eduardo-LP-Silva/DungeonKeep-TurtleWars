@@ -9,6 +9,11 @@ import com.lpoot4g4.tw.TurtleWars;
 
 public class heavyTurtleView extends TurtleView
 {
+    /**
+     * Class constructor.
+     *
+     * @param game The game itself.
+     */
     public heavyTurtleView(TurtleWars game)
     {
         super(game);
@@ -26,6 +31,11 @@ public class heavyTurtleView extends TurtleView
         frames.clear();
     }
 
+    /**
+     * Creates a sprite that represents the heavy turtle.
+     *
+     * @param game The game itself.
+     */
     @Override
     public Sprite createSprite(TurtleWars game)
     {

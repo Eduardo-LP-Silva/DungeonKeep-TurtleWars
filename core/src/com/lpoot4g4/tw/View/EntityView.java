@@ -1,10 +1,7 @@
 package com.lpoot4g4.tw.View;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.lpoot4g4.tw.Model.EntityModel;
 import com.lpoot4g4.tw.TurtleWars;
-
-import static com.lpoot4g4.tw.View.PlayView.PIXEL_TO_METER;
 
 public abstract class EntityView
 {
@@ -24,14 +21,14 @@ public abstract class EntityView
         sprite = createSprite(game);
     }
 
+    /**
+     * Returns the sprite associated with this view.
+     *
+     * @return The sprite associated with this view.
+     */
     public Sprite getSprite()
     {
         return sprite;
-    }
-
-    public void setSprite(Sprite sprite)
-    {
-        this.sprite = sprite;
     }
 
     /**
@@ -54,16 +51,4 @@ public abstract class EntityView
     {
         sprite.draw(batch);
     }
-
-    /**
-     * Updates this view based on a certain model.
-     *
-     * @param model the model used to update this view
-     */
-    public void update(EntityModel model)
-    {
-        sprite.setCenter(model.getX() / PIXEL_TO_METER, model.getY() / PIXEL_TO_METER);
-    }
-
-
 }

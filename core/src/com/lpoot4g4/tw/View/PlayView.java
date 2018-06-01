@@ -10,40 +10,97 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.Timer;
 import com.lpoot4g4.tw.Controller.GameWorld;
-import com.lpoot4g4.tw.Controller.ProjectileBody;
 import com.lpoot4g4.tw.Model.GameModel;
-import com.lpoot4g4.tw.Model.PowerUpModel;
-import com.lpoot4g4.tw.Model.ProjectileModel;
 import com.lpoot4g4.tw.TurtleWars;
-
-import java.util.ArrayList;
-import java.util.Random;
 
 public class PlayView extends ScreenAdapter implements GestureDetector.GestureListener
 {
+    /**
+     * The game itself.
+     */
     private TurtleWars game;
+
+    /**
+     * The game model.
+     */
     private GameModel gameModel;
+
+    /**
+     * The game world.
+     */
     private GameWorld gameWorld;
+
+    /**
+     * The turtle view for the first player.
+     */
     private TurtleView player1;
+
+    /**
+     * The turtle view for the AI player.
+     */
     private TurtleView player2;
+
+    /**
+     * The platform view for the floor.
+     */
     private PlatformView floor;
+
+    /**
+     * The font of used.
+     */
     private BitmapFont font = new BitmapFont(Gdx.files.internal("font.fnt"));
+
+    /**
+     * The camera of the game.
+     */
     private OrthographicCamera camera;
+
+    /**
+     * The debug renderer of the game.
+     */
     private Box2DDebugRenderer debugRenderer;
+
+    /**
+     * Flag to debug physics.
+     */
     private static boolean debugPhysics = false;
+
+    /**
+     * The gesture detector of the game.
+     */
     private GestureDetector gestureDetector;
+
+    /**
+     * Sprite for the bite button.
+     */
     private Sprite biteBtn;
+
+    /**
+     * Sprite for the shoot button.
+     */
     private Sprite fireBtn;
+
+    /**
+     * Sprite for the jump button.
+     */
     private Sprite jumpBtn;
 
+    /**
+     * Pixel to meter float constant.
+     */
     public final static float PIXEL_TO_METER = 0.01f;
 
+    /**
+     * Play view constructor.
+     *
+     * @param g The game itself.
+     * @param gm The game model.
+     */
     public PlayView(TurtleWars g, GameModel gm)
     {
         game = g;
@@ -61,14 +118,9 @@ public class PlayView extends ScreenAdapter implements GestureDetector.GestureLi
         loadAssets();
     }
 
-    public GameWorld getGameWorld() {
-        return gameWorld;
-    }
-
-    public GameModel getGameModel() {
-        return gameModel;
-    }
-
+    /**
+     * Loads all the assets needed for the play view.
+     */
     public void loadAssets()
     {
         this.game.getAssetManager().load("background.png", Texture.class);
@@ -108,6 +160,9 @@ public class PlayView extends ScreenAdapter implements GestureDetector.GestureLi
         fireBtn.setPosition(700, 10);
     }
 
+    /**
+     * Unloads all the assets previously used.
+     */
     public void unloadAssets()
     {
         this.game.getAssetManager().unload("platform.png");
@@ -124,6 +179,11 @@ public class PlayView extends ScreenAdapter implements GestureDetector.GestureLi
         this.game.getAssetManager().unload("fireBtn.png");
     }
 
+    /**
+     * Renders the screen.
+     *
+     * @param delta The time since last render (seconds).
+     */
     @Override
     public void render(float delta)
     {
@@ -216,6 +276,11 @@ public class PlayView extends ScreenAdapter implements GestureDetector.GestureLi
 
     }
 
+    /**
+     *  Updates the turtle sprite.
+     *
+     * @param delta The time since the last update (seconds).
+     */
     public void updateTurtles(float delta)
     {
         TextureRegion region;
@@ -267,6 +332,11 @@ public class PlayView extends ScreenAdapter implements GestureDetector.GestureLi
         player2.draw(game.getBatch());
     }
 
+    /**
+     * Handles the inputs.
+     *
+     * @param delta Time since last input handled.
+     */
     public void handleInputs(float delta)
     {
         Vector3 input = new Vector3(-1, -1, -1);
@@ -293,12 +363,30 @@ public class PlayView extends ScreenAdapter implements GestureDetector.GestureLi
             gameWorld.FireTurtle1();
     }
 
+    /**
+     * Implementation of touchDown function from Gesture Listener
+     *
+     * @param x The x coordinate of the input.
+     * @param y The y coordinate of the input.
+     * @param pointer The pointer.
+     * @param button The button.
+     * @return True if it accepted/registered the input.
+     */
     @Override
     public boolean touchDown(float x, float y, int pointer, int button)
     {
         return true;
     }
 
+    /**
+     * Implementation of tap function from Gesture Listener
+     *
+     * @param x The x coordinate of the input.
+     * @param y The y coordinate of the input.
+     * @param count The number of taps
+     * @param button The button.
+     * @return True if it registered the input.
+     */
     @Override
     public boolean tap(float x, float y, int count, int button)
     {
@@ -308,36 +396,88 @@ public class PlayView extends ScreenAdapter implements GestureDetector.GestureLi
         return true;
     }
 
+    /**
+     * Implementation of longPress function from Gesture Listener
+     *
+     * @param x The x coordinate of the input.
+     * @param y The y coordinate of the input.
+     * @return True if it registered the input.
+     */
     @Override
     public boolean longPress(float x, float y) {
         return false;
     }
 
+    /**
+     * Implementation of fling function from Gesture Listener
+     *
+     * @param velocityX  velocity on x in seconds
+     * @param velocityY velocity on y in seconds
+     * @param button The button.
+     * @return True if it registered the input.
+     */
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
         return false;
     }
 
+    /**
+     * Implementation of pan function from Gesture Listener
+     *
+     * @param x The x coordinate of the input.
+     * @param y The y coordinate of the input.
+     * @param deltaX the difference in pixels to the last drag event on x.
+     * @param deltaY the difference in pixels to the last drag event on y.
+     * @return True if it registered the input.
+     */
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
         return false;
     }
 
+    /**
+     * Implementation of panStop function from Gesture Listener
+     *
+     * @param x The x coordinate of the input.
+     * @param y The y coordinate of the input.
+     * @param pointer The pointer.
+     * @param button The button.
+     * @return True if it registered the input.
+     */
     @Override
     public boolean panStop(float x, float y, int pointer, int button) {
         return false;
     }
 
+    /**
+     * Implementation of zoom function from Gesture Listener
+     *
+     * @param initialDistance distance between fingers when the gesture started.
+     * @param distance current distance between fingers.
+     * @return True if it registered the input.
+     */
     @Override
     public boolean zoom(float initialDistance, float distance) {
         return false;
     }
 
+    /**
+     * Implementation of pinch function from Gesture Listener
+     *
+     * @param initialPointer1 The initial pointer 1.
+     * @param initialPointer2 The initial pointer 2.
+     * @param pointer1 Pointer 1.
+     * @param pointer2 Pointer 2.
+     * @return True if it registered the input.
+     */
     @Override
     public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
         return false;
     }
 
+    /**
+     * Implementation of pinchStop function from Gesture Listener
+     */
     @Override
     public void pinchStop() {
 

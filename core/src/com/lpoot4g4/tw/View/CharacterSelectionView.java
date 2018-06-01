@@ -2,7 +2,6 @@ package com.lpoot4g4.tw.View;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector3;
@@ -10,20 +9,39 @@ import com.lpoot4g4.tw.Model.GameModel;
 import com.lpoot4g4.tw.Model.TurtleModel;
 import com.lpoot4g4.tw.TurtleWars;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import io.socket.client.Socket;
-import io.socket.emitter.Emitter;
-
 public class CharacterSelectionView extends ScreenAdapter
 {
+    /**
+     * The game instance.
+     */
     private TurtleWars game;
+
+    /**
+     * The game model.
+     */
     private GameModel gameModel;
+
+    /**
+     * The light turtle sprite.
+     */
     private Sprite lightTurtle;
+
+    /**
+     * The heavy turtle sprite.
+     */
     private Sprite heavyTurtle;
+
+    /**
+     * The start game button sprite.
+     */
     private Sprite startGame;
 
+    /**
+     * The constructor for the character selection menu view.
+     *
+     * @param g The game itself.
+     * @param gm The game model.
+     */
     public CharacterSelectionView(TurtleWars g, GameModel gm)
     {
         game = g;
@@ -31,6 +49,9 @@ public class CharacterSelectionView extends ScreenAdapter
         loadAssets();
     }
 
+    /**
+     * Loads all the assets needed for the character selection menu view.
+     */
     public void loadAssets()
     {
         game.getAssetManager().load("characterSelection.png", Texture.class);
@@ -49,12 +70,20 @@ public class CharacterSelectionView extends ScreenAdapter
         startGame.setPosition(260, 160);
     }
 
+    /**
+     * Unloads all the assets previously used (that are not going to be needed in the next screen).
+     */
     public void unloadAssets()
     {
         game.getAssetManager().unload("characterSelection.png");
         game.getAssetManager().unload("newGameBtn.png");
     }
 
+    /**
+     * Renders the screen.
+     *
+     * @param delta The time since last render (seconds).
+     */
     @Override
     public void render(float delta)
     {
@@ -71,6 +100,9 @@ public class CharacterSelectionView extends ScreenAdapter
         game.getBatch().end();
     }
 
+    /**
+     * Handles the inputs of the user.
+     */
     public void handleInputs()
     {
         if(Gdx.input.isTouched())
@@ -92,35 +124,5 @@ public class CharacterSelectionView extends ScreenAdapter
             }
 
         }
-    }
-
-    public void handleSocketEvents()
-    {
-        Socket socket = game.getSocket();
-
-        socket.on(Socket.EVENT_CONNECT, new Emitter.Listener()
-        {
-            @Override
-            public void call(Object... args)
-            {
-                Gdx.app.log("SocketIO", "Connected");
-            }
-        }).on("socketID", new Emitter.Listener()
-        {
-            @Override
-            public void call(Object... args)
-            {
-                JSONObject data = (JSONObject) args[0];
-                try
-                {
-                    String id = data.getString("id");
-                    Gdx.app.log("SocketIO", "My ID" + id);
-                }catch(JSONException jse)
-                {
-                    Gdx.app.log("SocketID", "Error getting ID");
-                }
-
-            }
-        });
     }
 }

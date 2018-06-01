@@ -9,6 +9,11 @@ import com.lpoot4g4.tw.TurtleWars;
 
 public class lightTurtleView extends TurtleView
 {
+    /**
+     * Class constructor.
+     *
+     * @param game The game itself.
+     */
     public lightTurtleView(TurtleWars game)
     {
         super(game);
@@ -26,6 +31,11 @@ public class lightTurtleView extends TurtleView
         frames.clear();
     }
 
+    /**
+     * Creates a sprite that represents the light turtle.
+     *
+     * @param game The game itself.
+     */
     @Override
     public Sprite createSprite(TurtleWars game)
     {

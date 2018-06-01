@@ -11,19 +11,51 @@ import com.lpoot4g4.tw.TurtleWars;
 
 public class MenuView extends ScreenAdapter
 {
+    /**
+     * The game instance.
+     */
     private TurtleWars game;
+
+    /**
+     * The game model.
+     */
     private GameModel gameModel;
-    private static int SPACING = 20;
+
+    /**
+     * A constant to help to set the sprite's position.
+     */
+    private final static int SPACING = 20;
+
+    /**
+     * The new game button sprite.
+     */
     private Sprite newGameBtn;
+
+    /**
+     * The options button sprite.
+     */
     private Sprite optionsBtn;
+
+    /**
+     * The exit button sprite.
+     */
     private Sprite exitBtn;
 
+    /**
+     * The constructor for the main menu view.
+     *
+     * @param g The game itself.
+     * @param gm The game model.
+     */
     public MenuView(TurtleWars g, GameModel gm) {
         game = g;
         gameModel = gm;
         loadAssets();
     }
 
+    /**
+     * Loads all the assets needed for the main menu view.
+     */
     public void loadAssets()
     {
         this.game.getAssetManager().load("menuBackground.png", Texture.class);
@@ -46,6 +78,11 @@ public class MenuView extends ScreenAdapter
         gameModel.getThemeSong().play();
     }
 
+    /**
+     * Renders the screen.
+     *
+     * @param delta The time since last render (seconds).
+     */
     @Override
     public void render(float delta)
     {
@@ -62,12 +99,20 @@ public class MenuView extends ScreenAdapter
         game.getBatch().end();
     }
 
+    /**
+     * Unloads all the assets previously used.
+     */
     public void unloadAssets()
     {
         this.game.getAssetManager().unload("optionsBtn.png");
         this.game.getAssetManager().unload("exitBtn.png");
     }
 
+    /**
+     * Handles the inputs.
+     *
+     * @param delta Time since last input handled.
+     */
     public void handleInputs(float delta)
     {
         if(Gdx.input.isTouched())
