@@ -1,49 +1,97 @@
 # TurtleWars
 
-### UML Class and Package Diagram (Changes might occur in the future)
+## Setup
 
-![turtlewarsstarteruml](https://user-images.githubusercontent.com/32617691/39407842-9e12988a-4bc4-11e8-9151-e1b7a548b763.png)
+### Project
 
-### State Diagram
+1. Download project from GitHub.
+2. Import project in Android Studio.
+3. When prompted to update project upon start, **don't!**
+
+### Application
+
+1. Make sure your phone allows installation of unsigned APKs.
+2. Download APK to you phone.
+3. Install APK.
+
+## UML Diagram
+
+### Model Package
+
+![model](https://user-images.githubusercontent.com/32617691/40853358-b3a71318-65c5-11e8-836b-5340ce41a03d.png)
+
+### View Package
+
+![view](https://user-images.githubusercontent.com/32617691/40853364-b6183f0a-65c5-11e8-961c-b40bfcddc99d.png)
+
+### Controller Package
+
+![controller](https://user-images.githubusercontent.com/32617691/40853602-9b82e8ce-65c6-11e8-8635-59185be3d61d.png)
+
+### Turtle Wars Class
+
+![turtlewars](https://user-images.githubusercontent.com/32617691/40853605-9cc05a78-65c6-11e8-894f-2343c6e35aa2.png)
+
+## State Diagram
 
 Upon start, the application will be set to the Menu State.
 
-![twstate](https://user-images.githubusercontent.com/32617691/39408569-56b7acf8-4bd0-11e8-8995-3b08654fff38.png)
+![statediagram](https://user-images.githubusercontent.com/32617691/40849896-1d72b7ee-65bb-11e8-862a-cec17c87812c.png)
 
-### Design Pattern - MVC (Model - View - Controller)
+## Design Pattern - MVC (Model - View - Controller)
 
 We chose this design pattern beacuse our game will not only involve physics but also an elaborate logic (as well as various visual representations). Thus, this pattern will allow us to better manage all these aspects.
 The implementation will be made through 3 packages, each representing one of 3 modules. Each package will have several classes, being one of them (usually the one started with Game) the main class in the package. This class will have the principal functions regarding the core functionalities of the package. There will be, however, a set of classes outside of this pattern which will serve other non-core functionalities, such as starting the application.
 
-### GUI
+## User Manual
 
-* Main Menu
+The game starts with the Main Menu, where the user can choose an option:
 
-![mainmenu](https://user-images.githubusercontent.com/32617691/39411065-99a2ebf2-4bfa-11e8-938d-54b74e8ba056.png)
+![image](https://user-images.githubusercontent.com/32617691/40850464-93bde15c-65bc-11e8-8b05-ef07989d0455.png)
 
-* Options Menu
+* “New Game” moves the user to the next Menu, where he can choose his character and start our game.
+* “Exit” closes the app.
 
-![optionsmenu](https://user-images.githubusercontent.com/32617691/39411068-a673a65a-4bfa-11e8-9fdd-0ad94ec6b6c2.png)
+If the user pressed the first option, the game moves to the next menu: 
 
-* Character Selection Screen
+![image](https://user-images.githubusercontent.com/32617691/40850954-dbe59a3c-65bd-11e8-976e-60b84eb3bc86.png)
+
+In this Menu, the user can choose his character and then press the “New Game” button to start playing.
 
 
-![characterselectionmenu](https://user-images.githubusercontent.com/32617691/39411078-bdb03a2c-4bfa-11e8-9b54-ce2cb5d9be95.jpg)
+![image](https://user-images.githubusercontent.com/32617691/40851004-0165d286-65be-11e8-87d6-b8b525e7d373.png)
 
-* 2D View of arena and players
-* Possible buttons on the corner of the screen for Android Input
-* Health and Name bars on the top corners of the screen for each player
+The user begins in the left side of the map and he has to deplete all of the AI turtle’s health to win. 
 
-![gamedemo](https://user-images.githubusercontent.com/32617691/39411083-d3172362-4bfa-11e8-93b5-8e172c38a9dc.png)
+The game can end with a victory...
 
-### Test Design
+![image](https://user-images.githubusercontent.com/32617691/40851047-17c2a32e-65be-11e8-916e-a2cb3ba11900.png)
 
-* Movement Test - Gives every motion input (left, right, jump) and checks if the x/y coordinates changed appropriately.
-* Collision Test - Pushes a turtle towards another turtle (without attacking) and sees if the x coordinate of the first doesn't go beoynd the second one.
-* Shots Fired Test - Fires a missile towards a turtle a checks if this one took the appropriate damage.
-* Melee Test - Makes a turtle perfom 2 melee attacks, one further from another turtle and another right next to it, checking if the second turtle took damage the 2nd time but not the first.
-* GameOver Test - Continually pushes a turtle towards a cactus and checks if after some times has passed the game ended (in game over fashion).
-* Victory Test - Makes the player's turtle kill a weaker turtle (one shot) and checks if victory condition was achieved.
-* Character Selection Test - Checks if the type of turtle spawned in the world corresponds with the one choose in the character menu.
+... or with a defeat.
 
-Further tests can be implemented in the future if the need arises.
+![image](https://user-images.githubusercontent.com/32617691/40851074-27d3417e-65be-11e8-9d8b-c0f814b609b8.png)
+
+### Controls
+
+There are different ways to make the player's turtle to move and attack according to the platform where our game is running.
+
+1. Android
+   * To control the turtle’s movement, the user must lean the phone left or right.
+
+![phone](https://user-images.githubusercontent.com/32617691/40852277-d36ba53c-65c1-11e8-972d-7fbd5e5e065b.png)
+
+   * In case the user wants to jump, he has to press the jump button on the lower left corner or double tap the screen (not as responsive as the button).
+
+   * If the user wants to attack (bite and/or shoot), he has to press the two buttons on the lower right corner.
+
+2. Desktop*
+
+   * To control the turtle’s movement, the user must press “A” key to go left and “D” key to go right.
+
+   * To jump, the user must press the “W” key.
+
+   * If the user wants to attack (bite and/or shoot), he has to press the “E” and “Q” keys, respectively.
+  
+Note: The PC users can also make use of the buttons directed towards the mobile users.
+
+
