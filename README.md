@@ -84,7 +84,7 @@ There are different ways to make the player's turtle to move and attack accordin
 
    * If the user wants to attack (bite and/or shoot), he has to press the two buttons on the lower right corner.
 
-2. Desktop*
+2. Desktop
 
    * To control the turtle’s movement, the user must press “A” key to go left and “D” key to go right.
 
