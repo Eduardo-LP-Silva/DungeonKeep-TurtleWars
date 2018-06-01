@@ -6,16 +6,28 @@ import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Timer;
 import com.lpoot4g4.tw.Model.TurtleModel;
 import static com.lpoot4g4.tw.View.PlayView.PIXEL_TO_METER;
 import static java.lang.Math.abs;
 
 public class TurtleBody extends EntityBody
 {
+    /**
+     * The turtle's speed.
+     */
     private float speed;
+
+    /**
+     * Boolean to check if the AI player is retreating from an attack.
+     */
     private boolean retreating = false;
 
+    /**
+     * Constructor of the class.
+     *
+     * @param world The world where the turtle is.
+     * @param tm The turtle's model.
+     */
     public TurtleBody(World world, TurtleModel tm)
     {
         super(world, tm, BodyDef.BodyType.DynamicBody, 88, 59);
@@ -26,14 +38,27 @@ public class TurtleBody extends EntityBody
             speed = 1f;
     }
 
+    /**
+     * Checks if the AI player is retreating.
+     *
+     * @return The retreating variable value.
+     */
     public boolean isRetreating() {
         return retreating;
     }
 
+    /**
+     * Sets the retreating flag for the AI player.
+     *
+     * @param retreating The new value for the retreating flag.
+     */
     public void setRetreating(boolean retreating) {
         this.retreating = retreating;
     }
 
+    /**
+     * Moves the body to the left.
+     */
     public void moveLeft()
     {
         if(body.getLinearVelocity().x >= -7 && getX() > 0.5f)
@@ -42,7 +67,9 @@ public class TurtleBody extends EntityBody
         }
 
     }
-
+    /**
+     * Moves the body to the right.
+     */
     public void moveRight()
     {
         if(body.getLinearVelocity().x <= 7 && getX() + getWidth() * PIXEL_TO_METER < 795f * PIXEL_TO_METER)
@@ -52,6 +79,9 @@ public class TurtleBody extends EntityBody
 
     }
 
+    /**
+     * Makes the body jump.
+     */
     public void jump()
     {
         if(!((TurtleModel) body.getUserData()).isJumping())
@@ -61,6 +91,9 @@ public class TurtleBody extends EntityBody
         }
     }
 
+    /**
+     * Initiates a bite attack.
+     */
     public void bite()
     {
         ((TurtleModel) body.getUserData()).setBiting(true);
@@ -68,6 +101,9 @@ public class TurtleBody extends EntityBody
 
     }
 
+    /**
+     * Creates the turtle's fixture.
+     */
     @Override
     public void createFixture()
     {
@@ -125,6 +161,13 @@ public class TurtleBody extends EntityBody
         rightSide.dispose();
     }
 
+    /**
+     * Checks if a turtle is in biting range of a position according to it's velocity and distance.
+     *
+     * @param player2X The X coordinate of player two (or other position).
+     *
+     * @return true case is in range, false otherwise.
+     */
     public boolean isInBitingRange(float player2X)
     {
         float distance = abs(this.getX() - player2X);

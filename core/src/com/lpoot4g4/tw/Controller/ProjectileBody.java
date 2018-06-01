@@ -9,10 +9,19 @@ import com.lpoot4g4.tw.Model.ProjectileModel;
 
 public class ProjectileBody extends EntityBody
 {
+    /**
+     * Constructor of the class
+     *
+     * @param w The world where the projectile is.
+     * @param pm The projectile's model.
+     */
     public ProjectileBody(World w, ProjectileModel pm) {
         super(w, pm, BodyDef.BodyType.KinematicBody, 42, 27);
     }
 
+    /**
+     * Creates the projectile's fixture.
+     */
     @Override
     public void createFixture()
     {
@@ -28,6 +37,11 @@ public class ProjectileBody extends EntityBody
         shape.dispose();
     }
 
+    /**
+     * Moves the projectile according to a certain speed.
+     *
+     * @param speed The projectile's speed.
+     */
     public void move(float speed)
     {
         body.setLinearVelocity(new Vector2(speed, 0));

@@ -27,19 +27,71 @@ import static com.lpoot4g4.tw.View.PlayView.PIXEL_TO_METER;
 
 public class GameWorld implements ContactListener
 {
+    /**
+     * The Physic's world.
+     */
     private World world;
+
+    /**
+     * The turtle instance for player 1 (body).
+     */
     private TurtleBody player1;
+
+    /**
+     * The turtle instance for player 2 (body).
+     */
     private TurtleBody player2;
+
+    /**
+     * The floor instance.
+     */
     private PlatformBody floor;
+
+    /**
+     * The ceiling instance.
+     */
     private PlatformBody ceiling;
+
+    /**
+     * The power up instance.
+     */
     private PowerUpBody powerUp;
+
+    /**
+     * The left wall instance.
+     */
     private wallBody leftWall;
+
+    /**
+     * The right wall instance.
+     */
     private wallBody rightWall;
+
+    /**
+     * The list that contains all projectiles in flight
+     */
     private ArrayList<ProjectileBody> missiles;
+
+    /**
+     * The game model instance.
+     */
     private GameModel gameModel;
+
+    /**
+     * Flag for testing purposes.
+     */
     private boolean test = false;
+
+    /**
+     * The number of seconds it takes for a power up to spawn.
+     */
     private float POWERUP_SPAWN_DELAY = 7;
 
+    /**
+     * Creates a new GameWorld which controls the physics of the game model.
+     *
+     * @param gm The gamemodel.
+     */
     public GameWorld(GameModel gm)
     {
         world = new World(new Vector2(0, -9.8f), true);
@@ -54,29 +106,59 @@ public class GameWorld implements ContactListener
         world.setContactListener(this);
     }
 
+    /**
+     * Returns the first player's "body".
+     *
+     * @return Player one.
+     */
     public TurtleBody getPlayer1()
     {
         return player1;
     }
 
+    /**
+     * Returns the second player's "body".
+     *
+     * @return Player two.
+     */
     public TurtleBody getPlayer2()
     {
         return player2;
     }
 
+    /**
+     * Returns the missiles ArrayList.
+     *
+     * @return The missiles ArrayList.
+     */
     public ArrayList<ProjectileBody> getMissiles() {
         return missiles;
     }
 
+    /**
+     * Returns the world itself.
+     *
+     * @return The world.
+     */
     public World getWorld()
     {
         return world;
     }
 
+    /**
+     * Sets the test flag.
+     *
+     * @param test The value of the new test flag.
+     */
     public void setTest(boolean test) {
         this.test = test;
     }
 
+    /**
+     * Calculates the next physics step(in seconds) of duration delta.
+     *
+     * @param delta The size(in seconds) of the physics step.
+     */
     public void update(float delta)
     {
         gameModel.update();
@@ -115,6 +197,9 @@ public class GameWorld implements ContactListener
         updateTurtles();
     }
 
+    /**
+     * Calculates the AI's attack moves.
+     */
     public void player2Attack()
     {
         if(player1.getX() < player2.getX())
@@ -195,6 +280,9 @@ public class GameWorld implements ContactListener
         }
     }
 
+    /**
+     * Calculates the AI's defensive movements.
+     */
     void player2Defend()
     {
         if(gameModel.getPlayer1().isFiring() &&
@@ -263,6 +351,9 @@ public class GameWorld implements ContactListener
             }
     }
 
+    /**
+     * Removes the current power up.
+     */
     public void removePowerUp()
     {
         gameModel.getPowerUp().setEffect(PowerUpModel.Effect.Null);
@@ -270,6 +361,9 @@ public class GameWorld implements ContactListener
         powerUp = null;
     }
 
+    /**
+     * Updates both player one and two states.
+     */
     public void updateTurtles()
     {
         // Turtle 1
@@ -293,6 +387,9 @@ public class GameWorld implements ContactListener
                 ((TurtleModel) player2.getBody().getUserData()).setCurrentState(TurtleModel.State.Standing);
     }
 
+    /**
+     * Creates a new missile fired from the player one's position.
+     */
     public void FireTurtle1()
     {
         if(gameModel.getPlayer1().isFiring())
@@ -331,6 +428,9 @@ public class GameWorld implements ContactListener
         gameModel.getPlayer1().setReloadTime(System.currentTimeMillis());
     }
 
+    /**
+     * Creates a new missile fired from the player two's position.
+     */
     public void fireTurtle2()
     {
 
@@ -371,6 +471,11 @@ public class GameWorld implements ContactListener
         gameModel.getPlayer2().setReloadTime(System.currentTimeMillis());
     }
 
+    /**
+     * Controls the contact between a turtle and another object.
+     *
+     * @param contact The instance of this contact.
+     */
     public void turtleContact(Contact contact)
     {
         Fixture turtleFxtA = contact.getFixtureA(), fxtB = contact.getFixtureB();
@@ -450,6 +555,11 @@ public class GameWorld implements ContactListener
         }
     }
 
+    /**
+     * Controls the contact between a missile and another object.
+     *
+     * @param contact The contact instance.
+     */
     public void bulletContact(Contact contact)
     {
         Fixture bulletFxt1 = contact.getFixtureA(), fxtB = contact.getFixtureB();
@@ -468,6 +578,11 @@ public class GameWorld implements ContactListener
         bullet1.setForRemoval();
     }
 
+    /**
+     * Controls the contact between a wall and another object.
+     *.
+     * @param contact The contact instance.
+     */
     public void wallContact(Contact contact)
     {
         Fixture wallFxtA = contact.getFixtureA(), fxtB = contact.getFixtureB();
@@ -493,6 +608,11 @@ public class GameWorld implements ContactListener
         }
     }
 
+    /**
+     * Controls the contact between a power up and another object.
+     *
+     * @param contact The contact instance.
+     */
     public void powerUpContact(Contact contact)
     {
         PowerUpModel powerUpM = (PowerUpModel) contact.getFixtureA().getBody().getUserData();
@@ -521,6 +641,11 @@ public class GameWorld implements ContactListener
                 removePowerUp();
     }
 
+    /**
+     * Contact listener (when this is initiated) between two bodies.
+     *
+     * @param contact The contact instance.
+     */
     @Override
     public void beginContact(Contact contact)
     {
@@ -539,24 +664,40 @@ public class GameWorld implements ContactListener
                         powerUpContact(contact);
     }
 
+    /**
+     * Contact listener (when this finishes) between two bodies.
+     *
+     * @param contact The contact instance.
+     */
     @Override
     public void endContact(Contact contact) {
 
     }
 
+    /**
+     * Contact listener (before it happens) between two bodies.
+     *
+     * @param contact The contact instance.
+     */
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
 
     }
 
+    /**
+     * Contact listener (after it happens) between two bodies.
+     *
+     * @param contact The contact instance.
+     */
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
 
     }
 
     /**
-     * Removes objects that have been flagged for removal on the
-     * previous step.
+     * Removes a body from the world.
+     *
+     * @param body The body to remove.
      */
     public void removeBody(Body body)
     {

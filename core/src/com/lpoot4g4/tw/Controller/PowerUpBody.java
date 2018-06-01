@@ -5,7 +5,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.lpoot4g4.tw.Model.PowerUpModel;
 
@@ -13,11 +12,20 @@ import static com.lpoot4g4.tw.View.PlayView.PIXEL_TO_METER;
 
 public class PowerUpBody extends EntityBody
 {
+    /**
+     * Constructor of the class.
+     *
+     * @param world The world where the power-up is.
+     * @param model The power-up model.
+     */
     public PowerUpBody(World world, PowerUpModel model)
     {
         super(world, model, BodyDef.BodyType.DynamicBody, 45, 45);
     }
 
+    /**
+     * Creates the power up's fixture (sphere).
+     */
     @Override
     public void createFixture()
     {

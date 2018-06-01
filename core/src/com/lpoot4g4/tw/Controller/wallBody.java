@@ -10,11 +10,20 @@ import com.lpoot4g4.tw.TurtleWars;
 
 public class wallBody extends EntityBody
 {
+    /**
+     * Constructor of the class.
+     *
+     * @param world The world where the wall is.
+     * @param pm The platform model.
+     */
     public wallBody(World world, PlatformModel pm)
     {
         super(world, pm, BodyDef.BodyType.StaticBody, 1, TurtleWars.HEIGHT);
     }
 
+    /**
+     * Creates the wall's fixture (vertical).
+     */
     @Override
     public void createFixture()
     {
