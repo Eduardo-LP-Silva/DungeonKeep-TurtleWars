@@ -7,20 +7,21 @@
 1. Download project from GitHub.
 2. Import project in Android Studio.
 3. When prompted to update project upon start, **don't!**
-
------ To test the desktop version and unit tests---------
-
+----- To setup the desktop version and run unit tests ---------
 4. Go to Edit Configurations, click on the green plus sign and select application.
 5. On the Main class field select the DesktopLauncher class.
 6. On the Working directory field, select ...\TurtleWars\android\assets.
 7. Finnaly, select the classpath of the desktop and click apply and ok.
-
 
 ### Application
 
 1. Make sure that your phone allows the installation of unsigned APKs.
 2. Download the APK to your phone.
 3. Install the APK like any other.
+
+### Jar
+
+1. Just run the TurtleWars.jar just like any other .jar file.
 
 ## UML Diagram
 
