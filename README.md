@@ -1,5 +1,9 @@
 # TurtleWars
 
+## Important
+
+This README is outdated. This branch served as a mid point assessement and since then various changes were made. The updated version can be found in the finalRelease branch.
+
 ### UML Class and Package Diagram (Changes might occur in the future)
 
 ![turtlewarsstarteruml](https://user-images.githubusercontent.com/32617691/39407842-9e12988a-4bc4-11e8-9151-e1b7a548b763.png)
